@@ -1,0 +1,11 @@
+xietong:
+  jwt:
+    header: Authorization
+    expire: 86400 #秒（一天）
+    secret: r6tjfiy7rht565grh2d14r34aq32n0ffowgo94rhsjn2s5zeh4r8h5d3ss8f5sloen54975354nz #够64个字符位就行
+
+spring:
+  security:
+    user:
+      name: user
+      password: $2a$10$XgmWcf/K4tK14wNRLBug4uoVQUNoq5qnnET0fKsdiNH7M6gkrOMd.  # 这是123456加密后的密文 人麻了
