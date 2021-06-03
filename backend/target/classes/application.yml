@@ -8,3 +8,19 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 server:
   port: 8080
+
+#mybatis-plus配置
+mybatis-plus:
+  #配置Mapper映射文件
+  mapper-locations: classpath:/mapper/*.xml
+  # 配置Mybatis数据返回类型别名（默认别名为类名）
+  type-aliases-package: com.xietong.model.entity
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: true
+
+#配置控制台打印日志Debug
+logging:
+  level:
+    com.jd.mapper: debug
+
