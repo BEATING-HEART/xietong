@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface StaffDOService {
     public List<StaffDO> findAll();
+    public List<StaffDO> findOneById(String id);
+    public int removeOneById(String id);
 }

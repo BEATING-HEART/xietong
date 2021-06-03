@@ -15,4 +15,14 @@ public class StaffDOServiceImpl implements StaffDOService {
     public List<StaffDO> findAll() {
         return staffDOMapper.findAll();
     }
+
+    @Override
+    public List<StaffDO> findOneById(String id) {
+        return staffDOMapper.findOneById(id);
+    }
+
+    @Override
+    public int removeOneById(String id) {
+        return staffDOMapper.removeOne(id);
+    }
 }
