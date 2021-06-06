@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("staff")
-//@Configuration
 public class StaffDO {
     @TableId(value = "stuff_id", type = IdType.INPUT)
     @NonNull
@@ -28,6 +27,8 @@ public class StaffDO {
     @TableField(value = "effective")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean validity;
+    @NonNull
+    private Integer status;
 
     // 入职时间？离职时间？
 
