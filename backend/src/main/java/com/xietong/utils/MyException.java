@@ -82,7 +82,7 @@ public class MyException extends RuntimeException{
     }
 
     /**
-     * 构造通用异常
+     * 构造详细异常
      * @param errorCode 错误码
      * @param detailedMessage 详细描述
      * @param t 导火索

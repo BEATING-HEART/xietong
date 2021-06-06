@@ -1,9 +1,16 @@
 package com.xietong.constant.enums;
 
 public enum ErrorCodeEnum implements ErrorCode{
+    // 通用成功
     SUCCESS("200", "操作成功"),
-    UNSPECIFIED("500", "未知错误")
+    // 通用异常
+    UNSPECIFIED("400", "操作失败"),
 
+    /** 4打头的错误码，是用于spring security 认证的 这个没有什么约定俗成，只是我随便规定的 */
+    JWT_ERROR("4001", "token 异常"),
+    JWT_EXPIRE("4002", "token 过期"),
+    RQ_FORBIDDEN("4003", "访问权限不足"),
+    RQ_UNAUTHORIZED("4004", "未登录")
     ;
 
     /** 错误码 */
