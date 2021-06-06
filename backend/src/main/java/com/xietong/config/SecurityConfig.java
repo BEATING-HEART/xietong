@@ -1,21 +1,22 @@
 package com.xietong.config;
 
-import com.xietong.utils.security.LoginFailureHandler;
-import com.xietong.utils.security.LoginSuccessHandler;
+import com.xietong.filter.JwtAuthenticationFilter;
+import com.xietong.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @Author Sunforge
  * @Date 2021-06-02 16:40
+ * 配置spring security的过滤规则
  */
 @Configuration
 @EnableWebSecurity
@@ -31,23 +32,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Autowired
 //    CaptchaFilter captchaFilter;
 //
-//    @Autowired
-//    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-//
-//    @Autowired
-//    JwtAccessDeniedHandler jwtAccessDeniedHandler;
-//
-//    @Autowired
-//    UserDetailServiceImpl userDetailService;
-//
+    @Autowired
+    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    @Autowired
+    UserDetailServiceImpl userDetailService;
+
 //    @Autowired
 //    JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
 //
-//    @Bean
-//    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
-//        return jwtAuthenticationFilter;
-//    }
+    @Bean
+    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+        return jwtAuthenticationFilter;
+    }
 
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -89,22 +90,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
 
                 // 异常处理器
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
 
                 // 配置自定义的过滤器
-//                .and()
-//                .addFilter(jwtAuthenticationFilter())
+                .and()
+                .addFilter(jwtAuthenticationFilter())
 //                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
 
         ;
 
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailService);
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailService);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @Author Sunforge
  * @Date 2021-06-02 16:32
+ * 用于处理spring security的跨域请求
  */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
