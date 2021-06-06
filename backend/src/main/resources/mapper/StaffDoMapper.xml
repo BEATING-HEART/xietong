@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.StaffDOMapper">
+    <select id="findAll"  resultMap="StaffDOMap">
+        SELECT staff_id,staff_position,staff_name,status FROM staff
+    </select>
+    <select id="findOneById" resultType="StaffDo" >
+        SELECT staff_id,staff_position,staff_name,status FROM  staff where staff_id=#{id}
+    </select>
+    <delete id="removeOne"  >
+        delete from staff where staff_id=#{id}
+    </delete>
+    <insert id="insert" >
+        
+    </insert>
+    <resultMap id="StaffDOMap" type="StaffDo">
+        <id column="staff_id" property="stuffId"/>
+        <result column="staff_name" property="stuffName"/>
+        <result column="staff_position" property="stuffPosition"/>
+    </resultMap>
+</mapper>

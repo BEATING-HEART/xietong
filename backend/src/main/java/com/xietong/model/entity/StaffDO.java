@@ -4,24 +4,32 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 import org.springframework.context.annotation.Configuration;
 
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("staff")
-//@Configuration
 public class StaffDO {
     @TableId(value = "stuff_id", type = IdType.INPUT)
+    @NonNull
     private String stuffId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String stuffPwd;
+    @NonNull
     private String stuffPosition;
+    @NonNull
     private String stuffName;
+    @TableField(value = "effective")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean validity;
+    @NonNull
+    private Integer status;
 
     // 入职时间？离职时间？
+
 }
