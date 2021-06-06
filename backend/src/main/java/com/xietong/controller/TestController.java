@@ -4,6 +4,7 @@ package com.xietong.controller;
 import com.xietong.constant.enums.ErrorCodeEnum;
 import com.xietong.model.dto.ResponseDTO;
 import com.xietong.model.entity.StaffDO;
+import com.xietong.model.entity.T.Test;
 import com.xietong.service.intf.StaffDOService;
 import com.xietong.utils.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TestController {
 
     @RequestMapping("/test")
     public ResponseDTO testResponse(){
-        return new ResponseDTO(ErrorCodeEnum.UNSPECIFIED, new StaffDO("123","456","12346","135",true));
+        return new ResponseDTO(ErrorCodeEnum.UNSPECIFIED, new StaffDO("123","456","12346","135",true,1));
     }
     @RequestMapping("/findAll")
     public List<StaffDO> findAll(){
@@ -39,5 +40,10 @@ public class TestController {
     @RequestMapping("/removeOne/{id}")
     public int removeOne(@PathVariable(name = "id") String id){
         return staffDOService.removeOneById(id);
+    }
+    @RequestMapping("/findTest/{id}")
+    public List<Test> findTest(@PathVariable(name = "id") int id){
+        return staffDOService.unionSelect(id);
+
     }
 }
