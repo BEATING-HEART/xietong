@@ -10,7 +10,8 @@ spring:
   security:
     user:
       name: user
-      password: $2a$10$XgmWcf/K4tK14wNRLBug4uoVQUNoq5qnnET0fKsdiNH7M6gkrOMd.  # 这是123456加密后的密文 人麻了  
+      password: $2a$10$fJdE/FgcFKMSYIF/QxPZcOBHzS0i7kf/7q5WCxbEWs45Y4.39gQAO  # 这是123456加密后的密文 人麻了
+
 server:
   port: 8080
 

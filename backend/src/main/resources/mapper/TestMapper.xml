@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xietong.mapper.TestMapper">
-    <select id="unionSelect" resultType="Test">
-       SELECT t1.t1id,t1col,t2.t2col
-FROM test.t1,test.t2
-where t1.t1id=t2.t2col1
+    <select id="unionSelect" resultMap="testMap">
+        SELECT t1.t1id,t1col,t2.t2id,t2.t2col,t2.t2col1
+        FROM test.t1,test.t2
+        where t1.t1id=t2.t2col1
     </select>
+    <resultMap id="test2Map" type="Test2">
+        <id property="t2id" column="t2id"/>
+        <result property="t2col" column="t2col"/>
+        <result property="t2col1" column="t2col1"/>
+    </resultMap>
+    <resultMap id="testMap" type="Test">
+        <result column="t1id" property="t1id"/>
+        <result column="t1col" property="t1col"/>
+        <collection property="test2" resultMap="test2Map" >
+<!--            <id property="t2id" column="t2id"/>-->
+<!--            <result property="t2col" column="t2col"/>-->
+<!--            <result property="t2col1" column="t2col1"/>-->
+        </collection>
+    </resultMap>
 </mapper>

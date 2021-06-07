@@ -42,8 +42,9 @@ public class TestController {
         return staffDOService.removeOneById(id);
     }
     @RequestMapping("/findTest/{id}")
-    public List<Test> findTest(@PathVariable(name = "id") int id){
-        return staffDOService.unionSelect(id);
+    public ResponseDTO findTest(@PathVariable(name = "id") int id){
+//        return staffDOService.unionSelect(id);
+        return new ResponseDTO(ErrorCodeEnum.SUCCESS,staffDOService.unionSelect(id));
 
     }
 }

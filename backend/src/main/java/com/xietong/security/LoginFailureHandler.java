@@ -25,6 +25,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         System.out.println(e);
         response.setContentType("application/json;charset=UTF-8");
         ObjectMapper mapper = new ObjectMapper();
+        e.printStackTrace();
+        System.out.println(e.getMessage());
         ResponseDTO result = new ResponseDTO(ErrorCodeEnum.UNSPECIFIED, "用户名或密码错误",null);
         String responseJson = mapper.writeValueAsString(result);
         ServletOutputStream outputStream = response.getOutputStream();
