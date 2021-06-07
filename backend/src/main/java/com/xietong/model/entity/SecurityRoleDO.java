@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 @TableName("security_role")
 public class SecurityRoleDO {
     @TableId
-    private int id;
+    private Long id;
     private String name;
     private String code;
     private String remark;
-    private String status;
+    private int status;
 }
