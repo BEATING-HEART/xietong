@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.SecurityRoleDOMapper">
+    <select id="findAll"  resultType="SecurityRoleDO">
+        SELECT * FROM security_role
+    </select>
+    <select id="findOneById" resultType="SecurityRoleDO" >
+        SELECT * FROM  security_role where id=#{id}
+    </select>
+    <delete id="removeOne" parameterType="Long">
+        delete from security_role where id=#{id}
+    </delete>
+    <insert id="insert"  >
+         insert into security_role(id,name,code,remark,status) values(#{id},#{name},#{code},#{remark},#{status})
+    </insert>
+</mapper>

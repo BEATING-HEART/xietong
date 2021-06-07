@@ -1,13 +1,10 @@
-package com.xietong.mapper;
+package com.xietong.service.intf;
 
-import com.xietong.model.entity.SecurityRoleDO;
 import com.xietong.model.entity.SecurityStaffRoleDO;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface SecurityStaffRoleDOMapper {
+public interface SecurityStaffRoleDOService {
     public List<SecurityStaffRoleDO> findAll();
     public List<SecurityStaffRoleDO> findOneById(Long id);
     public int insert(SecurityStaffRoleDO securityStaffRoleDO);

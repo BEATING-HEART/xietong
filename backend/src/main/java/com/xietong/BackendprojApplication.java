@@ -1,6 +1,9 @@
 package com.xietong;
 
 import com.xietong.mapper.StaffDOMapper;
+import com.xietong.model.entity.SecurityRoleDO;
+import com.xietong.service.impl.SecurityRoleDOServiceImpl;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +21,7 @@ public class BackendprojApplication {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode("123456");
         System.out.println(password);
+
 
 
     }
