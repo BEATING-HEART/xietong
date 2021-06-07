@@ -23,14 +23,14 @@ public class SecurityStaffRoleController {
     }
     @RequestMapping("/findAll")
     public ResponseDTO findAll(){
-        return new ResponseDTO(ErrorCodeEnum.SUCCESS,securityStaffRoleDOService.findAll());
+        return ResponseDTO.success(securityStaffRoleDOService.findAll());
     }
     @RequestMapping("/findOneById/{id}")
     public ResponseDTO findOneById(@PathVariable(name = "id") Long id){
-        return new ResponseDTO(ErrorCodeEnum.SUCCESS,securityStaffRoleDOService.findOneById(id));
+        return ResponseDTO.success(securityStaffRoleDOService.findOneById(id));
     }
     @RequestMapping("/removeOne/{id}")
     public ResponseDTO removeOne(@PathVariable(name = "id") Long id){
-        return new ResponseDTO(ErrorCodeEnum.SUCCESS,securityStaffRoleDOService.removeOne(id));
+        return ResponseDTO.success(securityStaffRoleDOService.removeOne(id));
     }
 }

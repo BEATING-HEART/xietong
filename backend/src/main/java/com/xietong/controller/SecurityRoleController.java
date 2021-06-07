@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/securityRole")
+@RequestMapping("/api/user/v1")
 public class SecurityRoleController {
     @Autowired
     private SecurityRoleDOService securityRoleDOService;
@@ -23,15 +23,15 @@ public class SecurityRoleController {
     }
     @RequestMapping("/findAll")
     public ResponseDTO findAll(){
-        return new ResponseDTO(ErrorCodeEnum.SUCCESS,securityRoleDOService.findAll());
+        return ResponseDTO.success(securityRoleDOService.findAll());
     }
     @RequestMapping("/findOneById/{id}")
     public ResponseDTO findOneById(@PathVariable(name = "id") Long id){
-        return new ResponseDTO(ErrorCodeEnum.SUCCESS,securityRoleDOService.findOneById(id));
+        return ResponseDTO.success(securityRoleDOService.findOneById(id));
     }
     @RequestMapping("/removeOne/{id}")
     public ResponseDTO removeOne(@PathVariable(name = "id") Long id){
-        return new ResponseDTO(ErrorCodeEnum.SUCCESS,securityRoleDOService.removeOne(id));
+        return ResponseDTO.success(securityRoleDOService.removeOne(id));
     }
 
 }

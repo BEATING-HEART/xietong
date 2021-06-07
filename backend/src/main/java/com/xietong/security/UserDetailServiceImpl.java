@@ -39,6 +39,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
      * @return
      */
     public List<GrantedAuthority> getUserAuthority(String staffId){
+//        String authStr = staffDOService;
 //
 //        // 角色(ROLE_admin)、菜单操作权限 sys:user:list
 //        String authority = sysUserService.getUserAuthorityInfo(userId);  // ROLE_admin,ROLE_normal,sys:user:list,....

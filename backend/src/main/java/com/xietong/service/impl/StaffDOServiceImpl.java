@@ -1,5 +1,6 @@
 package com.xietong.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xietong.mapper.StaffDOMapper;
 import com.xietong.model.entity.StaffDO;
 
@@ -28,6 +29,7 @@ public class StaffDOServiceImpl implements StaffDOService {
     public int removeOneById(String id) {
         return staffDOMapper.removeOne(id);
     }
+
 
 //    @Override
 //    public List<Test> unionSelect(int id) {
