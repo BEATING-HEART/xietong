@@ -25,7 +25,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ServletOutputStream outputStream = response.getOutputStream();
 
-        ResponseDTO responseDTO = new ResponseDTO(ErrorCodeEnum.RQ_UNAUTHORIZED, null);
+        ResponseDTO responseDTO = ResponseDTO.fail(ErrorCodeEnum.RQ_UNAUTHORIZED, null);
         ObjectMapper mapper = new ObjectMapper();
         outputStream.write(mapper.writeValueAsString(responseDTO).getBytes("UTF-8"));
 

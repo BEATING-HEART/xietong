@@ -38,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-//    @Autowired
-//    UserDetailServiceImpl userDetailService;
+    @Autowired
+    UserDetailServiceImpl userDetailService;
 
 //    @Autowired
 //    JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
@@ -104,8 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailService);
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailService);
+    }
 }

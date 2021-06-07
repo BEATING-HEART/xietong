@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 //            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             ServletOutputStream outputStream = response.getOutputStream();
 
-            ResponseDTO responseDTO = new ResponseDTO(ErrorCodeEnum.JWT_ERROR, null);
+            ResponseDTO responseDTO = ResponseDTO.fail(ErrorCodeEnum.JWT_ERROR, null);
             ObjectMapper mapper = new ObjectMapper();
             outputStream.write(mapper.writeValueAsString(responseDTO).getBytes("UTF-8"));
 
@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 //            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             ServletOutputStream outputStream = response.getOutputStream();
 
-            ResponseDTO responseDTO = new ResponseDTO(ErrorCodeEnum.JWT_EXPIRE,null);
+            ResponseDTO responseDTO = ResponseDTO.fail(ErrorCodeEnum.JWT_EXPIRE,null);
             ObjectMapper mapper = new ObjectMapper();
             outputStream.write(mapper.writeValueAsString(responseDTO).getBytes("UTF-8"));
 

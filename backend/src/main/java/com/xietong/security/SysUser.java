@@ -1,5 +1,6 @@
 package com.xietong.security;
 
+import com.xietong.model.entity.StaffDO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
@@ -9,10 +10,9 @@ import java.util.Collection;
 /**
  * @Author Sunforge
  * @Date 2021-06-06 12:30
+ * 重写 UserDetail 向 user detail service impl 提供服务。
  */
-public class SysUser implements UserDetails {
-
-    private Long userId;
+public class  SysUser implements UserDetails {
 
     private String password;
 
@@ -28,17 +28,19 @@ public class SysUser implements UserDetails {
 
     private final boolean enabled;
 
-    public SysUser(Long userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this(userId, username, password, true, true, true, true, authorities);
+    public SysUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this(username, password, true, true, true, true, authorities);
     }
+//    public SysUser(StaffDO staff){
+//
+//    }
 
 
-    public SysUser(Long userId, String username, String password, boolean enabled, boolean accountNonExpired,
+    public SysUser(String username, String password, boolean enabled, boolean accountNonExpired,
                        boolean credentialsNonExpired, boolean accountNonLocked,
                        Collection<? extends GrantedAuthority> authorities) {
         Assert.isTrue(username != null && !"".equals(username) && password != null,
                 "Cannot pass null or empty values to constructor");
-        this.userId = userId;
         this.username = username;
         this.password = password;
         this.enabled = enabled;

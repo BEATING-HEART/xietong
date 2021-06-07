@@ -1,10 +1,9 @@
 package com.xietong.service.impl;
 
 import com.xietong.mapper.StaffDOMapper;
-import com.xietong.mapper.TestMapper;
 import com.xietong.model.entity.StaffDO;
 
-import com.xietong.model.entity.T.Test;
+//import com.xietong.model.entity.T.Test;
 import com.xietong.service.intf.StaffDOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,7 @@ import java.util.List;
 public class StaffDOServiceImpl implements StaffDOService {
     @Autowired
     private StaffDOMapper staffDOMapper;
-    @Autowired
-    private TestMapper testMapper;
+
     @Override
     public List<StaffDO> findAll() {
         return staffDOMapper.findAll();
@@ -31,9 +29,9 @@ public class StaffDOServiceImpl implements StaffDOService {
         return staffDOMapper.removeOne(id);
     }
 
-    @Override
-    public List<Test> unionSelect(int id) {
-        return testMapper.unionSelect(id);
-    }
+//    @Override
+//    public List<Test> unionSelect(int id) {
+//        return testMapper.unionSelect(id);
+//    }
 
 }

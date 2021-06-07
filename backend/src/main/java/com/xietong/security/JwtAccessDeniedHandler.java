@@ -29,7 +29,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
         ServletOutputStream outputStream = response.getOutputStream();
 
-        ResponseDTO responseDTO = new ResponseDTO(ErrorCodeEnum.RQ_FORBIDDEN, null);
+        ResponseDTO responseDTO = ResponseDTO.fail(ErrorCodeEnum.RQ_FORBIDDEN, null);
         ObjectMapper mapper = new ObjectMapper();
         outputStream.write(mapper.writeValueAsString(responseDTO).getBytes("UTF-8"));
 

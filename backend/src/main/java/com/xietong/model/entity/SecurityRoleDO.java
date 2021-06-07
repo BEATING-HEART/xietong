@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @TableName("security_role")
 public class SecurityRoleDO {
     @TableId

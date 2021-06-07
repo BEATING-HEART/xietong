@@ -11,5 +11,5 @@ public interface StaffDOMapper {
     public List<StaffDO> findAll();
     public List<StaffDO> findOneById(String id);
     public int removeOne(String id);
-    public int insertOne(String id);
+//    public int insertOne(String id);
 }

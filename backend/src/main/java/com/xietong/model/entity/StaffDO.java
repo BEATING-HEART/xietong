@@ -18,6 +18,7 @@ public class StaffDO {
     @TableId(value = "stuff_id", type = IdType.INPUT)
     @NonNull
     private String stuffId;
+    @NonNull
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String stuffPwd;
     @NonNull
