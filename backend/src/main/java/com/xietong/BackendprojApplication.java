@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@EnableSwagger2
 @SpringBootApplication
 @MapperScan("com.xietong.mapper")
 public class BackendprojApplication {

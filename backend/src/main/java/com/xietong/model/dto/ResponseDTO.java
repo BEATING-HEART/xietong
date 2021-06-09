@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ResponseDTO {
-    private String code;
+    private Integer code;
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;

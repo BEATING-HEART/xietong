@@ -5,7 +5,7 @@ public interface ErrorCode {
      * 获取错误码
      * @return
      */
-    String getCode();
+    Integer getCode();
 
     /**
      * 获取错误信息
