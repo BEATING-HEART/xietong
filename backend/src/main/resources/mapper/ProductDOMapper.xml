@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.ProductDOMapper">
+    <select id="list"  resultType="ProductDO">
+        SELECT product_id,product_name,description,unit FROM product
+    </select>
+    <select id="getById" resultType="ProductDO" >
+        SELECT product_id,product_name,description,unit FROM  product where product_id=#{id}
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from product where product_id=#{id}
+    </delete>
+    <insert id="insert"  >
+         insert into product(product_id,product_name,description,unit) values(#{productId},#{productName},#{description},#{unit})
+    </insert>
+    <update id="update" parameterType="ProductDO">
+        update product set product_name=#{productName},description=#{description},unit=#{unit} where product_id=#{product_id}
+    </update>
+    <update id="updateEffective" parameterType="int" >
+        update product set effective=#{effective} where product_id=#{id}
+    </update>
+</mapper>
