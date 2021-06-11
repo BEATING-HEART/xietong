@@ -1,0 +1,38 @@
+package com.xietong.model.entity;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
+import java.util.Date;
+import java.util.List;
+
+@Data
+
+public class SaleOrderDO {
+    @TableId
+    private int saleId;
+    private String sellerId;
+    private String managerId;
+    private int customerId;
+    private String remarks;
+    private Date time;
+    private int status;
+    private int deliveryStatus ;
+    private List<SaleProductDO> saleProductDOList;
+    private List<ShipmentDO> shipmentDOList;
+
+    public SaleOrderDO(String sellerId, int customerId, String remarks,Date time) {
+        this.sellerId = sellerId;
+        this.customerId = customerId;
+        this.remarks = remarks;
+        this.time=time;
+    }
+
+    public SaleOrderDO(String sellerId, int customerId, String remarks) {
+        this.sellerId = sellerId;
+        this.customerId = customerId;
+        this.remarks = remarks;
+    }
+}

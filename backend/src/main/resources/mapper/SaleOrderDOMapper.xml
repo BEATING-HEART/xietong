@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.SaleOrderDOMapper">
+    <insert id="insert"  parameterType="SaleOrderDO" >
+        <selectKey  resultType="int" order="AFTER" keyProperty="saleId">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+         insert into sales_order(seller_id,customer_id,remarks,time) values(#{sellerId},#{customerId},#{remarks},#{time})
+    </insert>
+
+</mapper>

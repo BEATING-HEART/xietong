@@ -7,6 +7,7 @@ import com.xietong.model.entity.ProductDO;
 import com.xietong.model.entity.StaffDO;
 //import com.xietong.model.entity.T.Test;
 import com.xietong.service.intf.ProductDOService;
+import com.xietong.service.intf.SaleOrderService;
 import com.xietong.service.intf.StaffDOService;
 import com.xietong.utils.MyException;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,8 @@ public class TestController {
     private StaffDOService staffDOService;
     @Autowired
     private ProductDOService productDOService;
+    @Autowired
+    private SaleOrderService saleOrderService;
     @GetMapping("/hello")
     public String hello(){
         return "欢迎来到软件系统设计spring boot项目";
@@ -121,6 +125,23 @@ public class TestController {
         }catch (DataAccessException e){
             return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"更改失败");
         }
+    }
+    @PostMapping("/insertSaleOrder")
+    @ApiOperation(value = "插入销售单")
+    public ResponseDTO insertSaleOrder(@RequestBody Map<String ,Object> params){
+        try{
+            Boolean a=saleOrderService.insert(params);
+            if (a){
+                return ResponseDTO.success("插入成功");
+            }else {
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入失败");
+            }
+
+        }catch(DataAccessException | ParseException e){
+            System.out.println(e);
+            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入失败");
+        }
+
     }
 }
 

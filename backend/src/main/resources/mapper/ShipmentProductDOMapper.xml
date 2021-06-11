@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.ShipmentProductDOMapper">
+    <insert id="insertList">
+        INSERT INTO shipment_product(shipment_id,product_id,num)
+        VALUES
+        <foreach collection="shipmentProductDOList" item="emp" separator=",">
+            (#{emp.shipmentId},#{emp.productId},#{emp.num})
+        </foreach>
+    </insert>
+</mapper>
