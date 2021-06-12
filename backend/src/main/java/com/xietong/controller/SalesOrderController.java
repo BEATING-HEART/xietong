@@ -44,8 +44,23 @@ public class SalesOrderController {
 
     }
     // delete  销售人员权限（审核通过前可以删除）
+
     // update  销售人员权限（审核通过前可以修改）【update也修改order-product，shipment， shipemnt-product】
+    
     // list    销售人员/销售经理 【联表查询，查order-product 。。。】
+    @PostMapping("/listSaleOrder")
+    @ApiOperation(value = "获取所有销售单及完整详情（包括销售单有哪些产品，发货批次及时间，每批次中产品的数量等）")
+    public ResponseDTO listSaleOrder(){
+        return ResponseDTO.success(saleOrderService.list());
+    }
     // get     销售人员/销售经理 【联表查询，查order-product 。。。】
+    @PostMapping("/getByIdSaleOrder")
+    @ApiOperation(value = "获取一个销售单及完整详情（包括销售单有哪些产品，发货批次及时间，每批次中产品的数量等）")
+    public ResponseDTO getByIdSaleOrder(@RequestBody Map<String ,Object> params){
+        System.out.println(Integer.parseInt(params.get("saleId").toString()));
+        return ResponseDTO.success(saleOrderService.getById(Integer.parseInt(params.get("saleId").toString())));
+    }
     // confirm 销售经理审核。 分 pass 和 非pass两种 【具体QQ上交流】 【审核通过则修改状态】
+
+
 }

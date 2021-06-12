@@ -81,4 +81,32 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
         return true;
     }
+    public List<SaleOrderDO> list(){
+        List<SaleOrderDO> saleOrderDOListA;
+        List<SaleOrderDO> saleOrderDOListB;
+        saleOrderDOListA=saleOrderDOMapper.listA();
+        saleOrderDOListB=saleOrderDOMapper.listB();
+        for(int i=0;i<saleOrderDOListA.size();i++){
+            for(int j=0;j<saleOrderDOListB.size();j++){
+                if (saleOrderDOListA.get(i).getSaleId()==saleOrderDOListB.get(j).getSaleId()){
+                    saleOrderDOListA.get(i).setShipmentDOList(saleOrderDOListB.get(j).getShipmentDOList());
+                }
+            }
+        }
+        return saleOrderDOListA;
+    }
+    public List<SaleOrderDO> getById(int saleId){
+        List<SaleOrderDO> saleOrderDOListA;
+        List<SaleOrderDO> saleOrderDOListB;
+        saleOrderDOListA=saleOrderDOMapper.getByIdA(saleId);
+        saleOrderDOListB=saleOrderDOMapper.getByIdB(saleId);
+        for(int i=0;i<saleOrderDOListA.size();i++){
+            for(int j=0;j<saleOrderDOListB.size();j++){
+                if (saleOrderDOListA.get(i).getSaleId()==saleOrderDOListB.get(j).getSaleId()){
+                    saleOrderDOListA.get(i).setShipmentDOList(saleOrderDOListB.get(j).getShipmentDOList());
+                }
+            }
+        }
+        return saleOrderDOListA;
+    }
 }

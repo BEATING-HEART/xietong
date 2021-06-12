@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
-
+@NoArgsConstructor
 public class SaleOrderDO {
     @TableId
     private int saleId;
@@ -34,5 +35,17 @@ public class SaleOrderDO {
         this.sellerId = sellerId;
         this.customerId = customerId;
         this.remarks = remarks;
+    }
+
+    public SaleOrderDO(int saleId, String sellerId, String managerId, int customerId, String remarks, Date time, int status, int deliveryStatus, List<SaleProductDO> saleProductDOList) {
+        this.saleId = saleId;
+        this.sellerId = sellerId;
+        this.managerId = managerId;
+        this.customerId = customerId;
+        this.remarks = remarks;
+        this.time = time;
+        this.status = status;
+        this.deliveryStatus = deliveryStatus;
+        this.saleProductDOList = saleProductDOList;
     }
 }

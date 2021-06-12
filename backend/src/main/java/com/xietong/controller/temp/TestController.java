@@ -143,6 +143,17 @@ public class TestController {
         }
 
     }
+    @PostMapping("/listSaleOrder")
+    @ApiOperation(value = "获取所有销售单及完整详情（包括销售单有哪些产品，发货批次及时间，每批次中产品的数量等）")
+    public ResponseDTO listSaleOrder(){
+        return ResponseDTO.success(saleOrderService.list());
+    }
+    @PostMapping("/getByIdSaleOrder")
+    @ApiOperation(value = "获取一个销售单及完整详情（包括销售单有哪些产品，发货批次及时间，每批次中产品的数量等）")
+    public ResponseDTO getByIdSaleOrder(@RequestBody Map<String ,Object> params){
+        System.out.println(Integer.parseInt(params.get("saleId").toString()));
+        return ResponseDTO.success(saleOrderService.getById(Integer.parseInt(params.get("saleId").toString())));
+    }
 }
 
 

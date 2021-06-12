@@ -8,5 +8,62 @@
         </selectKey>
          insert into sales_order(seller_id,customer_id,remarks,time) values(#{sellerId},#{customerId},#{remarks},#{time})
     </insert>
-
+    <select id="listA" resultMap="saleOrderMap">
+        SELECT sales_order.sale_id,seller_id,manager_id,customer_id,remarks,time,status,delivery_status,product_id,unit_price,num 
+FROM xietong.sales_order,sales_product
+where sales_order.sale_id=sales_product.sale_id and sales_order.effective=1 and sales_product.effective=1
+    </select>
+    <resultMap id="saleOrderMap" type="SaleOrderDO">
+        <result property="saleId" column="sale_id"/>
+        <result property="sellerId" column="seller_id"/>
+        <result property="managerId" column="manager_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="remarks" column="remarks"/>
+        <result property="time" column="time"/>
+        <result property="deliveryStatus" column="delivery_status"/>
+        <collection property="saleProductDOList" ofType="SaleProductDO" >
+            <id property="saleId" column="sale_id"/>
+            <id property="productId" column="product_id"/>
+            <result property="unitPrice" column="unit_price"/>
+            <result property="num" column="num"/>
+        </collection>
+    </resultMap>
+    <resultMap id="saleProductDOMap" type="SaleProductDO">
+        <id property="saleId" column="sale_id"/>
+        <id property="productId" column="product_id"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="num" column="num"/>
+    </resultMap>
+    <select id="listB" resultMap="saleOrderMapB">
+        SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,num
+FROM xietong.shipment,sales_order,shipment_product
+where shipment.sale_id=sales_order.sale_id and shipment.shipment_id=shipment_product.shipment_id and shipment.effective=1 and shipment_product.effective=1
+    </select>
+    <resultMap id="saleOrderMapB" type="SaleOrderDO">
+        <result property="saleId" column="sale_id"/>
+        <collection property="shipmentDOList" resultMap="shipmentDOMap">
+        </collection>
+    </resultMap>
+    <resultMap id="shipmentDOMap" type="ShipmentDO">
+        <id property="shipmentId" column="shipment_id"/>
+        <result property="saleId" column="sale_id"/>
+        <result property="time" column="time"/>
+        <result property="status" column="status"/>
+        <collection property="shipmentProductDOList" resultMap="shipmentProductDOMap"></collection>
+    </resultMap>
+    <resultMap id="shipmentProductDOMap" type="ShipmentProductDO">
+        <id property="shipmentId" column="shipment_id"/>
+        <id property="productId" column="product_id"/>
+        <result property="num" column="num"/>
+    </resultMap>
+    <select id="getByIdA" parameterType="int" resultMap="saleOrderMap">
+        SELECT sales_order.sale_id,seller_id,manager_id,customer_id,remarks,time,status,delivery_status,product_id,unit_price,num
+FROM xietong.sales_order,sales_product
+where sales_order.sale_id=sales_product.sale_id and sales_order.effective=1 and sales_product.effective=1 and sales_order.sale_id=#{saleId}
+    </select>
+    <select id="getByIdB" parameterType="int" resultMap="saleOrderMapB">
+        SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,num
+FROM xietong.shipment,sales_order,shipment_product
+where shipment.sale_id=sales_order.sale_id and shipment.shipment_id=shipment_product.shipment_id and shipment.effective=1 and shipment_product.effective=1 and sales_order.sale_id=#{saleId}
+    </select>
 </mapper>
