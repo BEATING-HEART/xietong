@@ -9,4 +9,10 @@
             (#{emp.shipmentId},#{emp.productId},#{emp.num})
         </foreach>
     </insert>
+    <update id="deleteByShipmentAndProductId">
+        update shipment_product set effective=false where shipment_id=#{shipmentId} and product_id=#{productId}
+    </update>
+    <update id="deleteByShipmentId">
+        update shipment_product set effective=false where shipment_id=#{shipmentId}
+    </update>
 </mapper>

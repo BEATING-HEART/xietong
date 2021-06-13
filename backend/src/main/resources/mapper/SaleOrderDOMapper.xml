@@ -66,4 +66,14 @@ where sales_order.sale_id=sales_product.sale_id and sales_order.effective=1 and 
 FROM xietong.shipment,sales_order,shipment_product
 where shipment.sale_id=sales_order.sale_id and shipment.shipment_id=shipment_product.shipment_id and shipment.effective=1 and shipment_product.effective=1 and sales_order.sale_id=#{saleId}
     </select>
+    <update id="confirmStatus" >
+        update sales_order set status=#{status} where sale_id=#{saleId}
+    </update>
+    <update id="confirmDeliveryStatus" >
+        update sales_order set delivery_status=#{deliveryStatus} where sale_id=#{saleId}
+    </update>
+    <update id="deleteBySaleId">
+        update sales_order set effective=false where sale_id=#{saleId}
+    </update>
+
 </mapper>

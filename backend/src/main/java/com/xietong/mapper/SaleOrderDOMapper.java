@@ -12,5 +12,8 @@ public interface SaleOrderDOMapper {
     List<SaleOrderDO> listB();
     List<SaleOrderDO> getByIdA(int saleId);
     List<SaleOrderDO> getByIdB(int saleId);
+    int confirmStatus(int saleId,int status);
+    int confirmDeliveryStatus(int saleId,int deliveryStatus);
+    int deleteBySaleId(int saleId);
 }
 

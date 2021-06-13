@@ -8,5 +8,13 @@
         </selectKey>
         insert into shipment(sale_id,time) values(#{saleId},#{time})
     </insert>
-
+    <update id="deleteByShipmentId">
+        update shipment set effective=false where shipment_id=#{shipemntId}
+    </update>
+    <update id="deleteBySaleId">
+        update shipment set effective=false where sale_id=#{saleId}
+    </update>
+    <select id="ListBySaleId" resultType="ShipmentDO">
+        select * from shipment where sale_id=#{saleId}
+    </select>
 </mapper>

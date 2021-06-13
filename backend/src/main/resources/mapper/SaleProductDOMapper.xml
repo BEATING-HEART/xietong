@@ -9,4 +9,14 @@
             (#{emp.saleId},#{emp.productId},#{emp.unitPrice},#{emp.num})
         </foreach>
     </insert>
+    <update id="deleteBySaleId">
+        update sales_product set effective=false where sale_id=#{saleId}
+    </update>
+    <update id="deleteBySaleAndProductId">
+        update sales_product set effective=false where sale_id=#{saleId} and product_id=#{productId}
+    </update>
+    <select id="listBySaleId" resultType="SaleProductDO">
+        select * from sales_product where sale_id={saleId}
+    </select>
+
 </mapper>

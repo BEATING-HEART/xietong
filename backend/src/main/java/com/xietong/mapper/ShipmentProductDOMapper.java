@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface ShipmentProductDOMapper {
     void insertList(@Param("shipmentProductDOList") List<ShipmentProductDO> shipmentProductDOList);
+    int deleteByShipmentAndProductId(int shipmentId,int productId);
+    int deleteByShipmentId(int shipmentId);
 }

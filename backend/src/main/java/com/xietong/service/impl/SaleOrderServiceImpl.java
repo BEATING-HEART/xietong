@@ -109,4 +109,65 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
         return saleOrderDOListA;
     }
+
+    @Override
+    public int confirmStatus(int saleId, int status) {
+        return saleOrderDOMapper.confirmStatus(saleId,status);
+    }
+
+    @Override
+    public int confirmDeliveryStatus(int saleId, int deliveryStatus) {
+        return saleOrderDOMapper.confirmDeliveryStatus(saleId,deliveryStatus);
+    }
+
+    @Override
+    public Boolean deleteSale(int saleId) {
+        try{
+            saleOrderDOMapper.deleteBySaleId(saleId);
+            saleProductDOMapper.deleteBySaleId(saleId);
+            List<ShipmentDO> shipmentDOList=shipmentDOMapper.ListBySaleId(saleId);
+            for(int i=0;i<shipmentDOList.size();i++){
+                shipmentDOMapper.deleteByShipmentId(shipmentDOList.get(i).getShipmentId());
+                shipmentProductDOMapper.deleteByShipmentId(shipmentDOList.get(i).getShipmentId());
+            }
+        }catch (DataAccessException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteSaleProduct(int saleId, int productId) {
+        try {
+            saleProductDOMapper.deleteBySaleAndProductId(saleId,productId);
+        }catch (DataAccessException e){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteShipment(int shipmentId) {
+        try{
+            shipmentDOMapper.deleteByShipmentId(shipmentId);
+            shipmentProductDOMapper.deleteByShipmentId(shipmentId);
+        }catch (DataAccessException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteShipmentProduct(int shipmentId, int productId) {
+        try{
+            shipmentProductDOMapper.deleteByShipmentAndProductId(shipmentId,productId);
+        }catch (DataAccessException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+
 }
