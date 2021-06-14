@@ -110,6 +110,11 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.13</version>
+        </dependency>
         <!--由于JDK升级，这些包不再包含。↑ ↑-->
 
         <!-- 工具类 暂时不删 ↓↓↓ -->
