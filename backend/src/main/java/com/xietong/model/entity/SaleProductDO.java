@@ -1,6 +1,7 @@
 package com.xietong.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SaleProductDO {
     @TableId
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int saleId;
     @TableId
     private int productId;
