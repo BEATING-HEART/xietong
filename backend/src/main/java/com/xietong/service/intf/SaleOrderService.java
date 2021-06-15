@@ -1,6 +1,9 @@
 package com.xietong.service.intf;
 
 import com.xietong.model.entity.SaleOrderDO;
+import com.xietong.model.entity.SaleProductDO;
+import com.xietong.model.entity.ShipmentDO;
+import com.xietong.model.entity.ShipmentProductDO;
 
 import java.text.ParseException;
 import java.util.List;
@@ -25,4 +28,9 @@ public interface SaleOrderService {
     Boolean deleteShipment(int shipmentId);
     //删除某一批次-产品记录
     Boolean deleteShipmentProduct(int shipmentId,int productId);
+
+    Boolean insertOneSaleProduct(SaleProductDO saleProductDO);
+
+    int  insertShipment(ShipmentDO shipmentDO);
+    Boolean insertOneShipmentProduct(List<ShipmentProductDO> shipmentProductDOList);
 }

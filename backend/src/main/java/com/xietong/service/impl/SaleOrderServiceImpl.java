@@ -170,4 +170,31 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return true;
     }
 
+    @Override
+    public Boolean insertOneSaleProduct(SaleProductDO saleProductDO) {
+        if (saleProductDOMapper.insertOne(saleProductDO)!=1){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public int insertShipment(ShipmentDO shipmentDO) {
+        shipmentDOMapper.insert(shipmentDO);
+        return shipmentDO.getShipmentId();
+    }
+
+    @Override
+    public Boolean insertOneShipmentProduct(List<ShipmentProductDO> shipmentProductDOList) {
+        try{
+            shipmentProductDOMapper.insertList(shipmentProductDOList);
+            return true;
+        }catch (DataAccessException e){
+            System.out.println(e);
+            return false;
+        }
+    }
+
+
 }
