@@ -1,4 +1,4 @@
-package com.xietong.filter;
+package com.xietong.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xietong.constant.enums.ErrorCodeEnum;
@@ -29,6 +29,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Autowired
     JWTUtils jwtUtils;
+
+    @Autowired
+    UserDetailServiceImpl userDetailService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -69,11 +72,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             outputStream.close();
 //            throw new MyException(ErrorCodeEnum.JWT_ERROR, "token 过期");
         }
-        String username = claim.getSubject();
+        String username = claim.getSubject();  // username 就是userId
         // 获取用户的权限等信息
 
         UsernamePasswordAuthenticationToken token
-                = new UsernamePasswordAuthenticationToken(username, null, null);
+//                = new UsernamePasswordAuthenticationToken(username, null, null);
+                = new UsernamePasswordAuthenticationToken(username, null, userDetailService.getUserAuthority(username));
 
         SecurityContextHolder.getContext().setAuthentication(token);
         chain.doFilter(request, response);

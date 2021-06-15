@@ -3,8 +3,33 @@
 
 <mapper namespace="com.xietong.mapper.SecurityMenuDOMapper">
     <select id="findAll"  resultType="SecurityMenuDO">
-        SELECT * FROM security_menu
+        SELECT * FROM security_menu ORDER BY orderNum ASC
     </select>
+    <select id="listMenuIdsByStaffId" resultType="java.lang.Long">
+        SELECT DISTINCT rm.menu_id
+        FROM security_staff_role sr LEFT JOIN security_role_menu rm
+        ON sr.role_id = rm.role_id
+        WHERE sr.staff_id=#{staffId}
+    </select>
+    <select id="listMenuIdsByRoleId" resultType="java.lang.Long">
+        SELECT DISTINCT menu_id
+        FROM security_role_menu
+        WHERE role_id = #{id}
+    </select>
+
+    <select id="listByIds" resultType="SecurityMenuDO" parameterType="list">
+        SELECT * FROM security_menu
+        WHERE id IN
+        <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="countChilds" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM security_menu
+            WHERE parent_id = #{id}
+    </select>
+
     <select id="findOneById" resultType="SecurityMenuDO" >
         SELECT * FROM  security_menu where id=#{id}
     </select>

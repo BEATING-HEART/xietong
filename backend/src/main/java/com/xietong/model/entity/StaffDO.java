@@ -25,6 +25,7 @@ public class StaffDO {
     private String stuffPosition;
     @NonNull
     private String stuffName;
+
     @TableField(value = "effective")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean validity;

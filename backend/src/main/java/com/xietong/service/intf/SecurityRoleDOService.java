@@ -9,4 +9,5 @@ public interface SecurityRoleDOService {
     public List<SecurityRoleDO> findOneById(Long id);
     public int insert(SecurityRoleDO securityRoleDO);
     public  int removeOne(Long id);
+    List<SecurityRoleDO> listRolesByStaffId(String staffId);
 }

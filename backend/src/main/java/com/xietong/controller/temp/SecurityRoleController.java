@@ -18,11 +18,11 @@ import java.util.List;
 public class SecurityRoleController {
     @Autowired
     private SecurityRoleDOService securityRoleDOService;
-    @RequestMapping("/insert")
-    public int insert(){
-        int a=securityRoleDOService.insert(new SecurityRoleDO((long) 1,"小明","12","ss",1));
-        return a;
-    }
+//    @RequestMapping("/insert")
+//    public int insert(){
+//        int a=securityRoleDOService.insert(new SecurityRoleDO((long) 1,"小明","12","ss",1));
+//        return a;
+//    }
     @RequestMapping("/findAll")
     public ResponseDTO findAll(){
         return ResponseDTO.success(securityRoleDOService.findAll());

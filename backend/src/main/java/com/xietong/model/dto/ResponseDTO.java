@@ -69,6 +69,10 @@ public class ResponseDTO {
         return new ResponseDTO(errorCode, message, null);
     }
 
+    public static  ResponseDTO fail(@NonNull String message){
+        return new ResponseDTO(ErrorCodeEnum.UNSPECIFIED, message, null);
+    }
+
 //    public static  ResponseDTO fail(@NonNull ErrorCode errorCode, @NotNull String message, Object data){
 //        return new ResponseDTO(errorCode, message, data);
 //    }

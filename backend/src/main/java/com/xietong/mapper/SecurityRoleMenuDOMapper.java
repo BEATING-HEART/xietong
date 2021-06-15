@@ -13,4 +13,5 @@ public interface SecurityRoleMenuDOMapper {
     List<SecurityRoleMenuDO> findOneById(int id);
     List<SecurityRoleMenuDO> insertOne(SecurityRoleMenuDO securityRoleMenuDO);
     int removeOne(int id);
+    boolean deleteByMenuId(String menuId);
 }

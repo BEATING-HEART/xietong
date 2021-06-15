@@ -11,6 +11,10 @@
     <delete id="removeOne"  >
         delete from security_role_menu where id=#{id}
     </delete>
+
+    <delete id="deleteByMenuId">
+        DELETE FROM security_role_menu WHERE menu_id = #{menuId}
+    </delete>
     <insert id="insertOne" parameterType="SecurityRoleMenuDO">
         insert into security_role_menu(id,role_id,menu_id) values(#{id},#{roleId},#{menuId})
     </insert>

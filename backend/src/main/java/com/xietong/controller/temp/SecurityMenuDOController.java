@@ -33,8 +33,8 @@ public class SecurityMenuDOController {
     public int removeOne(@PathVariable(name = "id") String id){
         return securityMenuDOService.removeOne(id);
     }
-    @RequestMapping("/insertOne")
-    public int insertOne(){
-        return securityMenuDOService.insertOne(new SecurityMenuDO((long)123,(long)456,"12346","135","1","1",1,"1",1,1));
-    }
+//    @RequestMapping("/insertOne")
+//    public int insertOne(){
+//        return securityMenuDOService.insertOne(new SecurityMenuDO((long)123,(long)456,"12346","135","1","1",1,"1",1,1));
+//    }
 }

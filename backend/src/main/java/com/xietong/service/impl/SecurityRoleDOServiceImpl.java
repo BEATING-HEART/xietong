@@ -30,4 +30,9 @@ public class SecurityRoleDOServiceImpl implements SecurityRoleDOService {
     public int removeOne(Long id) {
         return securityRoleDOMapper.removeOne(id);
     }
+
+    @Override
+    public List<SecurityRoleDO> listRolesByStaffId(String staffId) {
+        return securityRoleDOMapper.listRolesByStaffId(staffId);
+    }
 }

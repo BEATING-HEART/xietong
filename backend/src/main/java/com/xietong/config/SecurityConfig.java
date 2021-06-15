@@ -1,6 +1,6 @@
 package com.xietong.config;
 
-import com.xietong.filter.JwtAuthenticationFilter;
+import com.xietong.security.JwtAuthenticationFilter;
 import com.xietong.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -41,9 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailServiceImpl userDetailService;
 
-//    @Autowired
-//    JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
-//
+    @Autowired
+    JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
+
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
@@ -83,9 +83,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
 
-//                .and()
-//                .logout()
-//                .logoutSuccessHandler(jwtLogoutSuccessHandler)
+                .and()
+                .logout()
+                .logoutSuccessHandler(jwtLogoutSuccessHandler)
 
                 // 禁用session
                 .and()

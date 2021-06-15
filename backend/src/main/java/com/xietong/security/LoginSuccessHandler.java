@@ -34,6 +34,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         System.out.println(authentication.getName());
         String jwt = jwtUtils.generateToken(authentication.getName());
         response.setHeader(jwtUtils.getHeader(), jwt);
+
+        
+
+
         ResponseDTO result = ResponseDTO.success("登录成功", null);
         String responseJson = mapper.writeValueAsString(result);
         ServletOutputStream outputStream = response.getOutputStream();

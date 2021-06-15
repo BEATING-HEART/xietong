@@ -4,6 +4,7 @@ import com.xietong.model.entity.StaffDO;
 import com.xietong.service.intf.StaffDOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +31,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户名或密码不正确");
         }
         return new SysUser(staff.getStuffId(), staff.getStuffPwd(), getUserAuthority(staff.getStuffId()));
+//        return new SysUser(staff.getStuffId(), staff.getStuffPwd(), null);
 //        return null;
     }
 
@@ -39,12 +41,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
      * @return
      */
     public List<GrantedAuthority> getUserAuthority(String staffId){
-//        String authStr = staffDOService;
-//
-//        // 角色(ROLE_admin)、菜单操作权限 sys:user:list
-//        String authority = sysUserService.getUserAuthorityInfo(userId);  // ROLE_admin,ROLE_normal,sys:user:list,....
-//
-//        return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
-        return null;
+        String authority = staffDOService.getUserAuthorityInfo(staffId);
+        System.out.println("[UserDetailServiceImpl] authority: " + authority);
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
     }
 }

@@ -8,6 +8,8 @@
     <select id="findOneById" resultType="StaffDo" >
         SELECT staff_id,staff_pwd,staff_position,staff_name,status FROM  staff where staff_id=#{id}
     </select>
+
+
     <delete id="removeOne"  >
         delete from staff where staff_id=#{id}
     </delete>

@@ -8,6 +8,14 @@
     <select id="findOneById" resultType="SecurityRoleDO" >
         SELECT * FROM  security_role where id=#{id}
     </select>
+
+    <!--    根据参数，获取-->
+    <select id="listRolesByStaffId" resultType="SecurityRoleDO">
+        SELECT * FROM security_role WHERE id IN (
+            SELECT role_id FROM security_staff_role WHERE staff_id = #{staffId}
+        )
+    </select>
+
     <delete id="removeOne" parameterType="Long">
         delete from security_role where id=#{id}
     </delete>
