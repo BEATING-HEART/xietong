@@ -9,6 +9,9 @@
             (#{emp.saleId},#{emp.productId},#{emp.unitPrice},#{emp.num})
         </foreach>
     </insert>
+    <insert id="insertOne">
+        insert into sales_product(sale_id,product_id,unit_price,num) values (#{saleId},#{productId},#{unitPrice},#{num})
+    </insert>
     <update id="deleteBySaleId">
         update sales_product set effective=false where sale_id=#{saleId}
     </update>
