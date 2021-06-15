@@ -1,8 +1,9 @@
 package com.xietong.controller;
 
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author Sunforge
@@ -12,6 +13,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/application")
 public class WarehousingApplicationController {
+
+    @PostMapping("/insertApplication-product")
+    public List<warehousingApplicationDO> insertApplicationProduct(){
+        return  insertApplicationProduct(new warehousingApplicationDO());
+    }
+
+    @PostMapping("/deleteApplication-product")
+    public int deleteApplicationProduct(@PathVariable(name = "id") String id){
+        return  deleteApplicationProduct(id);
+    }
+
+    @GetMapping("/listApplication-product")
+    public List<?> listApplicationProduct(){
+        return  listApplicationProduct();
+    }
+
+    @GetMapping("/getApplication-product")
+    public List<?> getApplicationProduct(){
+        return  getApplicationProduct();
+    }
+
+    @PostMapping("/updateApplication-product")
+    public int updateApplicationProduct(@PathVariable(name = "id") String id){
+        return  updateApplicationProduct(id);
+    }
+
+    @PostMapping("/checkApplication-product")
+    public int checkApplicationProduct(@PathVariable(name = "id") String id){
+        return  checkApplicationProduct(id);
+    }
+
+    @PostMapping("/confirmApplication-product")
+    public int confirmApplicationProduct(@PathVariable(name = "id") String id){
+        return  confirmApplicationProduct(id);
+    }
     // insert  车间人员权限 【insert也填写application-product】
     // delete  车间人员权限（审核通过前可以删除）
     // update  车间人员权限（审核通过前可以修改，若修改则需要仓库管理员重新确认）【update也修改application-product】
