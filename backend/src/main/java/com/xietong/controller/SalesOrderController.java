@@ -1,7 +1,12 @@
 package com.xietong.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xietong.constant.enums.ErrorCodeEnum;
 import com.xietong.model.dto.ResponseDTO;
+import com.xietong.model.entity.SaleProductDO;
+import com.xietong.model.entity.ShipmentDO;
+import com.xietong.model.entity.ShipmentProductDO;
 import com.xietong.service.intf.SaleOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,7 +75,7 @@ public class SalesOrderController {
     }
     //（2）删除销售单与产品的关系
     @PostMapping("/deleteSaleProduct")
-    @ApiOperation(value = "删除某一销售单及其之下的销售-产品记录，发货批次表，批次-产品记录")
+    @ApiOperation(value = "删除某一销售单之下的销售-产品记录")
     public ResponseDTO deleteSaleProduct(@RequestBody Map<String ,Object> params){
         try{
             if (saleOrderService.deleteSaleProduct(Integer.parseInt(params.get("saleId").toString()),Integer.parseInt(params.get("productId").toString()))){
@@ -107,7 +115,6 @@ public class SalesOrderController {
 
 
     }
-
 
     // update  销售人员权限（审核通过前可以修改）【update也修改order-product，shipment， shipemnt-product】
     //（1）修改销售单的基本信息
@@ -177,4 +184,66 @@ public class SalesOrderController {
         }
 
     }
+    @PostMapping("/insertOneSaleProduct")
+    @ApiOperation(value = "插入一条销售单与产品的关系")
+    public ResponseDTO insertOneSaleProduct(@RequestBody Map<String ,Object> params){
+        try {
+            JSONObject saleProductObject= JSONObject.parseObject(JSON.toJSONString(params.get("saleProduct")));
+            SaleProductDO saleProductDO= JSONObject.parseObject(saleProductObject.toString(), SaleProductDO.class);
+            try {
+                if (saleOrderService.insertOneSaleProduct(saleProductDO)){
+                    return ResponseDTO.success("插入成功！");
+                }else {
+                    return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入失败！");
+                }
+            }catch (DataAccessException e){
+                System.out.println(e);
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入数据异常");
+            }
+
+
+        }catch (NullPointerException e){
+            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");
+        }
+    }
+    @PostMapping("/insertShipment")
+    @ApiOperation(value = "新建一个发货批次返回新建的发货批次的信息包括主键（用于后续添加批次与产品的记录）")
+    public ResponseDTO insertShipment(@RequestBody Map<String ,Object> params){
+        try {
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+                ShipmentDO shipmentDO=new ShipmentDO(Integer.parseInt(params.get("saleId").toString()),simpleDateFormat.parse(params.get("time").toString()));
+                int shipmentId=saleOrderService.insertShipment(shipmentDO);
+                return ResponseDTO.success("插入成功",shipmentDO);
+            }catch (DataAccessException e){
+                System.out.println(e);
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入失败！");
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入失败！");
+            }
+        }catch (NullPointerException e){
+            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");
+        }
+    }
+    @PostMapping("/insertShipmentProduct")
+    @ApiOperation(value = "插入一条发货批次与产品的关系记录")
+    public ResponseDTO insertShipmentProduct(@RequestBody Map<String ,Object> params){
+        try{
+            JSONObject saleProductObject= JSONObject.parseObject(JSON.toJSONString(params.get("shipmentProduct")));
+            ShipmentProductDO shipmentProductDO= JSONObject.parseObject(saleProductObject.toString(), ShipmentProductDO.class);
+            shipmentProductDO.setShipmentId(Integer.parseInt(params.get("shipmentId").toString()));
+            List<ShipmentProductDO> shipmentProductDOList = new ArrayList<>();
+            shipmentProductDOList.add(shipmentProductDO);
+            if (saleOrderService.insertOneShipmentProduct(shipmentProductDOList)){
+                return ResponseDTO.success("插入成功");
+            }else {
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"插入失败");
+            }
+        }catch (NullPointerException e){
+            System.out.println(e);
+            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");
+        }
+    }
+
 }

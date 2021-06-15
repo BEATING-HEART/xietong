@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface SaleProductDOMapper {
     int insertList(@Param("saleProductDOList")List<SaleProductDO> saleProductDOList);
+    int insertOne(SaleProductDO saleProductDO);
     int deleteBySaleId(int saleId);
     int deleteBySaleAndProductId(int saleId,int productId);
     List<SaleProductDO> listBySaleId(int saleId);
