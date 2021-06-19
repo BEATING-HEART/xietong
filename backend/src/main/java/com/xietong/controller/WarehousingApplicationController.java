@@ -1,13 +1,20 @@
 package com.xietong.controller;
 
-import com.xietong.model.dto.ResponseDTO;
+
 import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
+import com.xietong.constant.enums.ErrorCodeEnum;
+import com.xietong.model.dto.ResponseDTO;
+import com.xietong.service.intf.ApplicationProductDOService;
+import com.xietong.service.intf.WarehousingApplicationDOService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sunforge
@@ -18,45 +25,63 @@ import java.util.List;
 @RequestMapping("/api/application")
 public class WarehousingApplicationController {
 
-//    @PostMapping("/insertApplication-product")
-//    public List<warehousingApplicationDO> insertApplicationProduct(){
-//        return  insertApplicationProduct(new warehousingApplicationDO());
-//    }
+    @Autowired
+    WarehousingApplicationDOService warehousingApplicationDOService;
 
-    @PostMapping("/deleteApplication-product")
-    @PreAuthorize("hasRole('workshopstaff')")
-    public ResponseDTO deleteApplicationProduct(@PathVariable(name = "id") String id){
-        return ResponseDTO.success("还没开发好");
+    @Autowired
+    ApplicationProductDOService applicationProductDOService;
+
+
+    @PostMapping("/insertApplication")
+    public ResponseDTO insertApplication(@RequestBody Map<String ,Object> params){
+        boolean staWarApp=warehousingApplicationDOService.insert(params);
+        boolean staAppPro=applicationProductDOService.insert(params);
+        if (staWarApp&&staAppPro)
+        return ResponseDTO.success("入库申请插入成功",params);
+        else
+            return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @GetMapping("/listApplication-product")
-    @PreAuthorize("hasAnyRole({'workshopstaff','warehousestaff','warehousemanager'})")
-    public ResponseDTO listApplicationProduct(){
-        return ResponseDTO.success("还没开发好");
+    @PostMapping("/deleteApplication")
+    public ResponseDTO deleteApplication(@RequestBody Map<String ,Object> params){
+        if(warehousingApplicationDOService.deleteWarehousingApplication((long)params.get("warehousingApplicationId")))
+        return ResponseDTO.success("入库申请删除成功");
+        else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @GetMapping("/getApplication-product/{id}")
-    @PreAuthorize("hasAnyRole({'workshopstaff','warehousestaff','warehousemanager'})")
-    public ResponseDTO getApplicationProduct(@PathVariable(name = "id") String id){
-        return ResponseDTO.success("还没开发好");
+    @GetMapping("/listApplication")
+    public ResponseDTO listApplication(){
+
+        return  ResponseDTO.success("成功显示",warehousingApplicationDOService.list());
     }
 
-    @PostMapping("/updateApplication-product")
-    @PreAuthorize("hasRole('workshopstaff')")
-    public ResponseDTO updateApplicationProduct(@PathVariable(name = "id") String id){
-        return ResponseDTO.success("还没开发好");
+    @GetMapping("/getApplication")
+    public ResponseDTO getApplication(@RequestBody Map<String ,Object> params){
+
+        return  ResponseDTO.success(warehousingApplicationDOService.getById((long)params.get("warehousingApplicationId")));
     }
 
-    @PostMapping("/checkApplication-product")
-    @PreAuthorize("hasRole('warehousestaff')")
-    public ResponseDTO checkApplicationProduct(@PathVariable(name = "id") String id){
-        return ResponseDTO.success("还没开发好");
+    @PostMapping("/updateApplication")
+    public ResponseDTO updateApplication(@RequestBody Map<String ,Object> params){
+        if(warehousingApplicationDOService.update(params))
+        return  ResponseDTO.success("修改成功");
+        else return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @PostMapping("/confirmApplication-product")
-    @PreAuthorize("hasRole('warehousemanager')")
-    public ResponseDTO confirmApplicationProduct(@PathVariable(name = "id") String id){
-        return ResponseDTO.success("还没开发好");
+    @ApiOperation(value = "清点入库单状态 （status：1:pass；0:not pass）")
+    @PostMapping("/checkApplication")
+    public ResponseDTO checkApplication(@RequestBody Map<String ,Object> params){
+        if(applicationProductDOService.check((int)params.get("applyNum"),(int)params.get("actulNum")))
+        return  ResponseDTO.success("check pass");
+        else  return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+    }
+
+    @ApiOperation(value = "审核销售单状态 （status：0待审核；1通过；2：未通过）")
+    @PostMapping("/confirmApplication")
+    public ResponseDTO confirmApplication(@RequestBody Map<String ,Object> params){
+        if(warehousingApplicationDOService.confirm((long)params.get("warehousingApplicationId"),(int)params.get("status")))
+        return  ResponseDTO.success("状态修改成功");
+        else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
     // insert  车间人员权限 【insert也填写application-product】
     // delete  车间人员权限（审核通过前可以删除）
