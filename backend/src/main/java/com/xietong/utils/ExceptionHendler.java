@@ -8,11 +8,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @Author Sunforge
  * @Date 2021-06-14 13:41
  */
+@ApiIgnore
 @RestControllerAdvice
 public class ExceptionHendler {
 
@@ -28,21 +30,22 @@ public class ExceptionHendler {
             ObjectError objectError = result.getAllErrors().stream().findFirst().get();
 
 //            log.error("实体校验异常：----------------{}", objectError.getDefaultMessage());
-            return ResponseDTO.fail(objectError.getDefaultMessage());
+            return ResponseDTO.fail("实体校验异常");
         }
 
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         @ExceptionHandler(value = IllegalArgumentException.class)
         public ResponseDTO handler(IllegalArgumentException e) {
 //            log.error("Assert异常：----------------{}", e.getMessage());
-            return ResponseDTO.fail(e.getMessage());
+            return ResponseDTO.fail("assert异常");
         }
 
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         @ExceptionHandler(value = RuntimeException.class)
         public ResponseDTO handler(RuntimeException e) {
+
 //            log.error("运行时异常：----------------{}", e.getMessage());
-            return ResponseDTO.fail(e.getMessage());
+            return ResponseDTO.fail(e);
         }
 
 }

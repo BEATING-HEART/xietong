@@ -3,16 +3,14 @@ package com.xietong.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xietong.model.dto.ResponseDTO;
 import com.xietong.model.entity.SecurityMenuDO;
-import com.xietong.model.entity.SecurityRoleDO;
-import com.xietong.model.entity.SecurityRoleMenuDO;
 import com.xietong.service.intf.SecurityMenuDOService;
 import com.xietong.service.intf.SecurityRoleMenuDOService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -21,8 +19,10 @@ import java.util.List;
  * @Date 2021-06-09 20:54
  */
 @Api("权限菜单操作")
+@ApiIgnore
 @RestController
 @RequestMapping("/api/menu")
+@PreAuthorize("hasRole('admin')")
 public class MenuController {
 
     @Autowired

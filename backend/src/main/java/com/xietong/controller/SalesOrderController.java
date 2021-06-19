@@ -27,7 +27,7 @@ import java.util.Map;
  * @Author Sunforge
  * @Date 2021-06-10 10:43
  */
-@Api("销售销售单操作")
+@Api(tags = {"销售 CJ"})
 @RestController
 @RequestMapping("/api/sale")
 public class SalesOrderController {

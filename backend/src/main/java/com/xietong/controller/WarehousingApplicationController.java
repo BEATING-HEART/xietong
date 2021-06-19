@@ -1,7 +1,11 @@
 package com.xietong.controller;
 
+import com.xietong.model.dto.ResponseDTO;
 import io.swagger.annotations.Api;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -9,44 +13,50 @@ import java.util.List;
  * @Author Sunforge
  * @Date 2021-06-09 21:02
  */
-@Api("入库申请单操作")
+@Api(tags = {"入库申请单管理 Andrew"})
 @RestController
 @RequestMapping("/api/application")
 public class WarehousingApplicationController {
 
-    @PostMapping("/insertApplication-product")
-    public List<warehousingApplicationDO> insertApplicationProduct(){
-        return  insertApplicationProduct(new warehousingApplicationDO());
-    }
+//    @PostMapping("/insertApplication-product")
+//    public List<warehousingApplicationDO> insertApplicationProduct(){
+//        return  insertApplicationProduct(new warehousingApplicationDO());
+//    }
 
     @PostMapping("/deleteApplication-product")
-    public int deleteApplicationProduct(@PathVariable(name = "id") String id){
-        return  deleteApplicationProduct(id);
+    @PreAuthorize("hasRole('workshopstaff')")
+    public ResponseDTO deleteApplicationProduct(@PathVariable(name = "id") String id){
+        return ResponseDTO.success("还没开发好");
     }
 
     @GetMapping("/listApplication-product")
-    public List<?> listApplicationProduct(){
-        return  listApplicationProduct();
+    @PreAuthorize("hasAnyRole({'workshopstaff','warehousestaff','warehousemanager'})")
+    public ResponseDTO listApplicationProduct(){
+        return ResponseDTO.success("还没开发好");
     }
 
-    @GetMapping("/getApplication-product")
-    public List<?> getApplicationProduct(){
-        return  getApplicationProduct();
+    @GetMapping("/getApplication-product/{id}")
+    @PreAuthorize("hasAnyRole({'workshopstaff','warehousestaff','warehousemanager'})")
+    public ResponseDTO getApplicationProduct(@PathVariable(name = "id") String id){
+        return ResponseDTO.success("还没开发好");
     }
 
     @PostMapping("/updateApplication-product")
-    public int updateApplicationProduct(@PathVariable(name = "id") String id){
-        return  updateApplicationProduct(id);
+    @PreAuthorize("hasRole('workshopstaff')")
+    public ResponseDTO updateApplicationProduct(@PathVariable(name = "id") String id){
+        return ResponseDTO.success("还没开发好");
     }
 
     @PostMapping("/checkApplication-product")
-    public int checkApplicationProduct(@PathVariable(name = "id") String id){
-        return  checkApplicationProduct(id);
+    @PreAuthorize("hasRole('warehousestaff')")
+    public ResponseDTO checkApplicationProduct(@PathVariable(name = "id") String id){
+        return ResponseDTO.success("还没开发好");
     }
 
     @PostMapping("/confirmApplication-product")
-    public int confirmApplicationProduct(@PathVariable(name = "id") String id){
-        return  confirmApplicationProduct(id);
+    @PreAuthorize("hasRole('warehousemanager')")
+    public ResponseDTO confirmApplicationProduct(@PathVariable(name = "id") String id){
+        return ResponseDTO.success("还没开发好");
     }
     // insert  车间人员权限 【insert也填写application-product】
     // delete  车间人员权限（审核通过前可以删除）

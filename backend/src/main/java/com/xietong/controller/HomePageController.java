@@ -9,6 +9,7 @@ import com.xietong.service.intf.SecurityMenuDOService;
 import com.xietong.service.intf.StaffDOService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import java.util.List;
  * @Author Sunforge
  * @Date 2021-06-12 9:55
  */
-@Api("首页相关接口")
+@Api(tags = {"首页显示 Sunforge"})
 @RestController
 @RequestMapping("/api/homepage")
 public class HomePageController {
@@ -43,12 +44,12 @@ public class HomePageController {
         StaffDTO identity = new StaffDTO(staff);
         String authorityInfo = staffDOService.getUserAuthorityInfo(staff.getStuffId());
         String[] authorityInfoArray = StringUtils.tokenizeToStringArray(authorityInfo, ",");
-        List<MenuDTO> navs = securityMenuDOService.getCurStaffNav();
+//        List<MenuDTO> navs = securityMenuDOService.getCurStaffNav();
         return ResponseDTO.success(
                 MapUtil.builder()
                     .put("identity", identity)
                     .put("authorities", authorityInfoArray)
-                    .put("nav", navs)
+//                    .put("nav", navs)
                     .map()
         );
     }
@@ -59,8 +60,9 @@ public class HomePageController {
      * @return
      */
     @GetMapping("/msg")
+//    @PreAuthorize("hasRole('accounting')")
     public ResponseDTO getMessage(Principal principal){
         String staffId = principal.getName();
-        return ResponseDTO.success(staffId);
+        return ResponseDTO.success(staffId + "message 接口未实现");
     }
 }

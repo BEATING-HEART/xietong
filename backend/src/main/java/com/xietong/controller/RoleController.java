@@ -11,8 +11,10 @@ import com.xietong.service.intf.SecurityRoleDOService;
 import com.xietong.service.intf.SecurityRoleMenuDOService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -21,8 +23,10 @@ import java.util.List;
  * @Date 2021-06-09 20:52
  */
 @Api("管理员角色操作")
+@ApiIgnore
 @RestController
 @RequestMapping("/api/role")
+@PreAuthorize("hasRole('admin')")
 public class RoleController {
 
     @Autowired

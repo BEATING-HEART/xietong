@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @Author Sunforge
  * @Date 2021-06-09 20:55
  */
-@Api("产品操作")
+@Api(tags = {"产品的增删查改 CJ"})
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -33,7 +34,8 @@ public class ProductController {
      */
     // insert 管理员权限
     @PostMapping("/insert")
-    @ApiOperation(value = "加入产品")
+    @ApiOperation(value = "加入产品 ")
+    @PreAuthorize("hasRole('admin')")
     public ResponseDTO insertProduct(@RequestBody Map<String ,Object> params){
         try{
             try{
@@ -55,6 +57,7 @@ public class ProductController {
     // delete 管理员权限
     @PostMapping("/delete")
     @ApiOperation(value = "根据产品id删除产品")
+    @PreAuthorize("hasRole('admin')")
     public ResponseDTO deleteProduct(@RequestBody Map<String ,Object> params){
         try{
             try {
@@ -77,6 +80,7 @@ public class ProductController {
     // list   普通员工权限
     @PostMapping("/list")
     @ApiOperation(value = "查询全部产品")
+    @PreAuthorize("hasRole('basic')")
     public ResponseDTO list(){
         try{
             return ResponseDTO.success(productDOService.list());
@@ -89,6 +93,7 @@ public class ProductController {
     // get    普通员工权限
     @PostMapping("/getById")
     @ApiOperation(value = "根据产品id查询产品")
+    @PreAuthorize("hasRole('basic')")
     public ResponseDTO getById(@RequestBody Map<String ,Object> params){
         try{
             return ResponseDTO.success(productDOService.getById(Integer.parseInt(params.get("productId").toString())));
@@ -102,6 +107,7 @@ public class ProductController {
     //update
     @PostMapping("/update")
     @ApiOperation(value = "更改产品的信息")
+    @PreAuthorize("hasRole('admin')")
     public ResponseDTO update(@RequestBody Map<String ,Object> params){
         try{
             try{
