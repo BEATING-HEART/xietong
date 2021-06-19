@@ -169,21 +169,21 @@ public class SalesOrderController {
 
 
     }
-    @PostMapping("/confirmDeliveryStatus")
-    @ApiOperation(value = "更改销售单发货状态 （deliverStatus：0:发货未完成；1发货完成）")
-    public ResponseDTO confirmDeliveryStatus(@RequestBody Map<String ,Object> params){
-        try{
-            if(saleOrderService.confirmDeliveryStatus(Integer.parseInt(params.get("saleId").toString()),Integer.parseInt(params.get("deliveryStatus").toString()))!=0){
-                return ResponseDTO.success("修改成功");
-            }else {
-                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"修改失败");
-            }
-        }catch (NullPointerException e){
-            System.out.println(e);
-            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");
-        }
-
-    }
+//    @PostMapping("/confirmDeliveryStatus")
+//    @ApiOperation(value = "更改销售单发货状态 （deliverStatus：0:发货未完成；1发货完成）")
+//    public ResponseDTO confirmDeliveryStatus(@RequestBody Map<String ,Object> params){
+//        try{
+//            if(saleOrderService.confirmDeliveryStatus(Integer.parseInt(params.get("saleId").toString()),Integer.parseInt(params.get("deliveryStatus").toString()))!=0){
+//                return ResponseDTO.success("修改成功");
+//            }else {
+//                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"修改失败");
+//            }
+//        }catch (NullPointerException e){
+//            System.out.println(e);
+//            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");
+//        }
+//
+//    }
     @PostMapping("/insertOneSaleProduct")
     @ApiOperation(value = "插入一条销售单与产品的关系")
     public ResponseDTO insertOneSaleProduct(@RequestBody Map<String ,Object> params){

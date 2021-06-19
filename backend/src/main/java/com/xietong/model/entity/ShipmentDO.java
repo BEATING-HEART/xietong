@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 
 public class ShipmentDO {
+
     private int shipmentId;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int saleId;

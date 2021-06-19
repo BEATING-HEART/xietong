@@ -17,4 +17,19 @@
     <select id="ListBySaleId" resultType="ShipmentDO">
         select * from shipment where sale_id=#{saleId}
     </select>
+    <select id="getById" resultMap="shipmentDoMap">
+        SELECT shipment.shipment_id, sale_id, time, status, product_id, num FROM shipment join shipment_product
+        on shipment.shipment_id=shipment_product.shipment_id
+        where shipment.shipment_id=#{shipmentId}
+    </select>
+    <resultMap id="shipmentDoMap" type="ShipmentDo">
+        <result property="shipmentId" column="shipment_id"/>
+        <result property="saleId" column="sale_id"/>
+        <result property="status" column="status"/>
+        <result property="time" column="time"/>
+        <collection property="shipmentProductDOList" ofType="ShipmentProductDO">
+            <result property="productId" column="product_id"/>
+            <result property="num" column="num"/>
+        </collection>
+    </resultMap>
 </mapper>

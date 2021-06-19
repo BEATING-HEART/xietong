@@ -11,4 +11,5 @@ public interface ShipmentDOMapper {
     int deleteByShipmentId(int shipmentId);
     int deleteBySaleId(int saleId);
     List<ShipmentDO> ListBySaleId(int saleId);
+    ShipmentDO getById(int shipmentId);
 }
