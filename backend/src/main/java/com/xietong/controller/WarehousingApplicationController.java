@@ -1,9 +1,16 @@
 package com.xietong.controller;
 
+import com.xietong.constant.enums.ErrorCodeEnum;
+import com.xietong.model.dto.ResponseDTO;
+import com.xietong.service.intf.ApplicationProductDOService;
+import com.xietong.service.intf.WarehousingApplicationDOService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sunforge
@@ -14,39 +21,63 @@ import java.util.List;
 @RequestMapping("/api/application")
 public class WarehousingApplicationController {
 
-    @PostMapping("/insertApplication-product")
-    public List<warehousingApplicationDO> insertApplicationProduct(){
-        return  insertApplicationProduct(new warehousingApplicationDO());
+    @Autowired
+    WarehousingApplicationDOService warehousingApplicationDOService;
+
+    @Autowired
+    ApplicationProductDOService applicationProductDOService;
+
+
+    @PostMapping("/insertApplication")
+    public ResponseDTO insertApplication(@RequestBody Map<String ,Object> params){
+        boolean staWarApp=warehousingApplicationDOService.insert(params);
+        boolean staAppPro=applicationProductDOService.insert(params);
+        if (staWarApp&&staAppPro)
+        return ResponseDTO.success("入库申请插入成功",params);
+        else
+            return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @PostMapping("/deleteApplication-product")
-    public int deleteApplicationProduct(@PathVariable(name = "id") String id){
-        return  deleteApplicationProduct(id);
+    @PostMapping("/deleteApplication")
+    public ResponseDTO deleteApplication(@RequestBody Map<String ,Object> params){
+        if(warehousingApplicationDOService.deleteWarehousingApplication((long)params.get("warehousingApplicationId")))
+        return ResponseDTO.success("入库申请删除成功");
+        else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @GetMapping("/listApplication-product")
-    public List<?> listApplicationProduct(){
-        return  listApplicationProduct();
+    @GetMapping("/listApplication")
+    public ResponseDTO listApplication(){
+
+        return  ResponseDTO.success("成功显示",warehousingApplicationDOService.list());
     }
 
-    @GetMapping("/getApplication-product")
-    public List<?> getApplicationProduct(){
-        return  getApplicationProduct();
+    @GetMapping("/getApplication")
+    public ResponseDTO getApplication(@RequestBody Map<String ,Object> params){
+
+        return  ResponseDTO.success(warehousingApplicationDOService.getById((long)params.get("warehousingApplicationId")));
     }
 
-    @PostMapping("/updateApplication-product")
-    public int updateApplicationProduct(@PathVariable(name = "id") String id){
-        return  updateApplicationProduct(id);
+    @PostMapping("/updateApplication")
+    public ResponseDTO updateApplication(@RequestBody Map<String ,Object> params){
+        if(warehousingApplicationDOService.update(params))
+        return  ResponseDTO.success("修改成功");
+        else return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @PostMapping("/checkApplication-product")
-    public int checkApplicationProduct(@PathVariable(name = "id") String id){
-        return  checkApplicationProduct(id);
+    @ApiOperation(value = "清点入库单状态 （status：1:pass；0:not pass）")
+    @PostMapping("/checkApplication")
+    public ResponseDTO checkApplication(@RequestBody Map<String ,Object> params){
+        if(applicationProductDOService.check((int)params.get("applyNum"),(int)params.get("actulNum")))
+        return  ResponseDTO.success("check pass");
+        else  return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @PostMapping("/confirmApplication-product")
-    public int confirmApplicationProduct(@PathVariable(name = "id") String id){
-        return  confirmApplicationProduct(id);
+    @ApiOperation(value = "审核销售单状态 （status：0待审核；1通过；2：未通过）")
+    @PostMapping("/confirmApplication")
+    public ResponseDTO confirmApplication(@RequestBody Map<String ,Object> params){
+        if(warehousingApplicationDOService.confirm((long)params.get("warehousingApplicationId"),(int)params.get("status")))
+        return  ResponseDTO.success("状态修改成功");
+        else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
     // insert  车间人员权限 【insert也填写application-product】
     // delete  车间人员权限（审核通过前可以删除）
