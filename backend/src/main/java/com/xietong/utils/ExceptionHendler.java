@@ -1,6 +1,5 @@
 package com.xietong.utils;
 
-import com.xietong.constant.enums.ErrorCodeEnum;
 import com.xietong.model.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

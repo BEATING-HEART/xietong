@@ -33,12 +33,13 @@ public class StaffController {
     @PreAuthorize("hasRole('admin')")
     public ResponseDTO insertStaff(@RequestBody StaffDO staff){
 //        public ResponseDTO insertStaff(@RequestBody Map<String, Object> param){
-//        System.out.println(staff.toString());
+        System.out.println("raw" + staff.toString());
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(staff.getStaffPwd());
         staff.setStaffPwd(password);
         staff.setEffective(true);
         staff.setStatus(0);
+        System.out.println("final" + staff.toString());
         if (staffDOService.insertStaff(staff))
             return ResponseDTO.success("插入员工成功", new StaffDTO(staff));
         else
