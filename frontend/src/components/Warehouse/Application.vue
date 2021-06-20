@@ -97,10 +97,10 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="info" @click="dialogFormVisible = false">返回</el-button>
-                <el-button type="primary" @click="" v-if="false">核实正确</el-button>
-                <el-button type="danger" @click="" v-if="false">核实错误</el-button>
-                <el-button type="primary" @click="" v-if="true">审核通过</el-button>
-                <el-button type="danger" @click="" v-if="true">不通过</el-button>
+                <el-button type="primary" @click="" v-if="flag">核实正确</el-button>
+                <el-button type="danger" @click="" v-if="flag">核实错误</el-button>
+                <el-button type="primary" @click="" v-if="!flag">审核通过</el-button>
+                <el-button type="danger" @click="" v-if="!flag">不通过</el-button>
             </div>
         </el-dialog>
   </el-main>
@@ -111,6 +111,17 @@
 
 <script>
 export default {
+  created(){
+        if(!window.sessionStorage.getItem('activePath'))
+        this.activePath = '/WareHouseHome'
+        else
+        this.activePath = window.sessionStorage.getItem('activePath')
+        if(window.sessionStorage.getItem("StaffPosition")=="仓库人员")
+        this.flag=true
+        else
+        this.flag=false
+    },
+  
   data() {
     return {
         QueryForm:{
@@ -150,7 +161,8 @@ export default {
             status:'',
             date:'',
         },
-        dialogFormVisible: false
+        dialogFormVisible: false,
+        flag:'',
     }
   },
   methods:{

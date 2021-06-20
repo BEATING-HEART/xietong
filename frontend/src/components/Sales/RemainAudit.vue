@@ -36,7 +36,7 @@
                         <el-button size="mini" type="primary" 
                         @click="More(scope.$index, scope.row)">查看详情</el-button>
                         <!-- 撤回待审核的销售单按钮只有销售员看得到 -->
-                        <el-button type="danger" icon="el-icon-delete" v-if="true" @click="" size="mini">撤回</el-button>
+                        <el-button type="danger" icon="el-icon-delete" v-if="flag" @click="" size="mini">撤回</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -98,8 +98,8 @@
             <div slot="footer" class="dialog-footer">
                 <el-button type="info" @click="dialogFormVisible = false">返回</el-button>
                 <!-- 下面这两个按钮只有销售经理能看到 -->
-                <el-button type="danger" @click="" v-if="buttonflag">不通过</el-button>
-                <el-button type="success" @click="" v-if="buttonflag">通过</el-button>
+                <el-button type="danger" @click="" v-if="!flag">不通过</el-button>
+                <el-button type="success" @click="" v-if="!flag">通过</el-button>
             </div>
         </el-dialog>
   </el-main>
@@ -110,6 +110,12 @@
 
 <script>
 export default {
+  created(){
+        if(window.sessionStorage.getItem("StaffPosition")=="销售人员")
+        this.flag=true
+        else
+        this.flag=false
+    },
   data() {
     return {
         QueryForm:{
@@ -151,7 +157,7 @@ export default {
             description:'',
         },
         dialogFormVisible: false,
-        buttonflag:true,
+        flag:'',
     }
   },
   methods:{

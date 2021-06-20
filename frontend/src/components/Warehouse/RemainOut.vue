@@ -80,6 +80,12 @@
 
 <script>
 export default {
+  created(){
+        if(!window.sessionStorage.getItem('activePath'))
+        this.activePath = '/WareHouseHome'
+        else
+        this.activePath = window.sessionStorage.getItem('activePath')
+    },
   data() {
     return {
          tableData: [{
@@ -105,7 +111,7 @@ export default {
             status:'',
             date:'',
         },
-        dialogFormVisible: false
+        dialogFormVisible: false,
     }
   },
   methods:{
