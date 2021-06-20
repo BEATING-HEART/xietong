@@ -1,0 +1,118 @@
+<template>
+    <el-container class="home-container">
+    <!--头部-->
+        <el-header>
+            <div>
+                <span>人事管理</span>
+            </div>
+            <el-button type="info" @click="logout">退出</el-button>
+        </el-header>
+        <el-container>
+            <el-aside width="250px">
+                <el-menu
+      :default-active="activePath"
+      class="el-menu-vertical-demo"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+      router
+      >
+      <el-menu-item :index="item.path+''" v-for="item in show" :key="item.id" @click="saveNavState(item.path)">
+        <i class="el-icon-menu"></i>
+        <span slot="title">{{item.authName}}</span>
+      </el-menu-item>
+    </el-menu>
+            </el-aside>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
+        </el-container>
+    </el-container>
+</template>
+
+<script>
+export default {
+    created(){
+        if(!window.sessionStorage.getItem('activePath'))
+        this.activePath = '/Adminhome'
+        else
+        this.activePath = window.sessionStorage.getItem('activePath')
+    },
+    data(){
+        return{
+            show:[
+                {
+                "id":101,
+                "authName":"首页",
+                "path":"/Adminhome"
+                },
+                {
+                "id":102,
+                "authName":"添加员工",
+                "path":"/AdminRegister"
+                },
+                {
+                "id":103,
+                "authName":"修改信息",
+                "path":"/AdminRevise"
+                },
+                {
+                "id":104,
+                "authName":"删除员工",
+                "path":"/AdminDelete"
+                },
+                {
+                    "id":105,
+                    "authName":"产品管理",
+                    "path":"/Products"
+                }
+                ],
+            activePath:'/Adminhome'
+        }
+    },
+    methods:{
+        logout(){
+            window.sessionStorage.clear()
+            this.$router.push('/login')
+        },
+        saveNavState(activePath){
+            window.sessionStorage.setItem('activePath',activePath)
+            this.activePath = activePath
+        }
+    }
+}
+</script>
+
+<style scoped>
+.el-menu{
+    border-right: none;
+}
+.html{
+    height: 100%;
+}
+.body{
+    height: 100%;
+}
+.home-container{
+    height: 100%;
+}
+.el-header{
+    background-color: #545c64;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+}
+.el-header.div 
+{
+    display: flex;
+    align-items: center;
+}
+.el-aside{
+    background-color: #545c64;
+}
+.el-main{
+    background-color: #eaedf1;
+}
+</style>

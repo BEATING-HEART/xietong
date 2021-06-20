@@ -6,15 +6,18 @@ import router from './router'
 import ElementUI from 'element-ui'
 import "element-ui/lib/theme-chalk/index.css"
 import axios from 'axios'
+import qs from 'qs'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
 Vue.prototype.$axios = axios
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount('#app')
