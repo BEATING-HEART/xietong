@@ -13,10 +13,12 @@ public class StaffDTO {
     private String staffId;
     private String position;
     private String name;
+    private Boolean available;
 
     public StaffDTO(StaffDO staff){
-        this.name = staff.getStuffName();
-        this.position = staff.getStuffPosition();
-        this.staffId = staff.getStuffId();
+        this.name = staff.getStaffName();
+        this.position = staff.getStaffPosition();
+        this.staffId = staff.getStaffId();
+        this.available = staff.getEffective();
     }
 }

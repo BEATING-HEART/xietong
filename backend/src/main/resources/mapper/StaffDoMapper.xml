@@ -2,19 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xietong.mapper.StaffDOMapper">
-    <select id="findAll"  resultMap="StaffDOMap">
-        SELECT staff_id,staff_position,staff_name,status FROM staff
+<!--    <select id="findAll"  resultMap="StaffDOMap">-->
+    <select id="findAll"  resultType="StaffDO">
+        SELECT * FROM staff
     </select>
-    <select id="findOneById" resultType="StaffDo" >
-        SELECT staff_id,staff_pwd,staff_position,staff_name,status FROM  staff where staff_id=#{id}
+    <select id="findOneById" resultType="StaffDO" >
+        SELECT * FROM  staff where staff_id=#{id}
     </select>
 
+    <update id="logicallyRemove" parameterType="java.lang.String">
+        UPDATE staff SET effective = false WHERE staff_id = #{id} AND effective = true
+    </update>
+
+    <update id="updateStaff" parameterType="com.xietong.model.entity.StaffDO">
+        UPDATE staff
+        SET staff_pwd = #{staffPwd} , staff_position = #{staffPosition} , staff_name = #{staffName}
+        WHERE staff_id = #{staffId}
+    </update>
 
     <delete id="removeOne"  >
         delete from staff where staff_id=#{id}
     </delete>
-    <insert id="insert" >
-        
+    <insert id="insertStaff" parameterType="com.xietong.model.entity.StaffDO">
+        INSERT INTO staff(staff_id, staff_pwd, staff_position, staff_name, effective, status)
+        VALUES (#{staffId}, #{staffPwd}, #{staffPosition}, #{staffName}, #{effective}, #{status} )
     </insert>
     <resultMap id="StaffDOMap" type="StaffDo">
         <id column="staff_id" property="stuffId"/>

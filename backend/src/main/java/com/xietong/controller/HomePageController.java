@@ -42,7 +42,7 @@ public class HomePageController {
     public ResponseDTO navigator(Principal principal){
         StaffDO staff = staffDOService.findOneById(principal.getName()).get(0);
         StaffDTO identity = new StaffDTO(staff);
-        String authorityInfo = staffDOService.getUserAuthorityInfo(staff.getStuffId());
+        String authorityInfo = staffDOService.getUserAuthorityInfo(staff.getStaffId());
         String[] authorityInfoArray = StringUtils.tokenizeToStringArray(authorityInfo, ",");
 //        List<MenuDTO> navs = securityMenuDOService.getCurStaffNav();
         return ResponseDTO.success(

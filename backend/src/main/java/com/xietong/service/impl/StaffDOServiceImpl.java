@@ -1,9 +1,5 @@
 package com.xietong.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xietong.mapper.SecurityMenuDOMapper;
-import com.xietong.mapper.SecurityRoleDOMapper;
 import com.xietong.mapper.StaffDOMapper;
 import com.xietong.model.entity.SecurityMenuDO;
 import com.xietong.model.entity.SecurityRoleDO;
@@ -32,6 +28,15 @@ public class StaffDOServiceImpl implements StaffDOService {
 
 
 
+    public Boolean insertStaff(StaffDO staff){
+        return staffDOMapper.insertStaff(staff);
+    }
+
+    @Override
+    public Boolean updateStaff(StaffDO staff) {
+        return staffDOMapper.updateStaff(staff);
+    }
+
     @Override
     public List<StaffDO> findAll() {
         return staffDOMapper.findAll();
@@ -45,6 +50,11 @@ public class StaffDOServiceImpl implements StaffDOService {
     @Override
     public int removeOneById(String id) {
         return staffDOMapper.removeOne(id);
+    }
+
+    @Override
+    public int logicallyDeleteById(String id) {
+        return staffDOMapper.logicallyRemove(id);
     }
 
     @Override

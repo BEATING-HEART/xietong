@@ -14,6 +14,12 @@ public interface StaffDOMapper {
     public List<StaffDO> findOneById(String id);
     public int removeOne(String id);
 
+    Boolean insertStaff(StaffDO staff);
+
+    int logicallyRemove(String id);
+
+    Boolean updateStaff(StaffDO staff);
+
 
 //    List<SecurityRoleDO> list(QueryWrapper<SecurityRoleDO> id);
 
