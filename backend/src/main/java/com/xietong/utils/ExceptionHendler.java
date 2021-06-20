@@ -73,13 +73,13 @@ public class ExceptionHendler {
 
 
 
-//        @ResponseStatus(HttpStatus.BAD_REQUEST)
-//        @ExceptionHandler(value = RuntimeException.class)
-//        public ResponseDTO handler(RuntimeException e) {
-//
-////            log.error("运行时异常：----------------{}", e.getMessage());
-//            return ResponseDTO.fail(e.getMessage());
-//        }
+        @ResponseStatus(HttpStatus.BAD_REQUEST)
+        @ExceptionHandler(value = RuntimeException.class)
+        public ResponseDTO handler(RuntimeException e) {
+
+//            log.error("运行时异常：----------------{}", e.getMessage());
+            return ResponseDTO.fail(e.getMessage());
+        }
 
 //        @ResponseStatus(HttpStatus.BAD_REQUEST)
 
