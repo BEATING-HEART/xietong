@@ -173,7 +173,8 @@
                 <el-form-item label="发货状态">
                     <el-input v-model="Batch.status"></el-input>
                 </el-form-item>
-                <el-date-picker type="date" placeholder="选择日期" v-model="Batch.date" style="width: 100%;"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="Batch.date" style="width: 100%;"
+                format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"></el-date-picker>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="BatchVisible = false">取消</el-button>
