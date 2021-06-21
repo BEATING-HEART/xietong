@@ -40,7 +40,7 @@ public class ShipmentController {
 
     // toDeliver 仓库操作发货。
     @PostMapping("/to-deliver")
-    @ApiOperation(value = "发货")
+    @ApiOperation(value = "发货(根据发货批次号shipmentId和staffId)")
     public ResponseDTO deliver(@RequestBody Map<String ,Object> params){
         try{
             try {
@@ -53,6 +53,22 @@ public class ShipmentController {
             }catch (DataAccessException e){
                 System.out.println(e);
                 return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"发货失败");
+            }
+
+        }catch (NullPointerException e){
+            System.out.println(e);
+            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");
+        }
+    }
+    @GetMapping("/get-deliverSales")
+    @ApiOperation(value = "获取需要发货的销售单及需要发货的批次")
+    public ResponseDTO getDeliverSales(){
+        try{
+            try {
+                    return  ResponseDTO.success(deliveryService.getDeliverSale());
+            }catch (DataAccessException e){
+                System.out.println(e);
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"获取数据失败");
             }
 
         }catch (NullPointerException e){

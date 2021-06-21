@@ -38,7 +38,33 @@
     <select id="getShipmentListBySaleId" resultType="ShipmentDO">
         select * from shipment where sale_id=#{saleId}
     </select>
-    <select id="getShipmentStatus">
+    <select id="getShipmentStatus" resultType="int">
         select status from shipment where shipment_id=#{shipmentId}
     </select>
+
+
+    <select id="getDeliverSale" resultMap="saleWaitDeliverMap">
+        SELECT sales_order.sale_id,staff_name,customer_name,sales_order.time as sale_time,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,product.product_name,num
+        FROM product,staff,customer,(sales_order left join( xietong.shipment left join shipment_product  on shipment.shipment_id=shipment_product.shipment_id and shipment_product.effective=true)
+        on shipment.sale_id=sales_order.sale_id and shipment.effective=true)  where  sales_order.effective=true and staff.effective=true and customer.effective=true and sales_order.delivery_status=0
+        and shipment.status=0 and shipment.time&lt;=#{time} and sales_order.seller_id=staff.staff_id and sales_order.customer_id=customer.customer_id and product.product_id=shipment_product.product_id
+    </select>
+    <resultMap id="saleWaitDeliverMap" type="SaleWaitDeliver">
+        <result property="saleId" column="sale_id"/>
+        <result property="sellerName" column="staff_name"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="time" column="sale_time"/>
+        <collection property="shipmentWaitDeliverList" resultMap="shipmentWaitDeliverMap"></collection>
+    </resultMap>
+    <resultMap id="shipmentWaitDeliverMap" type="ShipmentWaitDeliver">
+        <id property="shipmentId" column="shipment_id"/>
+        <result property="time" column="time"/>
+        <result property="status" column="status"/>
+        <collection property="shipmentProductWaitDeliverList" resultMap="shipmentProductWaitDeliverMap"></collection>
+    </resultMap>
+    <resultMap id="shipmentProductWaitDeliverMap" type="ShipmentProductWaitDeliver">
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="num" column="num"/>
+    </resultMap>
 </mapper>

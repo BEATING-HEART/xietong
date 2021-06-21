@@ -3,6 +3,7 @@ package com.xietong.service.impl;
 import com.xietong.mapper.*;
 import com.xietong.model.entity.*;
 import com.xietong.model.entity.receiveDO.SaleOrderWithPriceMapDO;
+import com.xietong.model.entity.receiveDO.SaleWaitDeliver;
 import com.xietong.service.intf.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,5 +78,10 @@ public class DeliveryServiceImpl implements DeliveryService {
             saleOrderDOMapper.confirmDeliveryStatus(saleOrderDO.getSaleId(),1);
         }
         return true;
+    }
+
+    @Override
+    public List<SaleWaitDeliver> getDeliverSale() {
+        return shipmentDOMapper.getDeliverSale(new Date());
     }
 }
