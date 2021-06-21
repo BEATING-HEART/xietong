@@ -32,4 +32,13 @@
             <result property="num" column="num"/>
         </collection>
     </resultMap>
+    <update id="updateStatus" parameterType="int">
+        update  shipment set status=1 where shipment_id=#{shipmentId}
+    </update>
+    <select id="getShipmentListBySaleId" resultType="ShipmentDO">
+        select * from shipment where sale_id=#{saleId}
+    </select>
+    <select id="getShipmentStatus">
+        select status from shipment where shipment_id=#{shipmentId}
+    </select>
 </mapper>

@@ -1,12 +1,17 @@
 package com.xietong.controller;
 
+import com.xietong.constant.enums.ErrorCodeEnum;
 import com.xietong.model.dto.ResponseDTO;
+import com.xietong.service.intf.DeliveryService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.util.Map;
 
 /**
  * @Author Sunforge
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/delivery")
 public class DeliveryController {
+    @Autowired
+    private DeliveryService deliveryService;
     // 不提供增删改接口 发货单是对发货操作的记录。
     // list   仓库人员，仓库经理，销售人员，销售经理
     // get    仓库人员，仓库经理，销售人员，销售经理

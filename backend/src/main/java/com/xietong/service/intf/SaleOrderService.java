@@ -4,6 +4,7 @@ import com.xietong.model.entity.SaleOrderDO;
 import com.xietong.model.entity.SaleProductDO;
 import com.xietong.model.entity.ShipmentDO;
 import com.xietong.model.entity.ShipmentProductDO;
+import com.xietong.model.entity.receiveDO.SaleOrderSCNameDO;
 
 import java.text.ParseException;
 import java.util.List;
@@ -13,9 +14,9 @@ public interface SaleOrderService {
     //插入销售单
     public Boolean insert(Map<String ,Object> params) throws ParseException;
     //获取所有销售单全部信息
-    List<SaleOrderDO> list();
+   List<SaleOrderSCNameDO> list();
     //获取某一销售单全部信息
-    public List<SaleOrderDO> getById(int saleId);
+    public List<SaleOrderSCNameDO> getById(int saleId);
     //审核通过/不通过
     int confirmStatus(int saleId,int status);
     //修改发货状态
