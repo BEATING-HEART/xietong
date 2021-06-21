@@ -17,7 +17,8 @@
           <el-row>
               <el-col :span="12">
           <el-form-item style="margin-left:-80px">   
-                  <el-date-picker type="date" placeholder="选择日期" v-model="QueryForm.Date" style="width: 100%"></el-date-picker>
+                  <el-date-picker type="date" placeholder="选择日期" v-model="QueryForm.Date" style="width: 100%"
+                  format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
               </el-col>
               <el-col :span="10">
@@ -41,13 +42,17 @@
       width="180">
     </el-table-column>
     <el-table-column
-      prop="name"
-      label="产品名字"
+      prop="chejianname"
+      label="车间人员姓名"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="amount"
-      label="产品数量">
+      prop="verifyname"
+      label="核实人员姓名">
+    </el-table-column>
+    <el-table-column
+      prop="auditname"
+      label="审核经理姓名">
     </el-table-column>
     <el-table-column
       prop="date"
@@ -58,7 +63,7 @@
       <template slot-scope="scope">
                         <el-button size="mini" type="primary" 
                         style="margin-right: 10px" 
-                        @click="Edit(scope.$index, scope.row)">查看详情</el-button>
+                        @click="ShowDetail(scope.$index, scope.row)">查看详情</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -70,30 +75,29 @@
                 <el-form-item label="入库申请单单号">
                     <el-input v-model="detail.applyid" readonly="true"></el-input>
                 </el-form-item>
-                <el-form-item label="入库员工姓名">
-                    <el-input v-model="detail.rukuname" readonly="true"></el-input>
+                <el-form-item label="车间入库员工姓名">
+                    <el-input v-model="detail.chejianname" readonly="true"></el-input>
+                </el-form-item>
+                <el-form-item label="车间号">
+                    <el-input v-model="detail.chejianhao" readonly="true"></el-input>
+                </el-form-item>
+                <el-form-item label="核实人员姓名">
+                    <el-input v-model="detail.verifyname" readonly="true"></el-input>
                 </el-form-item>
                 <el-form-item label="审核经理姓名">
-                    <el-input v-model="detail.jingliname" readonly="true"></el-input>
+                    <el-input v-model="detail.auditname" readonly="true"></el-input>
                 </el-form-item>
-                <el-form-item label="产品编号">
-                    <el-input v-model="detail.pid" readonly="true"></el-input>
-                </el-form-item>
-                <el-form-item label="产品名">
-                    <el-input v-model="detail.pname" readonly="true"></el-input>
-                </el-form-item>
-                <el-form-item label="批次号">
-                    <el-input v-model="detail.pici" readonly="true"></el-input>
-                </el-form-item>
-                <el-form-item label="产品申请入库数量">
-                    <el-input v-model="detail.amount" readonly="true"></el-input>
-                </el-form-item>
-                <el-form-item label="产品状态">
-                    <el-input v-model="detail.status" readonly="true"></el-input>
-                </el-form-item>
-                <el-form-item label="入库时间">
+                <el-form-item label="日期">
                     <el-input v-model="detail.date" readonly="true"></el-input>
                 </el-form-item>
+                <el-table :data="detail.products" borderstyle="width:100%">
+                    <el-table-column label="产品编号" prop="pid">
+                    </el-table-column>
+                    <el-table-column label="产品名字" prop="pname">
+                    </el-table-column>
+                    <el-table-column label="出库数量" prop="amount">
+                    </el-table-column>
+                  </el-table>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="info" @click="dialogFormVisible = false">返回</el-button>
@@ -114,54 +118,50 @@ export default {
             Date:'',
         },
          tableData: [{
-         sheetid:'13489',
+          sheetid:'13489',
+          applyid:'120',
+          chejianname:'张三',
+          chejianhao:'1',
+          verifyname:'庄逸尘',
+          auditname:"蔡俊",
           date: '2016-05-02',
-          name: '齿轮',
-          amount: '1000'
+          products:[{pid:'1',pname:'齿轮',amount:'1000'},
+          {pid:'2',pname:'大齿轮',amount:'500'}]
         }, {
-          sheetid:'13490',
-          date: '2016-05-04',
-          name: '大齿轮',
-          amount:'2000'
-        }, {
-          sheetid:'13491',
-          date: '2016-05-06',
-          name: '大齿轮',
-          amount:'2000'
-        }, {
-          sheetid:'13492',
-          date: '2016-05-06',
-          name: '大齿轮',
-          amount:'2000'
+          sheetid:'13500',
+          applyid:'125',
+          chejianname:'张三',
+          chejianhao:'1',
+          verifyname:'庄逸尘',
+          auditname:"蔡俊",
+          date: '2016-05-03',
+          products:[{pid:'1',pname:'齿轮',amount:'1000'},
+          {pid:'3',pname:'晶体管',amount:'200'}]
         }],
         detail:{
             sheetid:'',
             applyid:'',
-            rukuname:'',
-            jingliname:'',
-            pid:'',
-            pname:'',
-            pici:'',
-            amount:'',
-            status:'',
+            chejianname:'',
+            chejianhao:'',
+            verifyname:'',
+            auditname:'',
             date:'',
+            products:[{pid:'',pname:'',amount:''}]
         },
         dialogFormVisible: false
     }
   },
   methods:{
-      Edit(row, detail){
+      ShowDetail(row, detail){
             this.dialogFormVisible = true
             this.detail.sheetid = detail.sheetid
-            this.detail.pname = detail.name
-            this.detail.amount = detail.amount
-            this.detail.date = detail.date
-            this.detail.applyid=
-            this.detail.rukuname=
-            this.detail.jingliname=
-            this.detail.pid=
-            this.detail.pici=
-            this.detail.status
+            this.detail.applyid = detail.applyid
+            this.detail.chejianname = detail.chejianname
+            this.detail.chejianhao = detail.chejianhao
+            this.detail.verifyname=detail.verifyname
+            this.detail.auditname=detail.auditname
+            this.detail.date=detail.date
+            this.detail.products=detail.products
         },
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {

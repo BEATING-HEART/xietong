@@ -114,9 +114,7 @@ export default {
           deliverid: '5323',
           clientname: '庄松林',
           batch:'1',
-          date:'2016-05-04',
-          pname:'螺丝',
-          amount:'110'
+          date:'2016-05-04'
         }, 
         {
           salesid:'13490',

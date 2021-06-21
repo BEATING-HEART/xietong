@@ -259,12 +259,12 @@ export default{
           return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
         };
       },
-    //   loadAll() {
-    //     return [
-    //       { value: "123456","address":"齿轮"},
-    //       { value: "234567","address":"大齿轮"}
-    //     ];
-    //   },
+      loadAll() {
+        return [
+          { value: "123456","address":"齿轮"},
+          { value: "234567","address":"大齿轮"}
+        ];
+      },
       handleSelect(item) {
         this.tmp.pname=item.address;
       },
@@ -273,15 +273,10 @@ export default{
       }
     },
     mounted() {
-        const a = [
-          { "productid": "123456","address":"齿轮"},
-          { "productid": "234567","address":"大齿轮"}
+        const a =[
+          { value: "123456","address":"齿轮"},
+          { value: "234567","address":"大齿轮"}
         ]
-        a.forEach(function (item) {
-              item.value = String(item.productid)
-              delete item.productid
-        })
-         console.log(a)
       this.restaurants = a
       console.log(a)
     }

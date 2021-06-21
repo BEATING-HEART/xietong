@@ -64,28 +64,13 @@ import qs from 'qs'
           if (valid) {
             var url = 'http://39.103.202.215:8080/api/staff/insert';
             var temp = {
-              staffId: this.ruleForm.account,
-              staffName: this.ruleForm.name,
-              staffPosition: "1",//this.ruleForm.positions,
-              staffPwd: this.ruleForm.password,
+              "staffId": this.ruleForm.account,
+              "staffName": this.ruleForm.name,
+              "staffPosition": this.ruleForm.positions,
+              "staffPwd": this.ruleForm.password,
             }
-            console.log(temp)
-            const a = await this.$axios.post(url,JSON.stringify(temp),{headers:{"Content-Type":"application/json"}})
-            // .catch( ( error ) => {
-            //       // 【务必注意】这里的error输出的不是一个对象【error.response才是一个对象】
-            //       console.log(error);
-            //       if (error.response) {
-            //           // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-            //           console.log( error.response.data );
-            //           console.log( error.response.status );
-            //           console.log( error.response.headers );
-            //       } else {
-            //           // Something happened in setting up the request that triggered an Error
-            //           console.log( "Error", error.message );
-            //       }
-            //       console.log( error.config );
-            //   } );
-
+            console.log(qs.stringify(temp))
+            const a = await this.$axios.post(url,qs.stringify(temp))
             console.log(a);
             // .then(({data: res,code: code,message: message})=>{
             //   console.log(res)
