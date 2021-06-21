@@ -11,6 +11,7 @@ import com.xietong.model.entity.SaleOrderDO;
 import com.xietong.model.entity.SaleProductDO;
 import com.xietong.model.entity.ShipmentDO;
 import com.xietong.model.entity.ShipmentProductDO;
+import com.xietong.model.entity.receiveDO.SaleOrderSCNameDO;
 import com.xietong.service.intf.SaleOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -81,10 +82,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
         return true;
     }
-    public List<SaleOrderDO> list(){
-        List<SaleOrderDO> saleOrderDOListA;
+    public List<SaleOrderSCNameDO> list(){
+        List<SaleOrderSCNameDO> saleOrderDOListA;
         List<SaleOrderDO> saleOrderDOListB;
-        saleOrderDOListA=saleOrderDOMapper.listA();
+        saleOrderDOListA=saleOrderDOMapper.listC();
         saleOrderDOListB=saleOrderDOMapper.listB();
         for(int i=0;i<saleOrderDOListA.size();i++){
             for(int j=0;j<saleOrderDOListB.size();j++){
@@ -95,10 +96,10 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
         return saleOrderDOListA;
     }
-    public List<SaleOrderDO> getById(int saleId){
-        List<SaleOrderDO> saleOrderDOListA;
+    public List<SaleOrderSCNameDO> getById(int saleId){
+        List<SaleOrderSCNameDO> saleOrderDOListA;
         List<SaleOrderDO> saleOrderDOListB;
-        saleOrderDOListA=saleOrderDOMapper.getByIdA(saleId);
+        saleOrderDOListA=saleOrderDOMapper.getByIdC(saleId);
         saleOrderDOListB=saleOrderDOMapper.getByIdB(saleId);
         for(int i=0;i<saleOrderDOListA.size();i++){
             for(int j=0;j<saleOrderDOListB.size();j++){

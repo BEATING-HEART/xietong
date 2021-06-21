@@ -8,6 +8,7 @@ import com.xietong.constant.enums.ErrorCodeEnum;
 import com.xietong.model.dto.ResponseDTO;
 import com.xietong.model.entity.*;
 //import com.xietong.model.entity.T.Test;
+import com.xietong.service.intf.DeliveryService;
 import com.xietong.service.intf.ProductDOService;
 import com.xietong.service.intf.SaleOrderService;
 import com.xietong.service.intf.StaffDOService;
@@ -36,7 +37,7 @@ public class TestController {
     @Autowired
     private SaleOrderService saleOrderService;
     @Autowired
-
+    private DeliveryService deliveryService;
     @GetMapping("/hello")
     public String hello(){
         return "欢迎来到软件系统设计spring boot项目";
@@ -68,6 +69,12 @@ public class TestController {
     public ResponseDTO postJson(@RequestBody Map<String, Object> params){
         // 也可以使用Bean对象来接收。
         return ResponseDTO.success("成功接收JSON参数",params);
+    }
+    @PostMapping("/deliver")
+    public ResponseDTO deliver(@RequestBody Map<String, Object> params){
+        // 也可以使用Bean对象来接收。
+        System.out.println(params);
+        return ResponseDTO.success("成功接收JSON参数", deliveryService.getById(Integer.parseInt(params.get("shipmentId").toString())));
     }
 
 

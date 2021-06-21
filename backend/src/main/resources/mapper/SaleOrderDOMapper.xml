@@ -63,6 +63,12 @@ FROM xietong.sales_order left join sales_product
 on (sales_order.sale_id=sales_product.sale_id  and sales_product.effective=true)
 where sales_order.sale_id=#{saleId} and sales_order.effective=true
     </select>
+    <select id="getByIdC" parameterType="int" resultMap="saleOrderMapC">
+         SELECT sales_order.sale_id,sales_order.seller_id,staff_name,manager_id,sales_order.customer_id,customer_name,remarks,time,sales_order.status,delivery_status,product_id,unit_price,num
+FROM staff,customer,(xietong.sales_order left join sales_product
+on sales_order.sale_id=sales_product.sale_id  and sales_product.effective=true )
+where sales_order.sale_id=#{saleId} and  sales_order.effective=true and sales_order.seller_id=staff.staff_id and customer.customer_id=sales_order.customer_id
+    </select>
     <select id="getByIdB" parameterType="int" resultMap="saleOrderMapB">
          SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,num
 FROM sales_order left join( xietong.shipment left join shipment_product  on shipment.shipment_id=shipment_product.shipment_id and shipment_product.effective=true)
@@ -77,5 +83,36 @@ on shipment.sale_id=sales_order.sale_id and shipment.effective=true  where  sale
     <update id="deleteBySaleId">
         update sales_order set effective=false where sale_id=#{saleId}
     </update>
+    <select id="listC" resultMap="saleOrderMapC">
+        SELECT sales_order.sale_id,sales_order.seller_id,staff_name,manager_id,sales_order.customer_id,customer_name,remarks,time,sales_order.status,delivery_status,product_id,unit_price,num
+FROM staff,customer,(xietong.sales_order left join sales_product
+on sales_order.sale_id=sales_product.sale_id  and sales_product.effective=true )
+where sales_order.effective=true and sales_order.seller_id=staff.staff_id and customer.customer_id=sales_order.customer_id
+    </select>
+    <resultMap id="saleOrderMapC" type="SaleOrderSCNameDO">
+        <result property="saleId" column="sale_id"/>
+        <result property="sellerId" column="seller_id"/>
+        <result property="sellerName" column="staff_name"/>
+        <result property="managerId" column="manager_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="remarks" column="remarks"/>
+        <result property="time" column="time"/>
+        <result property="deliveryStatus" column="delivery_status"/>
+        <collection property="saleProductDOList" ofType="SaleProductDO" >
+            <!--            <id property="saleId" column="sale_id"/>-->
+            <id property="productId" column="product_id"/>
+            <result property="unitPrice" column="unit_price"/>
+            <result property="num" column="num"/>
+        </collection>
+    </resultMap>
+    <select id="getByShipmentId" resultType="SaleOrderDO" parameterType="int">
+        SELECT  sales_order.sale_id, seller_id, manager_id, customer_id, remarks, sales_order.time,  sales_order.status, delivery_status
+FROM sales_order,shipment
+where sales_order.sale_id=shipment.sale_id and shipment_id=#{shipmentId} and sales_order.effective=true and shipment.effective=true 
+    </select>
+    <select id="getSaleProductBySaleId" resultType="SaleProductDo">
+        select * from sales_product where sale_id=#{saleId}
+    </select>
 
 </mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.DeliveryDOMapper">
+    <insert id="insertDeliveryDO"  parameterType="OutboundDO" >
+        <selectKey  resultType="int" order="AFTER" keyProperty="deliveryId">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into delivery(sale_id,customer_id,time) values(#{saleId},#{customerId},#{time})
+    </insert>
+    <insert id="insertDeliveryProductDO">
+        INSERT INTO delivery_product(delivery_id,product_id,num)
+        VALUES
+        <foreach collection="shipmentProductDOList" item="emp" separator=",">
+            (#{deliveryId},#{emp.productId},#{emp.num})
+        </foreach>
+    </insert>
+</mapper>
