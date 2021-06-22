@@ -117,6 +117,7 @@ public class ProductController {
                     return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"更改失败");
                 }
             }catch (DataAccessException e){
+                System.out.println(e);
                 return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"更改失败");
             }
         }catch (NullPointerException e){
