@@ -3,10 +3,10 @@
 
 <mapper namespace="com.xietong.mapper.ProductDOMapper">
     <select id="list"  resultType="ProductDO">
-        SELECT product_id,product_name,description,unit FROM product
+        SELECT product_id,product_name,description,unit FROM product where effective=true
     </select>
     <select id="getById" resultType="ProductDO" >
-        SELECT product_id,product_name,description,unit FROM  product where product_id=#{id}
+        SELECT product_id,product_name,description,unit FROM  product where product_id=#{id} and effective=true
     </select>
     <delete id="delete" parameterType="int">
         delete from product where product_id=#{id}
@@ -15,7 +15,7 @@
          insert into product(product_id,product_name,description,unit) values(#{productId},#{productName},#{description},#{unit})
     </insert>
     <update id="update" parameterType="ProductDO">
-        update product set product_name=#{productName},description=#{description},unit=#{unit} where product_id=#{product_id}
+        update product set product_name=#{productName},description=#{description},unit=#{unit} where product_id=#{productId} and effective=true
     </update>
     <update id="updateEffective" parameterType="int" >
         update product set effective=#{effective} where product_id=#{id}
