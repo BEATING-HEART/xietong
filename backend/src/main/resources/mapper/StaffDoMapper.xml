@@ -4,7 +4,7 @@
 <mapper namespace="com.xietong.mapper.StaffDOMapper">
 <!--    <select id="findAll"  resultMap="StaffDOMap">-->
     <select id="findAll"  resultType="StaffDO">
-        SELECT * FROM staff
+        SELECT * FROM staff where effective=true
     </select>
     <select id="findOneById" resultType="StaffDO" >
         SELECT * FROM  staff where staff_id=#{id}
@@ -16,7 +16,10 @@
 
     <update id="updateStaff" parameterType="com.xietong.model.entity.StaffDO">
         UPDATE staff
-        SET staff_pwd = #{staffPwd} , staff_position = #{staffPosition} , staff_name = #{staffName}
+        SET
+            <if  test="staffPwd != null">staff_pwd = #{staffPwd} ,</if>
+            <if  test="staffPosition != null">staff_position = #{staffPosition} ,</if>
+            <if  test="staffName != null">staff_name = #{staffName}</if>
         WHERE staff_id = #{staffId}
     </update>
 

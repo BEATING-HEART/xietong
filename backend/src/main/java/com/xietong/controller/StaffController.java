@@ -53,21 +53,22 @@ public class StaffController {
         if(count == 0)
             return ResponseDTO.fail("用户不存在,或用户已失效");
         else
-            return ResponseDTO.success("还没开发好");
+            return ResponseDTO.success("删除成功");
     }
 
     @PostMapping ("/update")
     @PreAuthorize("hasRole('admin')")
     public ResponseDTO updateStaff(@RequestBody StaffDO staff){
-//        System.out.println(staff.toString());
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String password = bCryptPasswordEncoder.encode(staff.getStaffPwd());
-        staff.setStaffPwd(password);
+        if(staff.getStaffPwd() != null){
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String password = bCryptPasswordEncoder.encode(staff.getStaffPwd());
+            staff.setStaffPwd(password);
+        }
         staff.setEffective(true);
         staff.setStatus(0);
 //        System.out.println(staff.toString());
         if(staffDOService.updateStaff(staff))
-            return ResponseDTO.success(new StaffDTO(staff));
+            return ResponseDTO.success(new StaffDTO(staffDOService.findOneById(staff.getStaffId()).get(0)));
         else
             return ResponseDTO.fail("更新失败");
     }

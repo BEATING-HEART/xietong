@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName("warehousing_application")
@@ -25,12 +26,15 @@ public class WarehousingApplicationDO {
 
     private int status;
 
+    @TableField(exist = false)
+    private List<ApplicationProductDO> applicationProducts;
 
-    public WarehousingApplicationDO(long warehousingApplicationId, String staffId, Date time, int workshopId, int status) {
-        this.warehousingApplicationId=warehousingApplicationId;
-        this.staffId=staffId;
-        this.time=time;
-        this.workshopId=workshopId;
-        this.status=status;
-    }
+
+//    public WarehousingApplicationDO(long warehousingApplicationId, String staffId, Date time, int workshopId, int status) {
+//        this.warehousingApplicationId=warehousingApplicationId;
+//        this.staffId=staffId;
+//        this.time=time;
+//        this.workshopId=workshopId;
+//        this.status=status;
+//    }
 }

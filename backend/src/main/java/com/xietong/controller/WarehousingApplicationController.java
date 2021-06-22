@@ -1,6 +1,7 @@
 package com.xietong.controller;
 
 
+import com.xietong.model.entity.WarehousingApplicationDO;
 import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
@@ -32,14 +33,24 @@ public class WarehousingApplicationController {
     ApplicationProductDOService applicationProductDOService;
 
 
-    @PostMapping("/insertApplication")
-    public ResponseDTO insertApplication(@RequestBody Map<String ,Object> params){
-        boolean staWarApp=warehousingApplicationDOService.insert(params);
-        boolean staAppPro=applicationProductDOService.insert(params);
-        if (staWarApp&&staAppPro)
-        return ResponseDTO.success("入库申请插入成功",params);
-        else
-            return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+//    @PostMapping("/insertApplication")
+//    public ResponseDTO insertApplication(@RequestBody Map<String ,Object> params){
+//        boolean staWarApp=warehousingApplicationDOService.insert(params);
+//        boolean staAppPro=applicationProductDOService.insert(params);
+//        if (staWarApp&&staAppPro)
+//            return ResponseDTO.success("入库申请插入成功",params);
+//        else
+//            return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+//    }
+    @PostMapping("/insert")
+    public ResponseDTO insertApplication(@RequestBody WarehousingApplicationDO application){
+        System.out.println(application);
+//        boolean staWarApp=warehousingApplicationDOService.insert(params);
+//        boolean staAppPro=applicationProductDOService.insert(params);
+//        if (staWarApp&&staAppPro)
+//            return ResponseDTO.success("入库申请插入成功",params);
+//        else
+        return  ResponseDTO.success(application);
     }
 
     @PostMapping("/deleteApplication")

@@ -18,10 +18,10 @@ public class WarehousingApplicationDOServiceImpl implements WarehousingApplicati
 
     @Override
     public boolean insert(Map<String, Object> params) {
-        WarehousingApplicationDO warehousingApplicationDO=new WarehousingApplicationDO((Long) params.get("warehousingApplicationId"),params.get("staffId").toString(),new Date(),(int)params.get("workshopId"),(int)params.get("status"));
-        if(warehousingApplicationDOMapper.insert(warehousingApplicationDO))
-            return true;
-        else
+//        WarehousingApplicationDO warehousingApplicationDO=new WarehousingApplicationDO((Long) params.get("warehousingApplicationId"),params.get("staffId").toString(),new Date(),(int)params.get("workshopId"),(int)params.get("status"));
+//        if(warehousingApplicationDOMapper.insert(warehousingApplicationDO))
+//            return true;
+//        else
         return false;
     }
 
@@ -46,11 +46,11 @@ public class WarehousingApplicationDOServiceImpl implements WarehousingApplicati
 
     @Override
     public boolean update(Map<String, Object> params) {
-        WarehousingApplicationDO warehousingApplicationDO=new WarehousingApplicationDO((Long) params.get("warehousingApplicationId"),params.get("staffId").toString(),new Date(),(int)params.get("workshopId"),(int)params.get("status"));
-        if(warehousingApplicationDOMapper.update(warehousingApplicationDO))
-            return true;
-        else
-        return false;
+//        WarehousingApplicationDO warehousingApplicationDO=new WarehousingApplicationDO((Long) params.get("warehousingApplicationId"),params.get("staffId").toString(),new Date(),(int)params.get("workshopId"),(int)params.get("status"));
+//        if(warehousingApplicationDOMapper.update(warehousingApplicationDO))
+//            return true;
+//        else
+            return false;
     }
 
     @Override
