@@ -42,16 +42,12 @@
       width="180">
     </el-table-column>
         <el-table-column
-      prop="salesmanname"
+      prop="salesname"
       label="销售员姓名">
     </el-table-column>
         <el-table-column
       prop="clientname"
       label="客户姓名">
-    </el-table-column>
-    <el-table-column
-      prop="pname"
-      label="产品名字">
     </el-table-column>
     <el-table-column
       prop="date"
@@ -66,60 +62,40 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog title="销售单" :visible.sync="dialogFormVisible" align="center" width="1250px">
+  <el-dialog title="销售单详情" :visible.sync="dialogFormVisible" align="center" width="1000px">
             <el-form ref="form" :model="form" label-width="150px">
-                <el-row>
-                    <el-col :span="12">
-                <el-form-item label="销售单单号">
+                <el-form-item label="销售单号">
                 <el-input v-model="detail.sheetid" readonly="true"></el-input>
                 </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                <el-form-item label="销售员工编号">
-                    <el-input v-model="detail.salesmanid" readonly="true"></el-input>
+                <el-form-item label="销售员姓名">
+                    <el-input v-model="detail.salesname" readonly="true"></el-input>
                 </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12">
                 <el-form-item label="客户姓名">
                     <el-input v-model="detail.clientname" readonly="true"></el-input>
                 </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                <el-form-item label="销售员姓名">
-                    <el-input v-model="detail.salesmanname" readonly="true"></el-input>
+                 <el-form-item label="时间">
+                    <el-input v-model="detail.date" readonly="true"></el-input>
                 </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-divider></el-divider>
-                <el-table>
-                    <el-table-column label="产品编号">
+                <h3 align=center>产品列表</h3>
+                <el-form-item v-for="(item,index) in this.detail.TobeDeliver">
+                  <el-form-item label="批次:">
+                    <el-input v-model="item.batch" readonly="true" ></el-input>
+                  </el-form-item>
+                  <el-form-item label="日期:">
+                    <el-input v-model="item.date" readonly="true" ></el-input>
+                  </el-form-item>
+                  <el-table :data="item.products" borderstyle="width:100%">
+                    <el-table-column label="产品编号" prop="pid">
                     </el-table-column>
-                    <el-table-column label="产品名字">
+                    <el-table-column label="产品名字" prop="pname">
                     </el-table-column>
-                    <el-table-column label="单价">
+                    <el-table-column label="发货数量" prop="amount">
                     </el-table-column>
-                    <el-table-column label="数量">
-                    </el-table-column>
-                    <el-table-column label="小计">
-                    </el-table-column>
-                </el-table>
-                <el-divider></el-divider>
-                <el-table>
-                    <el-table-column label="预约发货批次">
-                    </el-table-column>
-                    <el-table-column label="预计发货时间">
-                    </el-table-column>
-                    <el-table-column label="实际发货时间">
-                    </el-table-column>
-                    <el-table-column label="发货状态">
-                    </el-table-column>
-                    <el-divider></el-divider>
-              <el-form-item label="备注">
+                  </el-table>
+                </el-form-item>
+                <el-form-item label="备注">
                   <el-input v-model="detail.description" readonly="true"></el-input>
-              </el-form-item>
-                </el-table>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="info" @click="dialogFormVisible = false">返回</el-button>
@@ -133,6 +109,27 @@
 
 <script>
 export default {
+  async mounted(){
+      var url = 'http://39.103.202.215:8080/api/sale/listSaleOrder';
+      await this.$axios.post(url)
+      .then(({data: res})=>{
+        console.log(res.data)
+        const a = res.data
+        a.forEach(function (item) {
+              item.sheetid = String(item.saleId)
+              delete item.saleId
+              item.salesname = String(item.sellerName)
+              delete item.sellerName
+              item.clientname = String(item.customerName)
+              delete item.customerName
+              item.date = String(item.time)
+              delete item.time
+              item.description = String(item.remarks)
+              delete item.remarks
+        })
+        this.tableData = a
+      })      
+    },
   data() {
     return {
         QueryForm:{
@@ -142,36 +139,64 @@ export default {
          tableData: [{
          sheetid:'13489',
           date: '2016-05-02',
-          pname: '齿轮',
-          salesmanname:'陈宇',
+          salesname:'陈宇',
           clientname:"台积电",
-          status:''
-        }, 
-        {
-          sheetid:'13490',
-          date: '2016-05-04',
-          pname: '空间曲率发动机',
-          salesmanname:"陈宇",
-          clientname:"庄松林",
-          status:''
-        }, 
-        {
-          sheetid:'13491',
-          date: '2016-05-06',
-          pname: '大齿轮',
-          salesmanname:"陈宇",
-          clientname:"三星",
-          status:''
+          description:'销售员下跪得来的机会',
+          TobeDeliver:[
+            {
+              batch:'1',
+              date:'2016-05-03',
+              products:[
+                {
+                  pid:'1',
+                  pname:'齿轮',
+                  amount:'1000'
+                },
+                {
+                  pid:'2',
+                  pname:'大齿轮',
+                  amount:'500'
+                }
+              ]
+            },
+            {
+              batch:'2',
+              date:'2016-05-04',
+              products:[
+                {
+                  pid:'1',
+                  pname:'齿轮',
+                  amount:'500'
+                },
+                {
+                  pid:'3',
+                  pname:'晶体管',
+                  amount:'500'
+                }
+              ]
+            }
+          ]
         }
         ],
         detail:{
             sheetid:'',
-            salesmanid:'',
-            salesmanname:'',
+            salesname:'',
             clientname:'',
-            products:[],
-            batch:[],
+            date:'',
             description:'',
+            TobeDeliver:[
+              {
+                batch:'',
+                date:'',
+                products:[
+                  {
+                    pid:'',
+                    pname:'',
+                    amount:''
+                  }
+                ]
+              }
+              ],
         },
         dialogFormVisible: false
     }
@@ -180,9 +205,11 @@ export default {
       More(row, detail){
             this.dialogFormVisible = true
             this.detail.sheetid = detail.sheetid
-            this.detail.salesmanname = detail.salesmanname
+            this.detail.salesname = detail.salesname
             this.detail.clientname=detail.clientname
-            this.detail.salesmanid=''
+            this.detail.date=detail.date
+            this.detail.description=detail.description
+            this.detail.TobeDeliver=detail.TobeDeliver
         },
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {

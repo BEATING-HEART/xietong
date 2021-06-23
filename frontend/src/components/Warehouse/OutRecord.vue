@@ -84,6 +84,7 @@
                 <el-form-item label="日期">
                     <el-input v-model="detail.date" readonly="true"></el-input>
                 </el-form-item>
+                <h3 align=center>产品列表</h3>
                 <el-table :data="detail.products" borderstyle="width:100%">
                     <el-table-column label="产品编号" prop="pid">
                     </el-table-column>
@@ -152,6 +153,7 @@ export default {
             date:'',
             products:[
               {
+              pid:'',
               pname:'',
               amount:''
             }]

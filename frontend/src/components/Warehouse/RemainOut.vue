@@ -75,7 +75,6 @@
                       <el-button type="primary" size="mini" @click="">发货</el-button>
                     </el-col>
                   </el-row>
-
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

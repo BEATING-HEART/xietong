@@ -64,22 +64,22 @@ import qs from 'qs'
           if (valid) {
             var url = 'http://39.103.202.215:8080/api/staff/insert';
             var temp = {
-              "stuffId": this.ruleForm.account,
-              "stuffName": this.ruleForm.name,
-              "stuffPosition": this.ruleForm.positions,
-              "stuffPwd": this.ruleForm.password,
+              staffId: this.ruleForm.account,
+              staffName: this.ruleForm.name,
+              staffPosition: this.ruleForm.positions,
+              staffPwd: this.ruleForm.password,
             }
-            console.log(qs.stringify(temp))
-            const a = await this.$axios.post(url,qs.stringify(temp))
-            console.log(a);
-            // .then(({data: res,code: code,message: message})=>{
-            //   console.log(res)
-            //   console.log(code)
-            //   console.log(message)
-            // })
-            alert('注册成功');
+            console.log(temp)
+             await this.$axios.post(url,temp,{headers:{"Content-Type":"application/json"}})
+             .then(({data: res}) => {
+               console.log(res)
+               this.$message.success('注册成功')
+             })
+             .catch((error) => {
+               this.$message.error('注册失败，该用户已存在')
+              });
           } else {
-            console.log('注册失败!!');
+            this.$message.error('请输入具体信息')
             return false;
           }
         });

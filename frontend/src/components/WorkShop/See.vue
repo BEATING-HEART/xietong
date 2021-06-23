@@ -13,7 +13,7 @@
                 style="width: 100%"
                 :default-sort = "{prop: 'date', order: 'descending'}">
                 <el-table-column
-                    prop="num"
+                    prop="sheetid"
                     label="入库申请单号">
                 </el-table-column>
                 <el-table-column
@@ -32,6 +32,10 @@
                             size="mini"
                             type="warning"
                             @click="Detail(scope.$index, scope.row)">查看详情</el-button>
+                            <el-button
+                            size="mini"
+                            type="danger"
+                            @click="" v-if="Withdraw(scope.$index, scope.row)">撤回</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -45,12 +49,12 @@
                     label="产品名">
                 </el-table-column>
                 <el-table-column
-                    prop="pnum"
+                    prop="pid"
                     label="产品号">
                 </el-table-column>
                 <el-table-column
                     prop="num"
-                    label="批次号">
+                    label="车间号">
                 </el-table-column>
                 <el-table-column
                     prop="good"
@@ -78,50 +82,50 @@ export default {
         return{
             form:{
                 date:'',
-                num:''
+                sheetid:''
             },
             dialogFormVisible: false,
             detail:[],
             tableData: [{
                 date: '2016-05-02',
                 state: '审核中',
-                num:'1',
+                sheetid:'104',
                 data:[{pname: '螺丝1',
-                pnum: '123',
-                num: '567',
+                pid: '123',
+                num: '1',
                 good:'12',
                 bad:'23',
-                total:'123'}]
+                total:'35'}]
             }, {
                 date: '2016-05-04',
                 state: '审核中',
-                num:'2',
+                sheetid:'204',
                 data:[{pname: '螺丝2',
-                pnum: '123',
-                num: '567',
+                pid: '123',
+                num: '1',
                 good:'12',
                 bad:'23',
-                total:'123'}]
+                total:'35'}]
             }, {
                 date: '2016-05-01',
                 state: '已通过',
-                num:'3',
+                sheetid:'3',
                 data:[{pname: '螺丝3',
-                pnum: '123',
-                num: '567',
+                pid: '123',
+                num: '1',
                 good:'12',
                 bad:'23',
-                total:'123'}]
+                total:'35'}]
             }, {
                 date: '2016-05-03',
                 state: '已通过',
-                num:'4',
+                sheetid:'4',
                 data:[{pname: '螺丝4',
-                pnum: '123',
-                num: '567',
+                pid: '123',
+                num: '2',
                 good:'12',
                 bad:'23',
-                total:'123'}]
+                total:'35'}]
             }]
         }
     },
@@ -130,12 +134,18 @@ export default {
             //修改申请单数据添加至tableData
         },
         cancel(){
-            //重新获取完整申请单数据添加至tableData
+            //重新获取完整申请单数据添加至tableData,注意车间人员只能看到自己的入库申请单不要返回全部申请单
         },
         Detail(row, detail){
             this.dialogFormVisible = true
             this.detail = detail.data
             console.log(this.detail)
+        },
+        Withdraw(row, detail){
+            if(detail.state=="审核中")
+            return true
+            else if(detail.state=="已通过")
+            return false
         }
     }
 }

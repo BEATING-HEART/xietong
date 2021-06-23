@@ -28,7 +28,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="num"
-                    label="批次号">
+                    label="车间号">
                 </el-table-column>
                 <el-table-column
                     prop="good"
@@ -78,7 +78,7 @@
                 <el-form-item label="产品名">
                     <el-input v-model="tmp.pname" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="批次号">
+                <el-form-item label="车间号">
                     <el-input v-model="tmp.num"></el-input>
                 </el-form-item>
                 <el-form-item label="良品">
@@ -126,14 +126,14 @@ export default{
                 num: '567',
                 good:'12',
                 bad:'23',
-                total:'123'
+                total:'35'
             },{
                 pname: '大螺丝',
                 pnum: '123',
                 num: '567',
                 good:'12',
                 bad:'23',
-                total:'123'
+                total:'35'
             }],
             tmp:{
                 pname: '',
@@ -148,21 +148,6 @@ export default{
             dialogFormVisible: false,
             flag:true
         }
-    },
-    watch:{
-        // dialogFormVisible(val,oldVal){
-        //     if(val == false){
-        //         this.tmp.pname = ''
-        //         this.tmp.pnum = ''
-        //         this.tmp.num = ''
-        //         this.tmp.good = ''
-        //         this.tmp.bad = ''
-        //         this.tmp.total = ''
-        //         this.tmp.row = ''
-        //     }
-        //     console.log(val)
-        //     console.log(oldVal)
-        // }
     },
     methods:{
         Edit(row, detail){
@@ -246,6 +231,7 @@ export default{
             this.dialogFormVisible = false;
         },
         Submit(){
+            // 向后端提交数据时除了表格里有的数据(车间号等),还要提交当前的系统时间yyyy-mm-dd
             //提交数据
         },
         querySearch(queryString, cb) {

@@ -16,7 +16,8 @@
       &nbsp;
   </el-col>
           <el-col :span="2" >
-              <el-button type="primary" @click="submitForm('QueryForm')">查询</el-button>
+              <el-button type="primary" @click="submitForm()" v-if="buttonflag">查询</el-button>
+              <el-button type="primary" @click="showAllProducts()" v-if="!buttonflag">返回全部</el-button>
           </el-col>
           <el-col :span="2">
               <el-button type="warning" @click="Add()">新建产品</el-button>
@@ -115,6 +116,21 @@
 
 <script>
 export default {
+  async created(){
+    var url = 'http://39.103.202.215:8080/api/product/list';
+      await this.$axios.post(url)
+      .then(({data: res})=>{
+        console.log(res.data)
+        const a = res.data
+        a.forEach(function (item) {
+              item.pid = String(item.productId)
+              delete item.productId
+              item.pname = String(item.productName)
+              delete item.productName
+        })
+        this.tableData = a
+      })      
+  },
   data() {
     return {
         QueryForm:{
@@ -144,6 +160,7 @@ export default {
         },
         dialogFormVisibleEdit: false,
         dialogFormVisibleAdd: false,
+        buttonflag:true,
     }
   },
   methods:{
@@ -156,15 +173,37 @@ export default {
             this.product.row = row
             this.product.type = 'edit'
         },
-        Delete(row,index)
+        async Delete(row,index)
         {
         this.$confirm('此操作将永久删除该产品, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-            this.tableData.splice(row,1)
-            // 删除指令
+        }).then(async () => {
+            var url = 'http://39.103.202.215:8080/api/product/delete/' + index.pid;
+            console.log(url)
+             await this.$axios.post(url,{headers:{"Content-Type":"application/json"}})
+             .then(async ({data: res}) => {
+               console.log(res)
+               this.$message.success('删除成功')
+                   var url1 = 'http://39.103.202.215:8080/api/product/list';
+                    await this.$axios.post(url1)
+                    .then(({data: res})=>{
+                      console.log(res.data)
+                      const a = res.data
+                      a.forEach(function (item) {
+                            item.pid = String(item.productId)
+                            delete item.productId
+                            item.pname = String(item.productName)
+                            delete item.productName
+                      })
+                      this.tableData = a
+                    }) 
+             })
+             .catch((error) => {
+               this.$message.error('删除失败')
+                console.log(error);
+              });
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -185,40 +224,132 @@ export default {
             this.product.row = ''
             this.product.type = 'add'
         },
-        confirm(){
+        async confirm(){
             if(this.product.type == 'add'){
-                this.tableData.push({
-                    pname: this.product.pname,
-                    pid:this.product.pid,
-                    unit:this.product.unit,
-                    description:this.product.description,
-                    row: this.product.row,
-                })
+              var temp = {
+                  "description": this.product.description,
+                  "productId": this.product.pid,
+                  "productName": this.product.pname,
+                  "unit": this.product.unit,
+                }
+              var url = 'http://39.103.202.215:8080/api/product/insert';
+             await this.$axios.post(url,temp,{headers:{"Content-Type":"application/json"}})
+             .then(async ({data: res}) => {
+               console.log(res)
+               this.$message.success('添加成功')
+                   var url1 = 'http://39.103.202.215:8080/api/product/list';
+                    await this.$axios.post(url1)
+                    .then(({data: res})=>{
+                      console.log(res.data)
+                      const a = res.data
+                      a.forEach(function (item) {
+                            item.pid = String(item.productId)
+                            delete item.productId
+                            item.pname = String(item.productName)
+                            delete item.productName
+                      })
+                      this.tableData = a
+                    }) 
+             })
+             .catch((error) => {
+               this.$message.error('添加失败，请确认信息')
+                  //console.log(error);
+              });
+
+                // this.tableData.push({
+                //     pname: this.product.pname,
+                //     pid:this.product.pid,
+                //     unit:this.product.unit,
+                //     description:this.product.description,
+                //     row: this.product.row,
+                // })
                 this.dialogFormVisibleAdd = false;
                 // Insert指令
             }
             else{
-                this.$set(this.tableData,this.product.row,{
-                    pname: this.product.pname,
-                    pid:this.product.pid,
-                    unit:this.product.unit,
-                    description:this.product.description,
-                    row: this.product.row,
-                    Renew:true
-                })
+              var temp = {
+                  "description": this.product.description,
+                  "productId": this.product.pid,
+                  "productName": this.product.pname,
+                  "unit": this.product.unit,
+                }
+                console.log(temp)
+              var url = 'http://39.103.202.215:8080/api/product/update';
+             await this.$axios.post(url,temp,{headers:{"Content-Type":"application/json"}})
+             .then(async ({data: res}) => {
+               console.log(res)
+               this.$message.success('修改成功')
+                   var url1 = 'http://39.103.202.215:8080/api/product/list';
+                    await this.$axios.post(url1)
+                    .then(({data: res})=>{
+                      console.log(res.data)
+                      const a = res.data
+                      a.forEach(function (item) {
+                            item.pid = String(item.productId)
+                            delete item.productId
+                            item.pname = String(item.productName)
+                            delete item.productName
+                      })
+                      this.tableData = a
+                    }) 
+             })
+             .catch((error) => {
+               this.$message.error('添加失败，请确认信息')
+                  //console.log(error);
+              });
+                // this.$set(this.tableData,this.product.row,{
+                //     pname: this.product.pname,
+                //     pid:this.product.pid,
+                //     unit:this.product.unit,
+                //     description:this.product.description,
+                //     row: this.product.row,
+                //     Renew:true
+                // })
                 this.dialogFormVisibleEdit = false;
                 // update指令
             }
         },
-        submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('查询成功');
-          } else {
-            console.log('查询失败!!');
-            return false;
-          }
-        });
+        async submitForm(formName) {
+          var url = 'http://39.103.202.215:8080/api/product/get/' + this.QueryForm.PId;
+            console.log(url)
+             await this.$axios.post(url,{headers:{"Content-Type":"application/json"}})
+             .then(async ({data: res}) => {
+               console.log(res.data)
+               var a = res.data
+               a.forEach(function (item) {
+                            item.pid = String(item.productId)
+                            delete item.productId
+                            item.pname = String(item.productName)
+                            delete item.productName
+                      })
+                      this.tableData = a
+                      if(a.length!=0){
+                      this.$message({
+                            type: 'success',
+                            message: '查询成功!'
+                                    })}
+                      else{this.$message.error('查询失败')}
+                      this.buttonflag=false
+
+             })
+          
+      },
+      async showAllProducts(){
+        var url1 = 'http://39.103.202.215:8080/api/product/list';
+                    await this.$axios.post(url1)
+                    .then(({data: res})=>{
+                      console.log(res.data)
+                      const a = res.data
+                      a.forEach(function (item) {
+                            item.pid = String(item.productId)
+                            delete item.productId
+                            item.pname = String(item.productName)
+                            delete item.productName
+                      })
+                      this.tableData = a
+                    }) 
+                    this.buttonflag=true
+                    this.QueryForm.PId=''
       }
   }
 }
