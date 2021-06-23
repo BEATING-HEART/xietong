@@ -39,19 +39,15 @@ public class WarehousingApplicationDOServiceImpl implements WarehousingApplicati
 
     @Override
     public WarehousingApplicationDO getById(long applicationId) {
-        WarehousingApplicationDO application = warehousingApplicationDOMapper.getById(applicationId).get(0);
-        List<ApplicationProductDO> applicationProducts = applicationProductDOMapper.listApplicationProduct(applicationId);
-        application.setApplicationProducts(applicationProducts);
-        return application;
+        return warehousingApplicationDOMapper.getById(applicationId).get(0);
     }
 
-    @Override
-    public boolean update(Map<String, Object> params) {
-//        WarehousingApplicationDO warehousingApplicationDO=new WarehousingApplicationDO((Long) params.get("warehousingApplicationId"),params.get("staffId").toString(),new Date(),(int)params.get("workshopId"),(int)params.get("status"));
-//        if(warehousingApplicationDOMapper.update(warehousingApplicationDO))
-//            return true;
-//        else
-            return false;
+    @Override @Transactional
+    public boolean update(WarehousingApplicationDO application) {
+            Long applicationId = application.getWarehousingApplicationId();
+            applicationProductDOMapper.delete(applicationId);
+            applicationProductDOMapper.insertList(applicationId, application.getApplicationProducts());
+            return true;
     }
 
     @Override

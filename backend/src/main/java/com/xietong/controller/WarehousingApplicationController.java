@@ -4,6 +4,8 @@ package com.xietong.controller;
 import com.xietong.model.entity.ApplicationProductDO;
 import com.xietong.model.entity.WarehousingApplicationDO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import com.xietong.constant.enums.ErrorCodeEnum;
@@ -35,6 +37,11 @@ public class WarehousingApplicationController {
     ApplicationProductDOService applicationProductDOService;
 
     @PostMapping("/insert")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "warehousingApplicationId", value = "入库申请单id",  required = false),
+//            @ApiImplicitParam(name = "staffId", value = "员工id",  required = false),
+//            @ApiImplicitParam(name = "staffName", value = "员工姓名", required = false)
+    })
     public ResponseDTO insertApplication(@RequestBody WarehousingApplicationDO application, Principal principal){
         String staffId = principal.getName();
         application.setStatus(1);
@@ -66,9 +73,14 @@ public class WarehousingApplicationController {
     }
 
     @PostMapping("/update")
-    public ResponseDTO updateApplication(@RequestBody WarehousingApplicationDO application, Principal principal){
-
-//        if(warehousingApplicationDOService.update(params))
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "applicationId", value = "入库申请单id",  required = true),
+//            @ApiImplicitParam(name = "staffId", value = "员工id",  required = false),
+//            @ApiImplicitParam(name = "staffName", value = "员工姓名", required = false)
+    })
+    public ResponseDTO updateApplication(@RequestBody WarehousingApplicationDO application, Principal principal){// 删原来的product
+//        Long applicationId = application.getWarehousingApplicationId();
+        warehousingApplicationDOService.update(application);
         return  ResponseDTO.success("修改成功");
 //        else return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }

@@ -23,7 +23,7 @@ public interface WarehousingApplicationDOMapper {
             @Result(property = "applicationProducts", javaType = List.class,
                     many = @Many(select = "listApplicationProductById"), column = "warehousing_application_id")
     })
-    @Select("select * from warehousing_application")
+    @Select("select * from warehousing_application as wa inner join staff as s on wa.staff_id = s.staff_id")
     List<WarehousingApplicationDO> listApplication();
 
     @Select({
@@ -31,14 +31,15 @@ public interface WarehousingApplicationDOMapper {
             "inner join product as p on ap.product_id = p.product_id ",
             "where ap.warehousing_application_id = #{applicationId}"
     })
-    @Results(id = "products", value = {
-            @Result(property = "productName", column = "product_name")
-    })
+
     List<ApplicationProductDO> listApplicationProductById(Long applicationId);
 
-    @Select("select * from warehousing_application where warehousing_application_id = #{applicationId}")
-    @ResultMap(value = "applications")
-    List<WarehousingApplicationDO> getById(long applicationId);
+    @Select({
+            "select * from warehousing_application as wa inner join staff as s on wa.staff_id = s.staff_id",
+            "where warehousing_application_id = #{applicationId}"
+    })
+    @ResultMap("applications")
+    List<WarehousingApplicationDO> getById(Long applicationId);
 
 
 

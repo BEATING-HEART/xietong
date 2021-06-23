@@ -15,7 +15,7 @@ public interface WarehousingApplicationDOService {
 
     WarehousingApplicationDO getById(long warehousingApplicationId);
 
-    boolean update(Map<String, Object> params);
+    boolean update(WarehousingApplicationDO application);
 
     boolean confirm(long warehousingApplicationId, int status);
 

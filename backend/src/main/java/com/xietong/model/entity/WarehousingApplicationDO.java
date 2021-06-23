@@ -16,14 +16,15 @@ import java.util.List;
 
 public class WarehousingApplicationDO {
     @TableId(value = "warehousing_application_id",type = IdType.AUTO )
-    @ApiModelProperty(hidden=true)
+//    @ApiModelProperty(hidden=true)
     private long warehousingApplicationId;
 
     @ApiModelProperty(hidden=true)
     private String staffId;
 
-//    @TableField(exist = false)
-//    private String staffName;
+    @TableField(exist = false)
+    @ApiModelProperty(hidden=true)
+    private String staffName;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @ApiModelProperty(hidden=true)
