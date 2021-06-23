@@ -36,25 +36,26 @@ where   sales_order.effective=true
         <result property="num" column="num"/>
     </resultMap>
     <select id="listB" resultMap="saleOrderMapB">
-          SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,num
-FROM sales_order left join( xietong.shipment left join shipment_product  on shipment.shipment_id=shipment_product.shipment_id and shipment_product.effective=true)
-on shipment.sale_id=sales_order.sale_id and shipment.effective=true  where  sales_order.effective=true
+          SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,product.product_name,num
+FROM product,(sales_order left join( xietong.shipment left join shipment_product  on shipment.shipment_id=shipment_product.shipment_id and shipment_product.effective=true)
+on shipment.sale_id=sales_order.sale_id and shipment.effective=true)  where  sales_order.effective=true and product.product_id=shipment_product.product_id
     </select>
-    <resultMap id="saleOrderMapB" type="SaleOrderDO">
+    <resultMap id="saleOrderMapB" type="SaleOrderSCNameDO">
         <result property="saleId" column="sale_id"/>
-        <collection property="shipmentDOList" resultMap="shipmentDOMap">
+        <collection property="shipmentPNameDOList" resultMap="shipmentPNameDOMap">
         </collection>
     </resultMap>
-    <resultMap id="shipmentDOMap" type="ShipmentDO">
+    <resultMap id="shipmentPNameDOMap" type="ShipmentPNameDO">
         <id property="shipmentId" column="shipment_id"/>
 <!--        <result property="saleId" column="sale_id"/>-->
         <result property="time" column="time"/>
         <result property="status" column="status"/>
-        <collection property="shipmentProductDOList" resultMap="shipmentProductDOMap"></collection>
+        <collection property="shipmentProductPNameDOList" resultMap="shipmentProductPNameDOMap"></collection>
     </resultMap>
-    <resultMap id="shipmentProductDOMap" type="ShipmentProductDO">
+    <resultMap id="shipmentProductPNameDOMap" type="ShipmentProductPNameDO">
 <!--        <id property="shipmentId" column="shipment_id"/>-->
         <id property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
         <result property="num" column="num"/>
     </resultMap>
     <select id="getByIdA" parameterType="int" resultMap="saleOrderMap">
@@ -64,15 +65,15 @@ on (sales_order.sale_id=sales_product.sale_id  and sales_product.effective=true)
 where sales_order.sale_id=#{saleId} and sales_order.effective=true
     </select>
     <select id="getByIdC" parameterType="int" resultMap="saleOrderMapC">
-         SELECT sales_order.sale_id,sales_order.seller_id,staff_name,manager_id,sales_order.customer_id,customer_name,remarks,time,sales_order.status,delivery_status,product_id,unit_price,num
-FROM staff,customer,(xietong.sales_order left join sales_product
+         SELECT sales_order.sale_id,sales_order.seller_id,staff_name,manager_id,sales_order.customer_id,customer_name,remarks,time,sales_order.status,delivery_status,sales_product.product_id,product.product_name,num
+FROM product,staff,customer,(xietong.sales_order left join sales_product
 on sales_order.sale_id=sales_product.sale_id  and sales_product.effective=true )
-where sales_order.sale_id=#{saleId} and  sales_order.effective=true and sales_order.seller_id=staff.staff_id and customer.customer_id=sales_order.customer_id
+where sales_order.sale_id=#{saleId} and sales_order.effective=true and sales_order.seller_id=staff.staff_id and customer.customer_id=sales_order.customer_id and sales_product.product_id=product.product_id
     </select>
     <select id="getByIdB" parameterType="int" resultMap="saleOrderMapB">
-         SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,num
-FROM sales_order left join( xietong.shipment left join shipment_product  on shipment.shipment_id=shipment_product.shipment_id and shipment_product.effective=true)
-on shipment.sale_id=sales_order.sale_id and shipment.effective=true  where  sales_order.sale_id=#{saleId} and sales_order.effective=true
+         SELECT sales_order.sale_id,shipment.shipment_id,shipment.time,shipment.status,shipment_product.product_id,product.product_name,num
+FROM product,(sales_order left join( xietong.shipment left join shipment_product  on shipment.shipment_id=shipment_product.shipment_id and shipment_product.effective=true)
+on shipment.sale_id=sales_order.sale_id and shipment.effective=true)  where sales_order.sale_id=#{saleId} and sales_order.effective=true and product.product_id=shipment_product.product_id
     </select>
     <update id="confirmStatus" >
         update sales_order set status=#{status} where sale_id=#{saleId}
@@ -84,10 +85,10 @@ on shipment.sale_id=sales_order.sale_id and shipment.effective=true  where  sale
         update sales_order set effective=false where sale_id=#{saleId}
     </update>
     <select id="listC" resultMap="saleOrderMapC">
-        SELECT sales_order.sale_id,sales_order.seller_id,staff_name,manager_id,sales_order.customer_id,customer_name,remarks,time,sales_order.status,delivery_status,product_id,unit_price,num
-FROM staff,customer,(xietong.sales_order left join sales_product
+        SELECT sales_order.sale_id,sales_order.seller_id,staff_name,manager_id,sales_order.customer_id,customer_name,remarks,time,sales_order.status,delivery_status,sales_product.product_id,product.product_name,num
+FROM product,staff,customer,(xietong.sales_order left join sales_product
 on sales_order.sale_id=sales_product.sale_id  and sales_product.effective=true )
-where sales_order.effective=true and sales_order.seller_id=staff.staff_id and customer.customer_id=sales_order.customer_id
+where sales_order.effective=true and sales_order.seller_id=staff.staff_id and customer.customer_id=sales_order.customer_id and sales_product.product_id=product.product_id
     </select>
     <resultMap id="saleOrderMapC" type="SaleOrderSCNameDO">
         <result property="saleId" column="sale_id"/>
@@ -99,9 +100,10 @@ where sales_order.effective=true and sales_order.seller_id=staff.staff_id and cu
         <result property="remarks" column="remarks"/>
         <result property="time" column="time"/>
         <result property="deliveryStatus" column="delivery_status"/>
-        <collection property="saleProductDOList" ofType="SaleProductDO" >
+        <collection property="saleProductPNameDOList" ofType="SaleProductPNameDO" >
             <!--            <id property="saleId" column="sale_id"/>-->
             <id property="productId" column="product_id"/>
+            <result property="productName" column="product_name"/>
             <result property="unitPrice" column="unit_price"/>
             <result property="num" column="num"/>
         </collection>
