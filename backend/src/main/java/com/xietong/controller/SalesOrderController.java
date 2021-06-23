@@ -143,8 +143,14 @@ public class SalesOrderController {
     @ApiOperation(value = "获取一个销售单及完整详情（包括销售单有哪些产品，发货批次及时间，每批次中产品的数量等）")
     public ResponseDTO getByIdSaleOrder(@RequestBody Map<String ,Object> params){
         try{
-            System.out.println(Integer.parseInt(params.get("saleId").toString()));
-            return ResponseDTO.success(saleOrderService.getById(Integer.parseInt(params.get("saleId").toString())));
+            try{
+                System.out.println(Integer.parseInt(params.get("saleId").toString()));
+                return ResponseDTO.success(saleOrderService.getById(Integer.parseInt(params.get("saleId").toString())));
+            }catch (DataAccessException e){
+                System.out.println(e);
+                return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"数据库错误");
+            }
+
         }catch (NullPointerException e){
             System.out.println(e);
             return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED,"参数不完整或错误");

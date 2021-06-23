@@ -15,4 +15,31 @@
             (#{outboundId},#{emp.productId},#{emp.num})
         </foreach>
     </insert>
+    <select id="getBySaleId" resultMap="outboundNameDOMap">
+        SELECT outbound.outbound_id,outbound.sale_id,outbound.staff_id,staff.staff_name,outbound.customer_id,customer.customer_name,outbound.time, shipment_id,outbound_product.product_id,product.product_name,num
+FROM product,sales_order,staff,customer,(outbound left join outbound_product on outbound.outbound_id=outbound_product.outbound_id)
+where outbound.sale_id=sales_order.sale_id and  outbound.sale_id=#{saleId} and product.product_id=outbound_product.product_id
+and outbound.staff_id=staff.staff_id and outbound.customer_id=customer.customer_id and outbound.effective=true and sales_order.effective=true
+    </select>
+    <select id="getByTime" resultMap="outboundNameDOMap">
+        SELECT outbound.outbound_id,outbound.sale_id,outbound.staff_id,staff.staff_name,outbound.customer_id,customer.customer_name,outbound.time, shipment_id,outbound_product.product_id,product.product_name,num
+FROM product,sales_order,staff,customer,(outbound left join outbound_product on outbound.outbound_id=outbound_product.outbound_id)
+where outbound.sale_id=sales_order.sale_id and date(outbound.time)=date(#{time}) and product.product_id=outbound_product.product_id
+and outbound.staff_id=staff.staff_id and outbound.customer_id=customer.customer_id and outbound.effective=true and sales_order.effective=true
+    </select>
+    <resultMap id="outboundNameDOMap" type="OutboundNameDO">
+        <result property="outboundId" column="outbound_id"/>
+        <result property="saleId" column="sale_id"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="staffName" column="staff_name"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="time" column="time"/>
+        <result property="shipmentId" column="shipment_id"/>
+        <collection property="outboundProductNameDOList" ofType="OutboundProductNameDO">
+            <result property="productId" column="product_id"/>
+            <result property="productName" column="product_name"/>
+            <result property="num" column="num"/>
+        </collection>
+    </resultMap>
 </mapper>
