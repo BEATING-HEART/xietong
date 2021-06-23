@@ -1,6 +1,7 @@
 package com.xietong.controller;
 
 
+import com.xietong.model.entity.ApplicationProductDO;
 import com.xietong.model.entity.WarehousingApplicationDO;
 import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -32,51 +34,43 @@ public class WarehousingApplicationController {
     @Autowired
     ApplicationProductDOService applicationProductDOService;
 
-
-//    @PostMapping("/insertApplication")
-//    public ResponseDTO insertApplication(@RequestBody Map<String ,Object> params){
-//        boolean staWarApp=warehousingApplicationDOService.insert(params);
-//        boolean staAppPro=applicationProductDOService.insert(params);
-//        if (staWarApp&&staAppPro)
-//            return ResponseDTO.success("入库申请插入成功",params);
-//        else
-//            return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
-//    }
     @PostMapping("/insert")
-    public ResponseDTO insertApplication(@RequestBody WarehousingApplicationDO application){
-        System.out.println(application);
-//        boolean staWarApp=warehousingApplicationDOService.insert(params);
-//        boolean staAppPro=applicationProductDOService.insert(params);
-//        if (staWarApp&&staAppPro)
-//            return ResponseDTO.success("入库申请插入成功",params);
-//        else
-        return  ResponseDTO.success(application);
+    public ResponseDTO insertApplication(@RequestBody WarehousingApplicationDO application, Principal principal){
+        String staffId = principal.getName();
+        application.setStatus(1);
+        application.setStaffId(staffId);
+        application.setWorkshopId(1);
+        if (warehousingApplicationDOService.insertWarehousingApplication(application))
+            return  ResponseDTO.success("入库申请提交成功");
+        else
+            return ResponseDTO.fail("入库申请提交失败");
     }
 
-    @PostMapping("/deleteApplication")
-    public ResponseDTO deleteApplication(@RequestBody Map<String ,Object> params){
-        if(warehousingApplicationDOService.deleteWarehousingApplication((long)params.get("warehousingApplicationId")))
-        return ResponseDTO.success("入库申请删除成功");
-        else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+    @PostMapping("/delete/{applicationId}")
+    public ResponseDTO deleteApplication(@PathVariable(name = "applicationId") Long id){
+        if(warehousingApplicationDOService.deleteWarehousingApplication(id))
+            return ResponseDTO.success("入库申请删除成功");
+        else
+            return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @GetMapping("/listApplication")
+    @GetMapping("/list")
     public ResponseDTO listApplication(){
-
         return  ResponseDTO.success("成功显示",warehousingApplicationDOService.list());
     }
 
-    @GetMapping("/getApplication")
-    public ResponseDTO getApplication(@RequestBody Map<String ,Object> params){
-
-        return  ResponseDTO.success(warehousingApplicationDOService.getById((long)params.get("warehousingApplicationId")));
+    @GetMapping("/get/{applicationId}")
+    public ResponseDTO getApplication(@PathVariable(name = "applicationId") Long id){
+        WarehousingApplicationDO application = warehousingApplicationDOService.getById(id);
+        return  ResponseDTO.success(application);
     }
 
-    @PostMapping("/updateApplication")
-    public ResponseDTO updateApplication(@RequestBody Map<String ,Object> params){
-        if(warehousingApplicationDOService.update(params))
+    @PostMapping("/update")
+    public ResponseDTO updateApplication(@RequestBody WarehousingApplicationDO application, Principal principal){
+
+//        if(warehousingApplicationDOService.update(params))
         return  ResponseDTO.success("修改成功");
-        else return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+//        else return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
     @ApiOperation(value = "清点入库单状态 （status：1:pass；0:not pass）")

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.ApplicationProductDOMapper">
+    <insert id="insertList">
+        INSERT INTO application_product(warehousing_application_id, product_id, batch_id, apply_num,
+                                        good_num, bad_num)
+        VALUES
+            <foreach collection="products" item="item" index= "index" separator =",">
+                (#{applicationId}, #{item.productId}, #{item.batchId},
+                 #{item.totalNum}, #{item.goodNum}, #{item.badNum})
+            </foreach>
+    </insert>
+</mapper>

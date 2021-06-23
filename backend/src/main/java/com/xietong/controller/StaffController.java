@@ -46,9 +46,9 @@ public class StaffController {
             return ResponseDTO.fail("插入失败");
     }
 
-    @PostMapping ("/delete/{id}")
+    @PostMapping ("/delete/{staffId}")
     @PreAuthorize("hasRole('admin')")
-    public ResponseDTO deleteStaffById(@PathVariable(name = "id") String id){
+    public ResponseDTO deleteStaffById(@PathVariable(name = "staffId") String id){
         int count = staffDOService.logicallyDeleteById(id);
         if(count == 0)
             return ResponseDTO.fail("用户不存在,或用户已失效");
@@ -73,9 +73,9 @@ public class StaffController {
             return ResponseDTO.fail("更新失败");
     }
 
-    @PostMapping ("/get/{id}")
+    @PostMapping ("/get/{staffId}")
     @PreAuthorize("hasRole('admin')")
-    public ResponseDTO getStaff(@PathVariable(name = "id") String id){
+    public ResponseDTO getStaff(@PathVariable(name = "staffId") String id){
         System.out.println(staffDOService.findOneById(id));
         return ResponseDTO.success(new StaffDTO(staffDOService.findOneById(id).get(0)));
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xietong.mapper.WarehousingApplicationDOMapper">
+    <insert id="insert" parameterType="com.xietong.model.entity.WarehousingApplicationDO"
+            useGeneratedKeys="true" keyProperty="warehousingApplicationId">
+        INSERT INTO warehousing_application(staff_id, time, workshop_id, status)
+        VALUES(#{staffId}, now(), #{workshopId}, #{status})
+    </insert>
+</mapper>

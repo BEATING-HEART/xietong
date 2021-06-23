@@ -7,12 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @Author Sunforge
  * @Date 2021-06-14 23:40
  */
 @Configuration
+@EnableTransactionManagement
 //@MapperScan("com.xietong.model.entity")
 public class MybatisPlusConfig {
     /**
