@@ -15,9 +15,9 @@ public interface SaleOrderDOMapper {
     int insert(SaleOrderDO saleOrderDO);
     List<SaleOrderDO> listA();
     List<SaleOrderSCNameDO> listC();
-    List<SaleOrderDO> listB();
+    List<SaleOrderSCNameDO> listB();
     List<SaleOrderDO> getByIdA(int saleId);
-    List<SaleOrderDO> getByIdB(int saleId);
+    List<SaleOrderSCNameDO> getByIdB(int saleId);
     List<SaleOrderSCNameDO> getByIdC(int saleId);
     int confirmStatus(int saleId,int status);
     int confirmDeliveryStatus(int saleId,int deliveryStatus);

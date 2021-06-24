@@ -16,6 +16,7 @@ import com.xietong.service.intf.SaleOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     private ShipmentDOMapper shipmentDOMapper;
     @Autowired
     ShipmentProductDOMapper shipmentProductDOMapper;
-    @Override
+    @Override @Transactional
     public Boolean insert(Map<String, Object> params) throws ParseException {
         //1.插入销售单表sales_order,取得主键saleId
         SaleOrderDO saleOrderDO=new SaleOrderDO(params.get("sellerId").toString(),Integer.parseInt(params.get("customerId").toString()),params.get("remarks").toString(),new Date());
@@ -84,13 +85,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     }
     public List<SaleOrderSCNameDO> list(){
         List<SaleOrderSCNameDO> saleOrderDOListA;
-        List<SaleOrderDO> saleOrderDOListB;
+        List<SaleOrderSCNameDO> saleOrderDOListB;
         saleOrderDOListA=saleOrderDOMapper.listC();
         saleOrderDOListB=saleOrderDOMapper.listB();
         for(int i=0;i<saleOrderDOListA.size();i++){
             for(int j=0;j<saleOrderDOListB.size();j++){
                 if (saleOrderDOListA.get(i).getSaleId()==saleOrderDOListB.get(j).getSaleId()){
-                    saleOrderDOListA.get(i).setShipmentDOList(saleOrderDOListB.get(j).getShipmentDOList());
+                    saleOrderDOListA.get(i).setShipmentPNameDOList(saleOrderDOListB.get(j).getShipmentPNameDOList());
                 }
             }
         }
@@ -98,13 +99,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
     }
     public List<SaleOrderSCNameDO> getById(int saleId){
         List<SaleOrderSCNameDO> saleOrderDOListA;
-        List<SaleOrderDO> saleOrderDOListB;
+        List<SaleOrderSCNameDO> saleOrderDOListB;
         saleOrderDOListA=saleOrderDOMapper.getByIdC(saleId);
         saleOrderDOListB=saleOrderDOMapper.getByIdB(saleId);
         for(int i=0;i<saleOrderDOListA.size();i++){
             for(int j=0;j<saleOrderDOListB.size();j++){
                 if (saleOrderDOListA.get(i).getSaleId()==saleOrderDOListB.get(j).getSaleId()){
-                    saleOrderDOListA.get(i).setShipmentDOList(saleOrderDOListB.get(j).getShipmentDOList());
+                    saleOrderDOListA.get(i).setShipmentPNameDOList(saleOrderDOListB.get(j).getShipmentPNameDOList());
                 }
             }
         }
@@ -121,7 +122,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return saleOrderDOMapper.confirmDeliveryStatus(saleId,deliveryStatus);
     }
 
-    @Override
+    @Override @Transactional
     public Boolean deleteSale(int saleId) {
         try{
             saleOrderDOMapper.deleteBySaleId(saleId);
@@ -138,7 +139,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return true;
     }
 
-    @Override
+    @Override @Transactional
     public Boolean deleteSaleProduct(int saleId, int productId) {
         try {
             saleProductDOMapper.deleteBySaleAndProductId(saleId,productId);
@@ -148,7 +149,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return true;
     }
 
-    @Override
+    @Override @Transactional
     public Boolean deleteShipment(int shipmentId) {
         try{
             shipmentDOMapper.deleteByShipmentId(shipmentId);
@@ -160,7 +161,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return true;
     }
 
-    @Override
+    @Override @Transactional
     public Boolean deleteShipmentProduct(int shipmentId, int productId) {
         try{
             shipmentProductDOMapper.deleteByShipmentAndProductId(shipmentId,productId);
@@ -171,7 +172,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         return true;
     }
 
-    @Override
+    @Override @Transactional
     public Boolean insertOneSaleProduct(SaleProductDO saleProductDO) {
         if (saleProductDOMapper.insertOne(saleProductDO)!=1){
             return false;
@@ -180,13 +181,13 @@ public class SaleOrderServiceImpl implements SaleOrderService {
         }
     }
 
-    @Override
+    @Override @Transactional
     public int insertShipment(ShipmentDO shipmentDO) {
         shipmentDOMapper.insert(shipmentDO);
         return shipmentDO.getShipmentId();
     }
 
-    @Override
+    @Override @Transactional
     public Boolean insertOneShipmentProduct(List<ShipmentProductDO> shipmentProductDOList) {
         try{
             shipmentProductDOMapper.insertList(shipmentProductDOList);
