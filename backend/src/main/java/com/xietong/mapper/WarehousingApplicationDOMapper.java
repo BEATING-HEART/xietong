@@ -1,5 +1,6 @@
 package com.xietong.mapper;
 
+import com.xietong.constant.enums.ApplicationStatusEnum;
 import com.xietong.model.entity.ApplicationProductDO;
 import com.xietong.model.entity.WarehousingApplicationDO;
 import org.apache.ibatis.annotations.*;
@@ -20,6 +21,7 @@ public interface WarehousingApplicationDOMapper {
 
     @Results(id = "applications", value = {
             @Result(property = "warehousingApplicationId", column = "warehousing_application_id", id = true),
+//            @Result(property = "totalNum", column = "actual_num", id = true),
             @Result(property = "applicationProducts", javaType = List.class,
                     many = @Many(select = "listApplicationProductById"), column = "warehousing_application_id")
     })
@@ -42,8 +44,17 @@ public interface WarehousingApplicationDOMapper {
     List<WarehousingApplicationDO> getById(Long applicationId);
 
 
+    @Update("update warehousing_application set status = 1 where warehousing_application_id = #{applicationId}")
+    @Options(useGeneratedKeys = false)
+    boolean update(Long applicationId);
 
-    boolean update(WarehousingApplicationDO warehousingApplicationDO);
+    @Update({"update warehousing_application set status = #{status} ",
+            "where warehousing_application_id = #{applicationId}"})
+    @Options(useGeneratedKeys = false)
+    boolean confirm(long applicationId, int status);
 
-    boolean confirm(long warehousingApplicationId, int status);
+    @Update({"update warehousing_application set status = #{status} ",
+            "where warehousing_application_id = #{applicationId}"})
+    @Options(useGeneratedKeys = false)
+    Boolean check(Long applicationId, Integer status);
 }

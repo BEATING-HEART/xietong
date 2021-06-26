@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -33,8 +34,11 @@ public class WarehousingApplicationDO {
     @ApiModelProperty(hidden=true)
     private int workshopId;
 
-    @ApiModelProperty(hidden=true)
+    @ApiModelProperty(hidden=true) @JsonIgnore
     private int status;
+
+    @ApiModelProperty(hidden=true)
+    private String statusStr;
 
     @TableField(exist = false)
     private List<ApplicationProductDO> applicationProducts;

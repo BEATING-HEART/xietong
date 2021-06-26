@@ -17,7 +17,8 @@ public interface WarehousingApplicationDOService {
 
     boolean update(WarehousingApplicationDO application);
 
-    boolean confirm(long warehousingApplicationId, int status);
+    boolean confirm(long warehousingApplicationId, boolean pass);
 
 
+    Boolean check(Long applicationId, Boolean pass);
 }

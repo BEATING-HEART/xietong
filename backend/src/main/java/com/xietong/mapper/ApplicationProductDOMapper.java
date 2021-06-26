@@ -4,6 +4,7 @@ import com.xietong.model.entity.ApplicationProductDO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,5 @@ public interface ApplicationProductDOMapper {
 
     @Select("select * from application_product where warehousing_application_id = #{applicationId}")
     List<ApplicationProductDO> listApplicationProduct(Long applicationId);
+
 }

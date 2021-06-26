@@ -65,6 +65,11 @@ public class ExceptionHendler {
             return ResponseDTO.fail("下标0不存在" + e);
         }
 
+        @ResponseStatus(HttpStatus.BAD_REQUEST)
+        @ExceptionHandler(value = MyException.class)
+        public ResponseDTO handler(MyException e) {
+            return ResponseDTO.fail(e.getMessage());
+        }
 
 
 

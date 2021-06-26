@@ -10,7 +10,10 @@ public enum ErrorCodeEnum implements ErrorCode{
     JWT_ERROR(4001, "token 异常"),
     JWT_EXPIRE(4002, "token 过期"),
     RQ_FORBIDDEN(4003, "访问权限不足"),
-    RQ_UNAUTHORIZED(4004, "未登录")
+    RQ_UNAUTHORIZED(4004, "未登录"),
+
+    STATUS_UNDEFINED(1001, "状态不存在"),
+    STATUS_LOCKED(1002, "状态改变前置条件不满足")
     ;
 
     /** 错误码 */

@@ -21,10 +21,8 @@ public class ApplicationProductDOServiceImpl implements ApplicationProductDOServ
         return false;
     }
 
-    @Override
-    public boolean check(int applyNum, int actulNum) {
-        return false;
-    }
+
+
 
     @Override
     public List<ApplicationProductDO> listByApplicationId(Long id) {

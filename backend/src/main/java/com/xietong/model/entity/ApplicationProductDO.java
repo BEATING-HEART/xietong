@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -21,10 +22,9 @@ public class ApplicationProductDO {
     private long batchId;
     private int goodNum;
     private int badNum;
-    @TableField(value = "apply_num")
     private int totalNum;
-    @ApiModelProperty(hidden=true)
-    private int actulNum;
+    @ApiModelProperty(hidden=true) @JsonIgnore
+    private int countNum;
 
 
 }

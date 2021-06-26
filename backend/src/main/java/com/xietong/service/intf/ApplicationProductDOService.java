@@ -8,7 +8,9 @@ import java.util.Map;
 public interface ApplicationProductDOService {
     boolean insert(Map<String, Object> params);
 
-    boolean check(int applyNum, int actulNum);
+//    boolean check(int applyNum, int actulNum);
 
     List<ApplicationProductDO> listByApplicationId(Long id);
+
+
 }

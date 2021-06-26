@@ -1,6 +1,7 @@
 package com.xietong.controller;
 
 
+import com.xietong.constant.enums.ApplicationStatusEnum;
 import com.xietong.model.entity.ApplicationProductDO;
 import com.xietong.model.entity.WarehousingApplicationDO;
 import io.swagger.annotations.Api;
@@ -25,7 +26,7 @@ import java.util.Map;
  * @Author Sunforge
  * @Date 2021-06-09 21:02
  */
-@Api(tags = {"入库申请单管理 Andrew"})
+@Api(tags = {"入库申请单管理 Sunforge"})
 @RestController
 @RequestMapping("/api/application")
 public class WarehousingApplicationController {
@@ -39,12 +40,10 @@ public class WarehousingApplicationController {
     @PostMapping("/insert")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "warehousingApplicationId", value = "入库申请单id",  required = false),
-//            @ApiImplicitParam(name = "staffId", value = "员工id",  required = false),
-//            @ApiImplicitParam(name = "staffName", value = "员工姓名", required = false)
     })
     public ResponseDTO insertApplication(@RequestBody WarehousingApplicationDO application, Principal principal){
         String staffId = principal.getName();
-        application.setStatus(1);
+        application.setStatus(ApplicationStatusEnum.UNHANDLED.getCode());
         application.setStaffId(staffId);
         application.setWorkshopId(1);
         if (warehousingApplicationDOService.insertWarehousingApplication(application))
@@ -75,36 +74,44 @@ public class WarehousingApplicationController {
     @PostMapping("/update")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "applicationId", value = "入库申请单id",  required = true),
-//            @ApiImplicitParam(name = "staffId", value = "员工id",  required = false),
-//            @ApiImplicitParam(name = "staffName", value = "员工姓名", required = false)
     })
-    public ResponseDTO updateApplication(@RequestBody WarehousingApplicationDO application, Principal principal){// 删原来的product
-//        Long applicationId = application.getWarehousingApplicationId();
+    public ResponseDTO updateApplication(@RequestBody WarehousingApplicationDO application, Principal principal){
         warehousingApplicationDOService.update(application);
         return  ResponseDTO.success("修改成功");
-//        else return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @ApiOperation(value = "清点入库单状态 （status：1:pass；0:not pass）")
-    @PostMapping("/checkApplication")
-    public ResponseDTO checkApplication(@RequestBody Map<String ,Object> params){
-        if(applicationProductDOService.check((int)params.get("applyNum"),(int)params.get("actulNum")))
-        return  ResponseDTO.success("check pass");
-        else  return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+    @ApiOperation(value = "清点入库单状态 ")
+    @PostMapping("/check/{applicationId}/{result}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "applicationId", value = "入库申请单id",  required = true),
+            @ApiImplicitParam(name = "result", value = "仓库员工清点是否通过",  required = true),
+    })
+//    @PreAuthorize("hasRole('warehousestaff')")
+    public ResponseDTO checkApplication(@PathVariable(name = "applicationId") Long applicationId,
+                                        @PathVariable(name = "result") Boolean result){
+        if(result){
+            warehousingApplicationDOService.check(applicationId, result);
+            return ResponseDTO.success("清点校验通过");
+        }
+        else
+            return ResponseDTO.success("清点校验不通过");
     }
 
-    @ApiOperation(value = "审核销售单状态 （status：0待审核；1通过；2：未通过）")
-    @PostMapping("/confirmApplication")
-    public ResponseDTO confirmApplication(@RequestBody Map<String ,Object> params){
-        if(warehousingApplicationDOService.confirm((long)params.get("warehousingApplicationId"),(int)params.get("status")))
-        return  ResponseDTO.success("状态修改成功");
-        else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
+    @ApiOperation(value = "审核销售单状态 ")
+    @PostMapping("/confirm/{applicationId}/{result}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "applicationId", value = "入库申请单id",  required = true),
+            @ApiImplicitParam(name = "result", value = "仓库经理审核是否通过",  required = true),
+    })
+//    @PreAuthorize("hasRole('warehousemanager')")
+    public ResponseDTO confirmApplication(@PathVariable(name = "applicationId") Long applicationId,
+                                          @PathVariable(name = "result") Boolean result){
+        if(result){
+            warehousingApplicationDOService.confirm(applicationId, result);
+            return ResponseDTO.success("入库审核通过");
+        }
+        else
+            return ResponseDTO.success("入库审核不通过");
     }
-    // insert  车间人员权限 【insert也填写application-product】
-    // delete  车间人员权限（审核通过前可以删除）
-    // update  车间人员权限（审核通过前可以修改，若修改则需要仓库管理员重新确认）【update也修改application-product】
-    // list    车间人员/仓库人员/仓库经理 【联表查询】
-    // get     车间人员/仓库人员/仓库经理 【联表查询 application-product】
-    // check   仓库人员清点。 分 pass 和 非pass两种 【具体QQ上交流】
-    // confirm 仓库经理审核。 分 pass 和 非pass两种 【具体QQ上交流】 【审核通过那修改inventory和warehousing】
+
 }

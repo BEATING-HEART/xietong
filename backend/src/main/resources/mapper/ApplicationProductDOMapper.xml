@@ -3,7 +3,7 @@
 
 <mapper namespace="com.xietong.mapper.ApplicationProductDOMapper">
     <insert id="insertList">
-        INSERT INTO application_product(warehousing_application_id, product_id, batch_id, apply_num,
+        INSERT INTO application_product(warehousing_application_id, product_id, batch_id, total_num,
                                         good_num, bad_num)
         VALUES
             <foreach collection="products" item="item" index= "index" separator =",">
