@@ -38,7 +38,9 @@ public class ExceptionHendler {
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         @ExceptionHandler(value = IllegalArgumentException.class)
         public ResponseDTO handler(IllegalArgumentException e) {
-            return ResponseDTO.fail("assert异常" + e);
+//            log.error("Assert异常：----------------{}", e.getMessage());
+            return ResponseDTO.fail("assert异常"+e.getMessage());
+    
         }
 
         @ResponseStatus(HttpStatus.BAD_REQUEST)

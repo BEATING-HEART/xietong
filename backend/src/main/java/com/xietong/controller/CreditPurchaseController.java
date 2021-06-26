@@ -21,17 +21,17 @@ public class CreditPurchaseController {
     // 根据时间，公司等信息查找
     // list 只有list
     // get  只有get
-    @GetMapping("/list")
-    @PreAuthorize("hasRole('accounting')")
-    public ResponseDTO listCredits(){
-        return ResponseDTO.success("还没开发好");
-    }
-
-    @GetMapping("/get/{id}")
-    @PreAuthorize("hasRole('accounting')")
-    public ResponseDTO getCredit(@PathVariable(name = "id") Integer id){
-        return ResponseDTO.success("还没开发好");
-    }
+//    @GetMapping("/list")
+//    @PreAuthorize("hasRole('accounting')")
+//    public ResponseDTO listCredits(){
+//        return ResponseDTO.success("还没开发好");
+//    }
+//
+//    @GetMapping("/get/{id}")
+//    @PreAuthorize("hasRole('accounting')")
+//    public ResponseDTO getCredit(@PathVariable(name = "id") Integer id){
+//        return ResponseDTO.success("还没开发好");
+//    }
     // 先实现不设约束的
     // 还有 get by time by company
 }

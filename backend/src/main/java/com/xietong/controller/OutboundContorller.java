@@ -28,17 +28,17 @@ public class OutboundContorller {
 
     // list 仓库经理，仓库人员
     // get  仓库经理，仓库人员
-    @GetMapping("/list")
-//    @PreAuthorize("hasRole('accounting')")
-    public ResponseDTO listOutBounds(){
-        return ResponseDTO.success("还没开发好");
-    }
+//    @GetMapping("/list")
+////    @PreAuthorize("hasRole('accounting')")
+//    public ResponseDTO listOutBounds(){
+//        return ResponseDTO.success("还没开发好");
+//    }
 
-    @GetMapping("/get/{id}")
-//    @PreAuthorize("hasRole('accounting')")
-    public ResponseDTO getOutbound(@PathVariable(name = "id") Integer id){
-        return ResponseDTO.success("还没开发好");
-    }
+//    @GetMapping("/get/{id}")
+////    @PreAuthorize("hasRole('accounting')")
+//    public ResponseDTO getOutbound(@PathVariable(name = "id") Integer id){
+//        return ResponseDTO.success("还没开发好");
+//    }
     @PostMapping("/getOutboundBySaleId")
     @ApiOperation(value = "根据saleId获取对应的出库单")
     public ResponseDTO getOutboundBySaleId(@RequestBody Map<String ,Object> params){
