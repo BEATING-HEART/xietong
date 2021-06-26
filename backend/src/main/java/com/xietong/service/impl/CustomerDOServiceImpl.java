@@ -1,7 +1,10 @@
 package com.xietong.service.impl;
 
+import com.xietong.mapper.CustomerDOMapper;
 import com.xietong.model.entity.CustomerDO;
 import com.xietong.service.intf.CustomerDOService;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,28 +13,36 @@ import java.util.Map;
 @Service
 
 public class CustomerDOServiceImpl implements CustomerDOService {
+    @Autowired
+    private CustomerDOMapper customerDOMapper;
+
     @Override
     public List<CustomerDO> list() {
-        return null;
+        List<CustomerDO> listCustomer = customerDOMapper.list();
+        return listCustomer;
     }
 
     @Override
-    public List<CustomerDO> getById(int customerId) {
-        return null;
+    public CustomerDO getById(int customerId) {
+        return customerDOMapper.getById(customerId);
     }
 
     @Override
-    public boolean update(Map<String, Object> params) {
-        return false;
+    public boolean update(CustomerDO customerDO) {
+        customerDOMapper.update(customerDO);
+        return true;
     }
 
     @Override
-    public boolean updateStatus(int customerId, int effective) {
-        return false;
+    public boolean updateStatus(@Param("customerId") int customerId,@Param("effective") int effective) {
+        if(customerDOMapper.updateStatus(customerId,effective))
+        return true;
+        else return false;
     }
 
     @Override
-    public boolean insert(Map<String, Object> params) {
-        return false;
+    public boolean insert(CustomerDO customerDO) {
+        customerDOMapper.insert(customerDO);
+        return true;
     }
 }
