@@ -12,6 +12,7 @@ import com.xietong.model.entity.SaleProductDO;
 import com.xietong.model.entity.ShipmentDO;
 import com.xietong.model.entity.ShipmentProductDO;
 import com.xietong.model.entity.receiveDO.SaleOrderSCNameDO;
+import com.xietong.model.entity.receiveDO.ShipmentXDO;
 import com.xietong.service.intf.SaleOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,14 +53,50 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             System.out.println(e);
             return false;
         }
+
+
         //3.插入shipment表,插入shipment_product表
         JSONObject jsonObject;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
         ShipmentDO shipmentDO;
-        List<ShipmentProductDO> shipmentProductDOList;
+        List<ShipmentProductDO> shipmentProductDOList = new ArrayList<>();
         JSONArray array= JSONArray.parseArray(JSON.toJSONString(params.get("shipment")));
+        System.out.println(array);
+        List<ShipmentXDO> shipmentXDOList=JSONObject.parseArray(array.toString(),ShipmentXDO.class);
+        System.out.println(shipmentXDOList);
+        for(int i=1;i<20;i++){
+            String  shipmentTime=null;
+            for(int j=0;j<shipmentXDOList.size();j++){
+                if (shipmentXDOList.get(j).getShipmentNum()==i){
+                    shipmentProductDOList.add(new ShipmentProductDO(shipmentXDOList.get(j).getProductId(),shipmentXDOList.get(j).getNum()));
+                    shipmentTime=shipmentXDOList.get(j).getTime();
+                }
+            }
+            if (shipmentProductDOList.size()>0){
+                shipmentDO=new ShipmentDO(returnSaleID,simpleDateFormat.parse(shipmentTime));
+                try{
+                    shipmentDOMapper.insert(shipmentDO);
+                }catch (DataAccessException e){
+                    System.out.println(e);
+                    return false;
+                }
+                int returnShipmentId=shipmentDO.getShipmentId();
+                for (int j=0;j<shipmentProductDOList.size();j++){
+                    shipmentProductDOList.get(j).setShipmentId(returnShipmentId);
+                }
+                try{
+                    shipmentProductDOMapper.insertList(shipmentProductDOList);
+                }catch (DataAccessException e){
+                    System.out.println(e);
+                    return false;
+                }
+                shipmentProductDOList.clear();
+            }
+        }
 
 
+
+/*
         for (int i=0;i<array.size();i++){
              jsonObject= (JSONObject) array.get(i);
              shipmentDO=new ShipmentDO(returnSaleID,simpleDateFormat.parse(jsonObject.getString("time")));
@@ -81,6 +119,9 @@ public class SaleOrderServiceImpl implements SaleOrderService {
                 return false;
             }
         }
+
+*/
+
         return true;
     }
     public List<SaleOrderSCNameDO> list(){
