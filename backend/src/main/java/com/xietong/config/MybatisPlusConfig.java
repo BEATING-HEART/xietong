@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @Date 2021-06-14 23:40
  */
 @Configuration
+@EnableTransactionManagement
 //@MapperScan("com.xietong.model.entity")
 @EnableTransactionManagement
 public class MybatisPlusConfig {

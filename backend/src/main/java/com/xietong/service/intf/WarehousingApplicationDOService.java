@@ -7,15 +7,17 @@ import java.util.Map;
 
 public interface WarehousingApplicationDOService {
 
-    boolean insert(Map<String, Object> params);
-
     boolean deleteWarehousingApplication(long warehousingApplicationId);
+    boolean insertWarehousingApplication(WarehousingApplicationDO application);
+
 
     List<WarehousingApplicationDO> list();
 
-    List<WarehousingApplicationDO> getById(long warehousingApplicationId);
+    WarehousingApplicationDO getById(long warehousingApplicationId);
 
-    boolean update(Map<String, Object> params);
+    boolean update(WarehousingApplicationDO application);
 
     boolean confirm(long warehousingApplicationId, int status);
+
+
 }

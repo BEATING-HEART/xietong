@@ -1,8 +1,10 @@
 package com.xietong.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
@@ -11,20 +13,18 @@ import lombok.Data;
 public class ApplicationProductDO {
 
     @TableId(value = "warehousing_application_id",type = IdType.AUTO )
+    @ApiModelProperty(hidden=true)
     private long warehousingApplicationId;
-
     private int productId;
+    @TableField(exist = false)
+    private String productName;
     private long batchId;
-    private int applyNum;
+    private int goodNum;
+    private int badNum;
+    @TableField(value = "apply_num")
+    private int totalNum;
+    @ApiModelProperty(hidden=true)
     private int actulNum;
 
-    public ApplicationProductDO(long warehousingApplicationId,int productId,long batchId,int applyNum,int actulNum)
-    {
-        this.warehousingApplicationId=warehousingApplicationId;
-        this.productId=productId;
-        this.batchId=batchId;
-        this.applyNum=applyNum;
-        this.actulNum=actulNum;
-    }
 
 }
