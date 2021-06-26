@@ -26,8 +26,8 @@ public class CustomerContorller {
 
 
     @PostMapping("/insertCustomer") //增加客户
-    public ResponseDTO insertCustomer(@RequestBody Map<String ,Object> params){
-        boolean sta=customerDOService.insert(params);
+    public ResponseDTO insertCustomer(@RequestBody CustomerDO customerDO){
+        boolean sta=customerDOService.insert(customerDO);
         if (sta)
             return ResponseDTO.success("添加客户成功");
         else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
@@ -59,8 +59,8 @@ public class CustomerContorller {
 
     @PostMapping("/updateCustomer")//更新客户
 
-    public ResponseDTO updateCustomer(@RequestBody Map<String ,Object> params){
-        if(customerDOService.update(params))
+    public ResponseDTO updateCustomer(@RequestBody CustomerDO customerDO){
+        if(customerDOService.update(customerDO))
             return ResponseDTO.success("更新客户成功");
         else
         return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);

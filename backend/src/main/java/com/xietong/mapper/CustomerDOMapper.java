@@ -1,12 +1,12 @@
-package com.xietong.service.intf;
+package com.xietong.mapper;
 
 import com.xietong.model.entity.CustomerDO;
-import org.springframework.cache.config.CacheManagementConfigUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
-public interface CustomerDOService {
+@Repository
+public interface CustomerDOMapper {
     List<CustomerDO> list();
 
     CustomerDO getById(int customerId);
