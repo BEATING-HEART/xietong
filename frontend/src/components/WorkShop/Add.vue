@@ -16,30 +16,30 @@
                     </el-col>
                 </el-row>
                 <el-table
-                    :data="tableData"
+                    :data="applicationProducts"
                     style="width: 100%;margin-bottom: 20px">
                 <el-table-column
-                    prop="pname"
+                    prop="productName"
                     label="产品名">
                 </el-table-column>
                 <el-table-column
-                    prop="pnum"
+                    prop="productId"
                     label="产品号">
                 </el-table-column>
                 <el-table-column
-                    prop="num"
+                    prop="batchId"
                     label="车间号">
                 </el-table-column>
                 <el-table-column
-                    prop="good"
+                    prop="goodNum"
                     label="良品">
                 </el-table-column>
                 <el-table-column
-                    prop="bad"
+                    prop="badNum"
                     label="次品">
                 </el-table-column>
                 <el-table-column
-                    prop="total"
+                    prop="totalNum"
                     label="总计">
                 </el-table-column>
                 <el-table-column label="操作">
@@ -57,7 +57,7 @@
                 </el-table-column>
                 </el-table>
                 <el-button type="primary" @click="Add" style="float:right;margin-bottom: 20px;margin-left: 20px">添加</el-button>
-                <el-button type="success" @click="Submit" style="float:right;margin-bottom: 20px;margin-left: 20px">完成</el-button>
+                <el-button type="success" @click="Submit" style="float:right;margin-bottom: 20px;margin-left: 20px">提交</el-button>
             </el-form>
         </el-card>
         <el-dialog title="产品信息" :visible.sync="dialogFormVisible">
@@ -65,7 +65,7 @@
                 <el-form-item label="产品号">
                     <el-autocomplete
                     class="inline-input"
-                    v-model="tmp.pnum"
+                    v-model="tmp.productId"
                     :fetch-suggestions="querySearch"
                     :trigger-on-focus="false"
                     @select="handleSelect"
@@ -73,22 +73,22 @@
                 ></el-autocomplete>
                 </el-form-item>
                 <!-- 
-                    <el-input v-model="tmp.pnum"></el-input>
+                    <el-input v-model="tmp.productId"></el-input>
                 </el-form-item> -->
                 <el-form-item label="产品名">
-                    <el-input v-model="tmp.pname" disabled></el-input>
+                    <el-input v-model="tmp.productName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="车间号">
-                    <el-input v-model="tmp.num"></el-input>
+                    <el-input v-model="tmp.batchId"></el-input>
                 </el-form-item>
                 <el-form-item label="良品">
-                    <el-input v-model="tmp.good"></el-input>
+                    <el-input v-model="tmp.goodNum"></el-input>
                 </el-form-item>
                 <el-form-item label="次品">
-                    <el-input v-model="tmp.bad"></el-input>
+                    <el-input v-model="tmp.badNum"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="总计">
-                    <el-input v-model="tmp.total" disabled></el-input>
+                    <el-input v-model="tmp.totalNum" disabled></el-input>
                 </el-form-item> -->
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -120,28 +120,14 @@ export default{
                 StaffId:'',
                 StaffName:''
             },
-            tableData: [{
-                pname: '螺丝',
-                pnum: '123',
-                num: '567',
-                good:'12',
-                bad:'23',
-                total:'35'
-            },{
-                pname: '大螺丝',
-                pnum: '123',
-                num: '567',
-                good:'12',
-                bad:'23',
-                total:'35'
-            }],
+            applicationProducts: [],
             tmp:{
-                pname: '',
-                pnum: '',
-                num: '',
-                good:'',
-                bad:'',
-                total:'',
+                productName: '',
+                productId: '',
+                batchId: '',
+                goodNum:'',
+                badNum:'',
+                totalNum:'',
                 row:0,
                 type:''
             },
@@ -154,12 +140,12 @@ export default{
             this.dialogFormVisible = true
             console.log(row)
             console.log(detail)
-            this.tmp.pname = detail.pname
-            this.tmp.pnum = detail.pnum
-            this.tmp.num = detail.num
-            this.tmp.good = detail.good
-            this.tmp.bad = detail.bad
-            this.tmp.total = detail.total
+            this.tmp.productName = detail.productName
+            this.tmp.productId = detail.productId
+            this.tmp.batchId = detail.batchId
+            this.tmp.goodNum = detail.goodNum
+            this.tmp.badNum = detail.badNum
+            this.tmp.totalNum = detail.totalNum
             this.tmp.row = row
             this.tmp.type = 'edit'
         },
@@ -167,7 +153,7 @@ export default{
         // {
         //     console.log(index)
         //     console.log(row)
-        //     this.tableData.splice(row,1)
+        //     this.applicationProducts.splice(row,1)
         // }
         {
         this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
@@ -175,7 +161,7 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            this.tableData.splice(row,1)
+            this.applicationProducts.splice(row,1)
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -189,48 +175,63 @@ export default{
       },
         Add(){
             this.dialogFormVisible = true
-            this.tmp.pname = ''
-            this.tmp.pnum = ''
-            this.tmp.num = ''
-            this.tmp.good = ''
-            this.tmp.bad = ''
-            this.tmp.total = ''
+            this.tmp.productName = ''
+            this.tmp.productId = ''
+            this.tmp.batchId = ''
+            this.tmp.goodNum = ''
+            this.tmp.badNum = ''
+            this.tmp.totalNum = ''
             this.tmp.row = ''
             this.tmp.type = 'add'
         },
         confirm(){
             console.log(this.tmp.row)
             if(this.tmp.type == 'add'){
-                this.tableData.push({
-                    pname: this.tmp.pname,
-                    pnum: this.tmp.pnum,
-                    num: this.tmp.num,
-                    good: this.tmp.good,
-                    bad: this.tmp.bad,
-                    total: parseInt(this.tmp.good) + parseInt(this.tmp.bad),
+                this.applicationProducts.push({
+                    productName: this.tmp.productName,
+                    productId: this.tmp.productId,
+                    batchId: this.tmp.batchId,
+                    goodNum: this.tmp.goodNum,
+                    badNum: this.tmp.badNum,
+                    totalNum: parseInt(this.tmp.goodNum) + parseInt(this.tmp.badNum),
                     row: this.tmp.row
                 })
                 console.log(this.tmp)
-                console.log(this.tableData)
+                console.log(this.applicationProducts)
                 console.log('增加')
             }
             else{
-                this.$set(this.tableData,this.tmp.row,{
-                    pname: this.tmp.pname,
-                    pnum: this.tmp.pnum,
-                    num: this.tmp.num,
-                    good: this.tmp.good,
-                    bad: this.tmp.bad,
-                    total: parseInt(this.tmp.good) + parseInt(this.tmp.bad),
+                this.$set(this.applicationProducts,this.tmp.row,{
+                    productName: this.tmp.productName,
+                    productId: this.tmp.productId,
+                    batchId: this.tmp.batchId,
+                    goodNum: this.tmp.goodNum,
+                    badNum: this.tmp.badNum,
+                    totalNum: parseInt(this.tmp.goodNum) + parseInt(this.tmp.badNum),
                     row: this.tmp.row
                 })
-                console.log(this.tableData)
+                console.log(this.applicationProducts)
                 console.log(this.tmp)
                 console.log('修改')
             }
             this.dialogFormVisible = false;
         },
         Submit(){
+            var tmp = {
+                "applicationProducts":this.applicationProducts,
+                "warehousingApplicationId": this.form.StaffId
+                }
+            var url = 'http://39.103.202.215:8080/api/application/insert';
+                this.$axios.post(url,tmp)
+                .then(res=>{
+                    console.log(res)
+                    this.$message.success('添加成功');
+                    this.applicationProducts = []
+                })
+                .catch(error=>{
+                    console.log(error)
+                    this.$message.error('添加失败');
+                })
             // 向后端提交数据时除了表格里有的数据(车间号等),还要提交当前的系统时间yyyy-mm-dd
             //提交数据
         },
@@ -252,18 +253,26 @@ export default{
         ];
       },
       handleSelect(item) {
-        this.tmp.pname=item.address;
+        this.tmp.productName=item.address;
       },
       losefocus(){
 
       }
     },
     mounted() {
-        const a =[
-          { value: "123456","address":"齿轮"},
-          { value: "234567","address":"大齿轮"}
-        ]
-      this.restaurants = a
+        var url = 'http://39.103.202.215:8080/api/product/list';
+        this.$axios.post(url)
+        .then(res=>{
+            console.log(res.data.data)
+            var a = res.data.data
+                a.forEach(function (item) {
+                    item.value = String(item.productId)
+                    delete item.productId
+                    item.address = String(item.productName)
+                    delete item.productName
+        })
+            this.restaurants = a
+        });
       console.log(a)
     }
 }

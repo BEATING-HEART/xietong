@@ -77,19 +77,21 @@
                     <el-input v-model="detail.date" readonly="true"></el-input>
                 </el-form-item>
                 <h3 align=center>产品列表</h3>
-                <el-form-item v-for="(item,index) in this.detail.TobeDeliver">
+                <el-form-item v-for="item in this.detail.shipmentPNameDOList" :key="item.id">
+                  <el-container>
                   <el-form-item label="批次:">
-                    <el-input v-model="item.batch" readonly="true" ></el-input>
+                    <el-input v-model="item.shipmentId" readonly="true" ></el-input>
                   </el-form-item>
                   <el-form-item label="日期:">
-                    <el-input v-model="item.date" readonly="true" ></el-input>
+                    <el-input v-model="item.time" readonly="true" ></el-input>
                   </el-form-item>
-                  <el-table :data="item.products" borderstyle="width:100%">
-                    <el-table-column label="产品编号" prop="pid">
+                  </el-container>
+                  <el-table :data="item.shipmentProductPNameDOList" borderstyle="width:100%">
+                    <el-table-column label="产品编号" prop="productId">
                     </el-table-column>
-                    <el-table-column label="产品名字" prop="pname">
+                    <el-table-column label="产品名字" prop="productName">
                     </el-table-column>
-                    <el-table-column label="发货数量" prop="amount">
+                    <el-table-column label="发货数量" prop="num">
                     </el-table-column>
                   </el-table>
                 </el-form-item>
@@ -114,7 +116,7 @@ export default {
       await this.$axios.post(url)
       .then(({data: res})=>{
         console.log(res.data)
-        const a = res.data
+        var a = res.data
         a.forEach(function (item) {
               item.sheetid = String(item.saleId)
               delete item.saleId
@@ -127,7 +129,9 @@ export default {
               item.description = String(item.remarks)
               delete item.remarks
         })
-        this.tableData = a
+         console.log(this.tableData)
+         this.tableData = a
+         console.log(this.tableData)
       })      
     },
   data() {
@@ -142,36 +146,36 @@ export default {
           salesname:'陈宇',
           clientname:"台积电",
           description:'销售员下跪得来的机会',
-          TobeDeliver:[
+          shipmentPNameDOList:[
             {
-              batch:'1',
-              date:'2016-05-03',
-              products:[
+              shipmentId:'1',
+              time:'2016-05-03',
+              shipmentProductPNameDOList:[
                 {
-                  pid:'1',
-                  pname:'齿轮',
-                  amount:'1000'
+                  productId:'1',
+                  productName:'齿轮',
+                  num:'1000'
                 },
                 {
-                  pid:'2',
-                  pname:'大齿轮',
-                  amount:'500'
+                  productId:'1',
+                  productName:'齿轮',
+                  num:'1000'
                 }
               ]
             },
             {
-              batch:'2',
-              date:'2016-05-04',
-              products:[
+              shipmentId:'1',
+              time:'2016-05-03',
+              shipmentProductPNameDOList:[
                 {
-                  pid:'1',
-                  pname:'齿轮',
-                  amount:'500'
+                  productId:'1',
+                  productName:'齿轮',
+                  num:'1000'
                 },
                 {
-                  pid:'3',
-                  pname:'晶体管',
-                  amount:'500'
+                  productId:'1',
+                  productName:'齿轮',
+                  num:'1000'
                 }
               ]
             }
@@ -184,15 +188,15 @@ export default {
             clientname:'',
             date:'',
             description:'',
-            TobeDeliver:[
+            shipmentPNameDOList:[
               {
-                batch:'',
-                date:'',
-                products:[
+                shipmentId:'',
+                time:'',
+                shipmentProductPNameDOList:[
                   {
-                    pid:'',
-                    pname:'',
-                    amount:''
+                    productId:'',
+                    productName:'',
+                    num:''
                   }
                 ]
               }
@@ -209,7 +213,7 @@ export default {
             this.detail.clientname=detail.clientname
             this.detail.date=detail.date
             this.detail.description=detail.description
-            this.detail.TobeDeliver=detail.TobeDeliver
+            this.detail.shipmentPNameDOList=detail.shipmentPNameDOList
         },
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {

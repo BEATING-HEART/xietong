@@ -5,11 +5,11 @@
       <el-form ref="form" :model="loginform" :rules="loginrules">
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input placeholder="请输入用户名" v-model="loginform.username"></el-input>
+          <el-input placeholder="用户名" v-model="loginform.username"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
-          <el-input placeholder="请输入密码" v-model="loginform.password" show-password></el-input>
+          <el-input placeholder="密码" v-model="loginform.password" show-password></el-input>
         </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
@@ -29,13 +29,11 @@ export default {
             //登录表单
             loginform:{
                 username:'',
-                password:'123456'
+                password:''
             },
             loginrules:{
-                username:[{ required: true, message: '请输入用户名', trigger: 'blur' },
-                {min:1,max:10,message:"长度在1到10个字符",trigger:'blur'}],
-                password:[{ required: true, message: '请输入密码', trigger: 'blur' },
-                { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }]
+                username:[{ required: true, message: '请输入用户名', trigger: 'blur' }],
+                password:[{ required: true, message: '请输入密码', trigger: 'blur' }]
             }
         }
     },

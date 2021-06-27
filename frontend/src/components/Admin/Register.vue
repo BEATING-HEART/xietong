@@ -77,7 +77,16 @@ import qs from 'qs'
              })
              .catch((error) => {
                this.$message.error('注册失败，该用户已存在')
+                  //console.log(error);
               });
+            // if(a == '') return ;
+            // if(a.data.code == 200) return ; 
+            
+            // .then(({data: res,code: code,message: message})=>{
+            //   console.log(res)
+            //   console.log(code)
+            //   console.log(message)
+            // })
           } else {
             this.$message.error('请输入具体信息')
             return false;
