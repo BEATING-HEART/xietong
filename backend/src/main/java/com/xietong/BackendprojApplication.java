@@ -15,7 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @SpringBootApplication
 @MapperScan("com.xietong.mapper")
-
 public class BackendprojApplication {
 
     public static void main(String[] args) {

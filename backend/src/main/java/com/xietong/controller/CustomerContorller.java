@@ -6,6 +6,8 @@ import com.xietong.constant.enums.ErrorCodeEnum;
 import com.xietong.service.intf.CustomerDOService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -25,40 +27,26 @@ public class CustomerContorller {
     CustomerDOService customerDOService;
 
 
-    @PostMapping("/insertCustomer") //增加客户
+    @PostMapping("/insert") @Transactional//增加客户
     public ResponseDTO insertCustomer(@RequestBody CustomerDO customerDO){
         boolean sta=customerDOService.insert(customerDO);
         if (sta)
             return ResponseDTO.success("添加客户成功");
         else return ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
-/*
-    @PostMapping("/deleteCustomer")//删除客户
-    // public ResponseDTO deleteCustomer(@PathVariable(name = "id") String id){
-    //     return  ResponseDTO.success("未完成开发");
-    public ResponseDTO deleteCustomer(@RequestBody Map<String ,Object> params){
-        if(customerDOService.delete((int)params.get("customerId")))
-            return ResponseDTO.success("删除客户成功");
-        else
-        return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
-    }
 
- */
-
-    @GetMapping("/listCustomer")//显示所有客户
+    @GetMapping("/list")//显示所有客户
     public ResponseDTO listCustomer(){
 
         return ResponseDTO.success("成功显示",customerDOService.list());
     }
 
-    @GetMapping("/getCustomerById")//查找客户 id
-    public ResponseDTO getCustomer(@RequestBody Map<String ,Object> params){
-
-        return  ResponseDTO.success(customerDOService.getById((int)params.get("customerId")));
+    @GetMapping("/get/{customerId}")//查找客户 id
+    public ResponseDTO getCustomer(@PathVariable(name = "customerId") int id){
+        return  ResponseDTO.success(customerDOService.getById(id));
     }
 
-    @PostMapping("/updateCustomer")//更新客户
-
+    @PostMapping("/update")//更新客户
     public ResponseDTO updateCustomer(@RequestBody CustomerDO customerDO){
         if(customerDOService.update(customerDO))
             return ResponseDTO.success("更新客户成功");
@@ -66,9 +54,9 @@ public class CustomerContorller {
         return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);
     }
 
-    @PostMapping("/updateCustomerStatus")//更新客户 逻辑删除
-    public ResponseDTO updateCustomerStatus(@RequestBody Map<String ,Object> params){
-        if(customerDOService.updateStatus((int)params.get("customerId"),(int)params.get("effective")))
+    @PostMapping("/delete/{customerId}") //逻辑删除
+    public ResponseDTO updateCustomerStatus(@PathVariable(name = "customerId") int id){
+        if(customerDOService.updateStatus(id,0))
             return ResponseDTO.success("更新客户成功");
         else
             return  ResponseDTO.fail(ErrorCodeEnum.UNSPECIFIED);

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +25,7 @@ public class CustomerDO {
     private String customerPhone;
     @TableField(value = "business_scope")
     private String businessScope;
-
-    private String adress;
-    private int effective;
+    private String address;
+    @ApiModelProperty(hidden=true)
+    private Boolean effective;
 }

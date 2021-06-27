@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper>
-    <insert id="insert" parameterType="com.xietong.model.entity.CustomerDO">
-        INSERT INTO customer
-        VALUES (#{customerId}, #{customerName}, #{customerPhone}, #{businessScope}, #{adress}, #{effective})
-    </insert>
+<mapper namespace="com.xietong.mapper.CustomerDOMapper">
+<!--    <insert id="insert" parameterType="com.xietong.model.entity.CustomerDO">-->
+<!--        INSERT INTO customer-->
+<!--        VALUES (#{customerId}, #{customerName}, #{customerPhone}, #{businessScope}, #{adress}, #{effective})-->
+<!--    </insert>-->
 
     <select id="list" resultMap="CustomerDOMap">
         SELECT * FROM customer WHERE effective=1;
@@ -24,7 +24,7 @@
     </select>
 
     <update id="update" parameterType="com.xietong.model.entity.CustomerDO">
-        UPDATE customer SET customer_name=#{customerName}, customer_phone=#{customerPhone}, business_scope=#{businessScope}, adress=#{adress}
+        UPDATE customer SET customer_name=#{customerName}, customer_phone=#{customerPhone}, business_scope=#{businessScope}, address=#{address}
         WHERE  customer_id=#{customerId}
     </update>
 
