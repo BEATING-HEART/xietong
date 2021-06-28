@@ -3,7 +3,7 @@
         <h2>查看入库申请单</h2>
         <el-card>
             <el-container>
-            <el-input v-model="num" placeholder="请输入入库申请单号" style="margin-bottom: 20px;margin-right: 50px"></el-input>
+            <el-input v-model="id" placeholder="请输入入库申请单号" style="margin-bottom: 20px;margin-right: 50px"></el-input>
             <el-button type="primary" @click="search" style="float:right;margin-bottom: 20px">查询</el-button>
             <el-button type="danger" @click="cancel" style="float:right;margin-bottom: 20px">取消</el-button>
             </el-container>
@@ -11,18 +11,18 @@
             <el-table
                 :data="tableData"
                 style="width: 100%"
-                :default-sort = "{prop: 'date', order: 'descending'}">
+                :default-sort = "{prop: 'time', order: 'descending'}">
                 <el-table-column
-                    prop="num"
+                    prop="warehousingApplicationId"
                     label="入库申请单号">
                 </el-table-column>
                 <el-table-column
-                    prop="date"
+                    prop="time"
                     sortable
                     label="申请时间">
                 </el-table-column>
                 <el-table-column
-                    prop="state"
+                    prop="statusStr"
                     label="申请状态"
                     sortable>
                 </el-table-column>
@@ -32,6 +32,10 @@
                             size="mini"
                             type="warning"
                             @click="Detail(scope.$index, scope.row)">查看详情</el-button>
+                            <!-- <el-button
+                            size="mini"
+                            type="danger"
+                            @click="" v-if="Withdraw(scope.$index, scope.row)">撤回</el-button> -->
                     </template>
                 </el-table-column>
             </el-table>
@@ -41,27 +45,27 @@
                     :data="detail"
                     style="width: 100%;margin-bottom: 20px">
                 <el-table-column
-                    prop="pname"
+                    prop="productName"
                     label="产品名">
                 </el-table-column>
                 <el-table-column
-                    prop="pnum"
+                    prop="productId"
                     label="产品号">
                 </el-table-column>
                 <el-table-column
-                    prop="num"
-                    label="批次号">
+                    prop="batchId"
+                    label="车间号">
                 </el-table-column>
                 <el-table-column
-                    prop="good"
+                    prop="goodNum"
                     label="良品">
                 </el-table-column>
                 <el-table-column
-                    prop="bad"
+                    prop="badNum"
                     label="次品">
                 </el-table-column>
                 <el-table-column
-                    prop="total"
+                    prop="totalNum"
                     label="总计">
                 </el-table-column>
                 </el-table>
@@ -71,72 +75,108 @@
 
 <script>
 export default {
-    created(){
-        //获取申请单数据添加至tableData
+    async created(){
+     var url = 'http://39.103.202.215:8080/api/application/list';
+      await this.$axios.get(url,{headers:{"Content-Type":"application/json"}})
+      .then(({data: res})=>{
+        console.log(res.data)
+        this.tableData = res.data
+      })
+      .catch((error)=>{
+          console.log(error)
+      })   
     },
     data(){
         return{
             form:{
-                date:'',
-                num:''
+                time:'',
+                warehousingApplicationId:''
             },
             dialogFormVisible: false,
             detail:[],
+            id:'',
             tableData: [{
-                date: '2016-05-02',
-                state: '审核中',
-                num:'1',
-                data:[{pname: '螺丝1',
-                pnum: '123',
-                num: '567',
-                good:'12',
-                bad:'23',
-                total:'123'}]
+                time: '2016-05-02',
+                statusStr: '审核中',
+                warehousingApplicationId:'104',
+                data:[{productName: '螺丝1',
+                productId: '123',
+                batchId: '1',
+                goodNum:'12',
+                badNum:'23',
+                totalNum:'35'}]
             }, {
-                date: '2016-05-04',
-                state: '审核中',
-                num:'2',
-                data:[{pname: '螺丝2',
-                pnum: '123',
-                num: '567',
-                good:'12',
-                bad:'23',
-                total:'123'}]
+                time: '2016-05-04',
+                statusStr: '审核中',
+                warehousingApplicationId:'204',
+                data:[{productName: '螺丝2',
+                productId: '123',
+                batchId: '1',
+                goodNum:'12',
+                badNum:'23',
+                totalNum:'35'}]
             }, {
-                date: '2016-05-01',
-                state: '已通过',
-                num:'3',
-                data:[{pname: '螺丝3',
-                pnum: '123',
-                num: '567',
-                good:'12',
-                bad:'23',
-                total:'123'}]
+                time: '2016-05-01',
+                statusStr: '已通过',
+                warehousingApplicationId:'3',
+                data:[{productName: '螺丝3',
+                productId: '123',
+                batchId: '1',
+                goodNum:'12',
+                badNum:'23',
+                totalNum:'35'}]
             }, {
-                date: '2016-05-03',
-                state: '已通过',
-                num:'4',
-                data:[{pname: '螺丝4',
-                pnum: '123',
-                num: '567',
-                good:'12',
-                bad:'23',
-                total:'123'}]
+                time: '2016-05-03',
+                statusStr: '已通过',
+                warehousingApplicationId:'4',
+                data:[{productName: '螺丝4',
+                productId: '123',
+                batchId: '2',
+                goodNum:'12',
+                badNum:'23',
+                totalNum:'35'}]
             }]
         }
     },
     methods:{
-        search(){
-            //修改申请单数据添加至tableData
+        async search(){
+            var url = 'http://39.103.202.215:8080/api/application/get/' + this.id;
+            await this.$axios.get(url,{headers:{"Content-Type":"application/json"}})
+            .then(({data: res})=>{
+                console.log(res.data)
+                var a = [
+                    res.data
+                ]
+                this.tableData = a
+                this.$message.success("查询成功")
+            })
+            .catch((error)=>{
+                console.log(error)
+                this.$message.error("查询失败")
+            })   
         },
-        cancel(){
-            //重新获取完整申请单数据添加至tableData
+        async cancel(){
+            var url = 'http://39.103.202.215:8080/api/application/list';
+            await this.$axios.get(url,{headers:{"Content-Type":"application/json"}})
+            .then(({data: res})=>{
+                console.log(res.data)
+                this.tableData = res.data
+            })
+            .catch((error)=>{
+                console.log(error)
+            }) 
         },
         Detail(row, detail){
             this.dialogFormVisible = true
-            this.detail = detail.data
+            this.detail = detail.applicationProducts
             console.log(this.detail)
-        }
+        },
+        // Withdraw(row, detail){
+        //     if(detail.statusStr=="审核中")
+        //     return true
+        //     else if(detail.statusStr=="已通过")
+        //     return false
+        // }
     }
 }
 </script>

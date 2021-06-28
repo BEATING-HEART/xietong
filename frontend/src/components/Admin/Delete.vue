@@ -14,9 +14,9 @@
   <el-form-item label="姓名" prop="name" style="margin-left:170px">
     <el-input v-model="ruleForm.name" style="width:580px" readonly="true"></el-input>
   </el-form-item>
-  <el-form-item label="密码" prop="password" style="margin-left:170px">
+  <!-- <el-form-item label="密码" prop="password" style="margin-left:170px">
     <el-input v-model="ruleForm.password" style="width:580px" readonly="true"></el-input>
-  </el-form-item>
+  </el-form-item> -->
   <el-form-item label="职位" prop="positions" style="margin-left:170px">
     <el-input v-model="ruleForm.positions" style="width:580px" readonly="true"></el-input>
   </el-form-item>
@@ -48,9 +48,19 @@
     },
     methods: {
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            alert('删除成功');
+            var url = 'http://39.103.202.215:8080/api/staff/delete/' + this.ruleForm.account;
+            console.log(url)
+             await this.$axios.post(url,{headers:{"Content-Type":"application/json"}})
+             .then(({data: res}) => {
+               console.log(res)
+               this.$message.success('删除成功')
+             })
+             .catch((error) => {
+               this.$message.error('删除失败，该用户不存在')
+                  //console.log(error);
+              });
           } else {
             console.log('删除失败!!');
             return false;
@@ -76,21 +86,19 @@
         this.ruleForm.password=item.password;
         this.ruleForm.positions=item.position;
       },
-      loadAll() {
-        return [
-          { value: "1812480136","name":"庄逸尘","password":"zyc123456","position":"仓库经理"},
-          { value: "1812480407","name":"蔡俊","password":"cj123456","position":"仓库管理员"},
-          {value:"1811410626","name":"叶博涛","password":"ybt123456","position":"销售员"}
-        ];
-      }
     },
-    mounted(){
-        const a =[
-          { value: "1812480136","name":"庄逸尘","password":"zyc123456","position":"仓库经理"},
-          { value: "1812480407","name":"蔡俊","password":"cj123456","position":"仓库管理员"},
-          {value:  "1811410626","name":"叶博涛","password":"ybt123456","position":"销售员"}
-        ]
-      this.Accounts = a
+    async mounted(){
+      var url = 'http://39.103.202.215:8080/api/staff/list';
+      await this.$axios.get(url)
+      .then(({data: res})=>{
+        console.log(res.data)
+        const a = res.data
+        a.forEach(function (item) {
+              item.value = String(item.staffId)
+              delete item.staffId
+        })
+        this.Accounts = a
+      })      
     }
   }
 </script>

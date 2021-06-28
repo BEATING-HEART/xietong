@@ -28,8 +28,8 @@ export default {
         return{
             //登录表单
             loginform:{
-                username:'1812480000',
-                password:'123456'
+                username:'',
+                password:''
             },
             loginrules:{
                 username:[{ required: true, message: '请输入用户名', trigger: 'blur' }],

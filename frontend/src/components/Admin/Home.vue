@@ -6,6 +6,11 @@
 
 <script>
 export default {
+    created(){
+        var url = 'http://39.103.202.215:8080/api/staff/list';
+        const a = this.$axios.get(url)
+        console.log(a)
+    }
     
 }
 </script>

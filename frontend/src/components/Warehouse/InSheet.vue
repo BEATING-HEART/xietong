@@ -111,6 +111,14 @@
 
 <script>
 export default {
+  created(){
+        var url = 'http://39.103.202.215:8080/api/warehousing/list';
+        this.$axios.get(url)
+        .then(res=>{
+            console.log(res.data.data)
+            this.tableData = res.data.data
+        });
+  },
   data() {
     return {
         QueryForm:{

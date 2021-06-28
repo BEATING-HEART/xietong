@@ -17,16 +17,17 @@
           <el-row>
               <el-col :span="12">
           <el-form-item style="margin-left:-80px">   
-                  <el-date-picker type="date" placeholder="选择日期" v-model="QueryForm.Date" style="width: 100%"
-                  format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"></el-date-picker>
+                  <el-time-picker type="time" placeholder="选择日期" v-model="QueryForm.Date" style="width: 100%"
+                  format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"></el-time-picker>
           </el-form-item>
               </el-col>
               <el-col :span="10">
                   &nbsp;
               </el-col>
-          <el-col :span="2">
-              <el-button type="primary" @click="submitForm('QueryForm')">查询</el-button>
-          </el-col>
+          <el-container>
+              <el-button type="primary" @click="submitForm()">查询</el-button>
+              <el-button type="danger" @click="cancel()">取消</el-button>
+          </el-container>
           </el-row>
       </el-form>
   </el-header>
@@ -37,21 +38,21 @@
     border
     style="width: 100%">
     <el-table-column
-      prop="sheetid"
+      prop="warehousingApplicationId"
       label="单号"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="number"
+      prop="workshopId"
       label="车间号"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="name"
+      prop="staffName"
       label="车间人员姓名">
     </el-table-column>
     <el-table-column
-      prop="date"
+      prop="time"
       label="日期">
     </el-table-column>
     <el-table-column
@@ -66,23 +67,23 @@
   <el-dialog title="入库申请单" :visible.sync="dialogFormVisible" align="center">
             <el-form ref="form" :model="form" label-width="150px">
                 <el-form-item label="订单号">
-                <el-input v-model="detail.sheetid" readonly="true"></el-input>
+                <el-input v-model="detail.warehousingApplicationId" readonly="true"></el-input>
                 </el-form-item>
                 <el-form-item label="车间人员姓名">
-                    <el-input v-model="detail.name" readonly="true"></el-input>
+                    <el-input v-model="detail.staffName" readonly="true"></el-input>
                 </el-form-item>
                 <el-form-item label="车间号">
-                    <el-input v-model="detail.number" readonly="true"></el-input>
+                    <el-input v-model="detail.workshopId" readonly="true"></el-input>
                 </el-form-item>
                 <el-form-item label="日期">
-                    <el-input v-model="detail.date" readonly="true"></el-input>
+                    <el-input v-model="detail.time" readonly="true"></el-input>
                 </el-form-item>
-                <el-table :data="detail.products" borderstyle="width:100%">
-                    <el-table-column label="产品编号" prop="pid">
+                <el-table :data="detail.applicationProducts" borderstyle="width:100%">
+                    <el-table-column label="产品编号" prop="productId">
                     </el-table-column>
-                    <el-table-column label="产品名字" prop="pname">
+                    <el-table-column label="产品名字" prop="productName">
                     </el-table-column>
-                    <el-table-column label="发货数量" prop="amount">
+                    <el-table-column label="发货数量" prop="totalNum">
                     </el-table-column>
                   </el-table>
             </el-form>
@@ -112,57 +113,32 @@ export default {
         else
         this.flag=false
     },
-  
+  created(){
+      var url = 'http://39.103.202.215:8080/api/application/list';
+        this.$axios.get(url)
+        .then(res=>{
+            console.log(res.data.data)
+            this.tableData = res.data.data
+        });
+      //console.log(a)
+  },
   data() {
     return {
         QueryForm:{
             SheetId:'',
             Date:'',
         },
-         tableData: [{
-         sheetid:'13489',
-          date: '2016-05-02',
-          name: '老王',
-          number: '1',
-          products:[
-            {
-              pid:'1',
-              pname:'齿轮',
-              amount:"1000"
-            },
-            {
-              pid:'2',
-              pname:'大齿轮',
-              amount:'500'
-            }
-          ]
-        }, 
-        {
-          sheetid:'13490',
-          date: '2016-05-04',
-          name: '张三',
-          number:'2',
-          products:[{
-            pid:'1',
-            pname:'齿轮',
-            amount:'200'
-          },
-          {
-            pid:'3',
-            pname:'晶体管',
-            amount:'500'
-          }]
-        }],
+         tableData: [],
         detail:{
-            sheetid:'',
-            date:'',
-            name:'',
-            number:'',
-            products:[
+            warehousingApplicationId:'',
+            time:'',
+            staffName:'',
+            workshopId:'',
+            applicationProducts:[
               {
-                pid:'',
-                pname:'',
-                amount:''
+                productId:'',
+                productName:'',
+                totalNum:''
                 }
               ]
         },
@@ -173,20 +149,34 @@ export default {
   methods:{
       ShowDetail(row, detail){
             this.dialogFormVisible = true
-            this.detail.sheetid = detail.sheetid
-            this.detail.name = detail.name
-            this.detail.number = detail.number
-            this.detail.date = detail.date
-            this.detail.products=detail.products
+            this.detail.warehousingApplicationId = detail.warehousingApplicationId
+            this.detail.staffName = detail.staffName
+            this.detail.workshopId = detail.workshopId
+            this.detail.time = detail.time
+            this.detail.applicationProducts=detail.applicationProducts
         },
-        submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('查询成功');
-          } else {
-            console.log('查询失败!!');
-            return false;
-          }
+        async submitForm() {
+            var url = 'http://39.103.202.215:8080/api/application/get/' + this.QueryForm.SheetId;
+            await this.$axios.get(url,{headers:{"Content-Type":"application/json"}})
+            .then(({data: res})=>{
+                console.log(res.data)
+                var a = [
+                    res.data
+                ]
+                this.tableData = a
+                this.$message.success("查询成功")
+            })
+            .catch((error)=>{
+                console.log(error)
+                this.$message.error("查询失败")
+            })  
+      },
+      async cancel(){
+        var url = 'http://39.103.202.215:8080/api/application/list';
+        this.$axios.get(url)
+        .then(res=>{
+            console.log(res.data.data)
+            this.tableData = res.data.data
         });
       }
   }
