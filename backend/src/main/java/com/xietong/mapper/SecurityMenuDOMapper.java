@@ -2,6 +2,7 @@ package com.xietong.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.xietong.model.entity.SecurityMenuDO;
 
 import org.springframework.stereotype.Repository;

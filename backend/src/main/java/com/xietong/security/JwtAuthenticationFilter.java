@@ -26,7 +26,6 @@ import java.io.IOException;
  * @Date 2021-06-04 18:11
  */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
-
     @Autowired
     JWTUtils jwtUtils;
 

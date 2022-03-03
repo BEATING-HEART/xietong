@@ -18,6 +18,7 @@ import java.util.List;
  * 返回 userDetailService 供security config 调用
  */
 @Service
+
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
